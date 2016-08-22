@@ -29,5 +29,7 @@ namespace Recipes.Models
         {
             return new ApplicationDbContext();
         }
-    }
+
+		public System.Data.Entity.DbSet<Recipes.Domain.Recipe> Recipes { get; set; }
+	}
 }
