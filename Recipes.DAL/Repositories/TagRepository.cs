@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Recipes.DAL.Repositories
 {
-	public class SubCategoryRepository : RepositoryBase<SubCategory>
+	public class TagRepository : RepositoryBase<Tag>
 	{
-		public SubCategoryRepository(DataContext dc) : base(dc)
+		public TagRepository(DataContext dataContext) : base (dataContext)
 		{
 
 		}

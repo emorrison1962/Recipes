@@ -50,21 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
-    <Compile Include="Migrations\201606122035531_Initial.cs" />
-    <Compile Include="Migrations\201606122035531_Initial.Designer.cs">
-      <DependentUpon>201606122035531_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606122126060_02.cs" />
-    <Compile Include="Migrations\201606122126060_02.Designer.cs">
-      <DependentUpon>201606122126060_02.cs</DependentUpon>
+    <Compile Include="Migrations\201608241842247_Initial.cs" />
+    <Compile Include="Migrations\201608241842247_Initial.Designer.cs">
+      <DependentUpon>201608241842247_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\CategoryRepository.cs" />
+    <Compile Include="Repositories\TagRepository.cs" />
     <Compile Include="Repositories\EthnicityRepository.cs" />
     <Compile Include="Repositories\RecipeRepository.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
-    <Compile Include="Repositories\SubCategoryRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -82,11 +77,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606122035531_Initial.resx">
-      <DependentUpon>201606122035531_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606122126060_02.resx">
-      <DependentUpon>201606122126060_02.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201608241842247_Initial.resx">
+      <DependentUpon>201608241842247_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

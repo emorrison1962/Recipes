@@ -11,10 +11,13 @@ namespace Recipes.DAL.Migrations
                 "dbo.Categories",
                 c => new
                     {
-                        CategoryId = c.Int(nullable: false, identity: true),
+                        TagId = c.Int(nullable: false, identity: true),
                         Name = c.String(),
+                        Recipe_RecipeId = c.Int(),
                     })
-                .PrimaryKey(t => t.CategoryId);
+                .PrimaryKey(t => t.TagId)
+                .ForeignKey("dbo.Recipes", t => t.Recipe_RecipeId)
+                .Index(t => t.Recipe_RecipeId);
             
             CreateTable(
                 "dbo.Ethnicities",
@@ -31,29 +34,21 @@ namespace Recipes.DAL.Migrations
                     {
                         RecipeId = c.Int(nullable: false, identity: true),
                         Name = c.String(),
-                        Source = c.String(nullable: true),
-                        CategoryId = c.Int(nullable: true),
-                        EthnicityId = c.Int(nullable: true),
-                        Rating = c.Int(nullable: true),
-                        Time = c.Time(nullable: true, precision: 7),
+                        Uri = c.String(),
+                        Source = c.String(),
+                        EthnicityId = c.Int(),
+                        Rating = c.Int(),
+                        Time = c.Time(precision: 7),
+                        ImageUri = c.String(),
                     })
                 .PrimaryKey(t => t.RecipeId);
-            
-            CreateTable(
-                "dbo.SubCategories",
-                c => new
-                    {
-                        SubCategoryId = c.Int(nullable: false, identity: true),
-                        CategoryId = c.Int(nullable: false),
-                        Name = c.String(),
-                    })
-                .PrimaryKey(t => t.SubCategoryId);
             
         }
         
         public override void Down()
         {
-            DropTable("dbo.SubCategories");
+            DropForeignKey("dbo.Categories", "Recipe_RecipeId", "dbo.Recipes");
+            DropIndex("dbo.Categories", new[] { "Recipe_RecipeId" });
             DropTable("dbo.Recipes");
             DropTable("dbo.Ethnicities");
             DropTable("dbo.Categories");

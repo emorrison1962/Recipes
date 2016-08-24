@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace Recipes.Domain
 {
 	[Table("Categories")]
-	public class Category
+	public class Tag
 	{
-		public int CategoryId { get; private set; }
+		public int TagId { get; private set; }
 		public string Name { get; set; }
 	}
 }

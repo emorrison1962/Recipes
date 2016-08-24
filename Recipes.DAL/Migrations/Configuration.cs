@@ -9,7 +9,7 @@ namespace Recipes.DAL.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(Recipes.DAL.Data.DataContext context)

@@ -2,6 +2,7 @@
 using Recipes.DAL.Data;
 using Recipes.DAL.Repositories;
 using Recipes.Domain;
+using Recipes.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,9 @@ namespace Recipes.Controllers
 		// GET: Recipe
 		public ActionResult Index()
 		{
-			var recipes = this.RecipesRepository.GetAll();
+			//var recipes = this.RecipesRepository.GetAll();
+			var recipes = new RecipeService().GetAll();
+
 
 			return View(recipes);
 		}

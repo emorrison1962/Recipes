@@ -13,7 +13,7 @@ namespace Recipes.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201606122035531_Initial"; }
+            get { return "201608241842247_Initial"; }
         }
         
         string IMigrationMetadata.Source

@@ -1,20 +1,28 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Recipes.Services;
+﻿using Recipes.Domain;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Recipes.Services.Tests
+namespace Recipes.Services
 {
-	[TestClass()]
-	public class PageParserTests
+	public class RecipeService
 	{
-		[TestMethod()]
-		public void ParseTest()
+		public List<Recipe> GetAll()
 		{
+			var result = new List<Recipe>();
+
+
+			result = foo();
+
+
+			return result;
+		}
+
+		List<Recipe> foo()
+		{
+
 			var list = new List<string>()
 			{
 "http://www.seriouseats.com/recipes/2016/02/slow-roasted-bacon-wrapped-pineapple-recipe.html",
@@ -43,15 +51,21 @@ namespace Recipes.Services.Tests
 "http://www.seriouseats.com/recipes/2016/07/gyudon-japanese-simmered-beef-and-rice-bowl-recipe.html",
 			};
 
+			var result = new List<Recipe>();
+
 			var parser = new PageParser();
 
 			foreach (var s in list)
 			{
 				var title = parser.TryParse(s);
-				Debug.WriteLine(title);
-				//Assert.IsFalse(string.IsNullOrEmpty(title));
+				var r = new Recipe() { Name = parser.Title, Uri = s, ImageUri = parser.ImageUrl };
+				result.Add(r);
 			}
 
+			return result;
+
+
 		}
+
 	}
 }

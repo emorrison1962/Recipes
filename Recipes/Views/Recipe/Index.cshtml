@@ -4,66 +4,107 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Uri)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Source)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CategoryId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EthnicityId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Rating)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Time)
-        </th>
-        <th></th>
-    </tr>
+<style>
+    img {
+        display: block;
+        margin: 0 auto;
+    }
+</style>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Uri)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Source)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CategoryId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.EthnicityId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rating)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Time)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.RecipeId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.RecipeId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.RecipeId })
-        </td>
-    </tr>
-}
 
-</table>
+<div ng-controller='indexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+    <h2>Index</h2>
+    <br />
+    <br />
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="add()">Add:</button>
+                </span>
+                    <form type="text" class="btn btn-default" placeholder="http://..." ng-model=added ng-submit="add()" />
+                    @*<input type="text" class="form-control" placeholder="http://..." ng-model=added ng->*@
+</div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+
+
+
+    <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Recipes</div>
+        <div class="panel-body">
+
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ImageUri)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Source)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EthnicityId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Rating)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Time)
+                    </th>
+                    <th></th>
+                </tr>
+
+                <tr ng-repeat="recipe in recipes">
+                    <td>
+                        <a href="{{recipe.ImageUri}}" target="_blank">
+                            <img src="{{recipe.ImageUri}}" style="max-width:200px; max-height:100px" />
+                        </a>
+                    </td>
+                    <td>
+                        <p>
+                            <a href="{{recipe.Uri}}" target="_blank">
+                                <h4>{{recipe.Name}}</h4>
+                            </a>
+                        </p>
+                    </td>
+                    <td>
+                        {{recipe.Source}}
+                    </td>
+                    <td>
+                        {{recipe.EthnicityId}}
+                    </td>
+                    <td>
+                        {{recipe.Rating}}
+                    </td>
+                    <td>
+                        {{recipe.Time}}
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { id = {{ recipe.ImageUri}}}) |
+                            @Html.ActionLink("Details", "Details", new { id = item.RecipeId }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.RecipeId })*@
+                    </td>
+                </tr>
+
+            </table>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+<script src="~/Scripts/Index.js"></script>

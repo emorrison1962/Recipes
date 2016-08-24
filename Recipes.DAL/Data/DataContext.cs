@@ -15,8 +15,7 @@ namespace Recipes.DAL.Data
 
 		}
 		public DbSet<Recipe> Recipes { get; set; }
-		public DbSet<Category> Categories { get; set; }
-		public DbSet<SubCategory> SubCategories { get; set; }
+		public DbSet<Tag> Categories { get; set; }
 		public DbSet<Ethnicity> Ethnicities { get; set; }
 
 
