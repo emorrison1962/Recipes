@@ -26,17 +26,17 @@ namespace Recipes.Dal.Repositories
 			return _dbSet.Find(id);
 		}
 
-		public virtual IQueryable<T> GetAll()
+		public virtual IEnumerable<T> GetAll()
 		{
 			return _dbSet;
 		}
 
-		public virtual IQueryable<T> GetAll(object filter)
+		public virtual IEnumerable<T> GetAll(object filter)
 		{
 			return null;
 		}
 
-		public virtual IQueryable<T> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
+		public virtual IEnumerable<T> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
 		{
 			return null;
 		}

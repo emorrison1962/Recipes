@@ -12,5 +12,7 @@ namespace Recipes.Domain
 	{
 		public int TagId { get; private set; }
 		public string Name { get; set; }
+
+        public List<Recipe> Recipes { get; set; }
 	}
 }

@@ -18,15 +18,17 @@
     <br />
     <br />
 
+
     <div class="row">
         <div class="col-lg-6">
-            <div class="input-group">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="add()">Add:</button>
-                </span>
-                    <form type="text" class="btn btn-default" placeholder="http://..." ng-model=added ng-submit="add()" />
-                    @*<input type="text" class="form-control" placeholder="http://..." ng-model=added ng->*@
-</div><!-- /input-group -->
+            <form ng-submit="add()">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="add()">Add:</button>
+                    </span>
+                    <input type="text" class="form-control" placeholder="http://..." ng-model=added>
+                </div><!-- /input-group -->
+            </form>
         </div><!-- /.col-lg-6 -->
     </div><!-- /.row -->
 
@@ -68,7 +70,7 @@
                 <tr ng-repeat="recipe in recipes">
                     <td>
                         <a href="{{recipe.ImageUri}}" target="_blank">
-                            <img src="{{recipe.ImageUri}}" style="max-width:200px; max-height:100px" />
+                            <img src="{{recipe.ImageUri}}" style="max-width:200px; max-height:200px" />
                         </a>
                     </td>
                     <td>

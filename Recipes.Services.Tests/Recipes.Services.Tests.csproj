@@ -36,7 +36,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -53,12 +62,30 @@
   <ItemGroup>
     <Compile Include="PageParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RecipeServiceTests.cs" />
+    <Compile Include="TagServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Recipes.Contracts\Recipes.Contracts.csproj">
+      <Project>{8EC87091-238E-481A-934A-715C5D068EC6}</Project>
+      <Name>Recipes.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Recipes.DAL\Recipes.DAL.csproj">
+      <Project>{E1691B93-C6FB-4C22-8E19-18B8FF5C563F}</Project>
+      <Name>Recipes.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Recipes.Domain\Recipes.Domain.csproj">
+      <Project>{E707E401-A2C3-4ED3-8A10-EB098F4F5911}</Project>
+      <Name>Recipes.Domain</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Recipes.Services\Recipes.Services.csproj">
       <Project>{F826C939-A25B-4A60-B83D-91C30691CD9D}</Project>
       <Name>Recipes.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
