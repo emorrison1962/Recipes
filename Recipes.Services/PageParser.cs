@@ -15,6 +15,13 @@ namespace Recipes.Services
 {
 	public class PageParser
 	{
+        const string DIV = "div";
+        const string CLASS = "class";
+        const string OL = "ol";
+        const string UL = "ul";
+        const string INGREDIENTS = "recipe-ingredients";
+        const string PROCEDURES = "recipe-procedures";
+
         public string Title { get; set; }
         public Image Image { get; set; }
 
@@ -89,6 +96,7 @@ namespace Recipes.Services
 
 		}
 
+
         List<string> GetIngredients(HtmlDocument doc)
         {
             var result = new List<string>();
@@ -111,13 +119,9 @@ namespace Recipes.Services
 
         HtmlNode GetIngredientsDiv(HtmlDocument doc)
         {
-            const string DIV = "div";
-            const string CLASS = "class";
-            const string RECIPE_INGREDIENTS = "recipe-ingredients";
-
             var divs = doc.DocumentNode.Descendants(DIV);
             var result = divs.Where(x => x.HasAttributes
-                    && x.Attributes.Where(a => CLASS == a.Name && RECIPE_INGREDIENTS == a.Value).Count() > 0
+                    && x.Attributes.Where(a => CLASS == a.Name && INGREDIENTS == a.Value).Count() > 0
                     ).FirstOrDefault();
 
             return result;
@@ -126,9 +130,6 @@ namespace Recipes.Services
         HtmlNode GetIngredientsList(HtmlNode div)
         {
             HtmlNode result = null;
-
-            const string OL = "ol";
-            const string UL = "ul";
 
             result = div.Descendants(UL).FirstOrDefault();
             if (null == result)
@@ -145,6 +146,70 @@ namespace Recipes.Services
             {
                 //result = list.Descendants("li").Select(x => x.InnerText).ToList();
                 
+                foreach (var li in list.ChildNodes)
+                {
+                    if (li.NodeType == HtmlNodeType.Element)
+                    {
+                        result.Add(li.InnerText);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        List<string> GetProcedures(HtmlDocument doc)
+        {
+            var result = new List<string>();
+            Debug.WriteLine(doc.ToString());
+
+            //<div class="recipe-ingredients">
+
+            var div = GetProceduresDiv(doc);
+            if (null != div)
+            {
+                var list = this.GetProceduresList(div);
+                if (null != list)
+                {
+                    result = this.GetProcedures(list);
+                }
+            }
+
+            return result;
+        }
+
+
+
+        HtmlNode GetProceduresDiv(HtmlDocument doc)
+        {
+            var divs = doc.DocumentNode.Descendants(DIV);
+            var result = divs.Where(x => x.HasAttributes
+                    && x.Attributes.Where(a => CLASS == a.Name && INGREDIENTS == a.Value).Count() > 0
+                    ).FirstOrDefault();
+
+            return result;
+        }
+
+        HtmlNode GetProceduresList(HtmlNode div)
+        {
+            HtmlNode result = null;
+
+            result = div.Descendants(UL).FirstOrDefault();
+            if (null == result)
+                result = div.Descendants(OL).FirstOrDefault();
+
+            return result;
+        }
+
+        List<string> GetProcedures(HtmlNode list)
+        {
+            var result = new List<string>();
+
+            if (null != list)
+            {
+                //result = list.Descendants("li").Select(x => x.InnerText).ToList();
+
                 foreach (var li in list.ChildNodes)
                 {
                     if (li.NodeType == HtmlNodeType.Element)
