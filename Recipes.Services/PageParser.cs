@@ -31,6 +31,11 @@ namespace Recipes.Services
                 result = this.GetImage(doc);
             }
 
+            var ingredients = this.GetIngredients(doc);
+            if (ingredients.Count > 0)
+            {
+                new Object(); //SUCCESS
+            }
             return result;
 		}
 
@@ -83,6 +88,75 @@ namespace Recipes.Services
 			return result;
 
 		}
+
+        List<string> GetIngredients(HtmlDocument doc)
+        {
+            var result = new List<string>();
+            Debug.WriteLine(doc.ToString());
+
+            //<div class="recipe-ingredients">
+
+            var div = GetIngredientsDiv(doc);
+            if (null != div)
+            {
+                var list = this.GetIngredientsList(div);
+                if (null != list)
+                {
+                    result = this.GetIngredients(list);
+                }
+            }
+
+            return result;
+        }
+
+        HtmlNode GetIngredientsDiv(HtmlDocument doc)
+        {
+            const string DIV = "div";
+            const string CLASS = "class";
+            const string RECIPE_INGREDIENTS = "recipe-ingredients";
+
+            var divs = doc.DocumentNode.Descendants(DIV);
+            var result = divs.Where(x => x.HasAttributes
+                    && x.Attributes.Where(a => CLASS == a.Name && RECIPE_INGREDIENTS == a.Value).Count() > 0
+                    ).FirstOrDefault();
+
+            return result;
+        }
+
+        HtmlNode GetIngredientsList(HtmlNode div)
+        {
+            HtmlNode result = null;
+
+            const string OL = "ol";
+            const string UL = "ul";
+
+            result = div.Descendants(UL).FirstOrDefault();
+            if (null == result)
+                result = div.Descendants(OL).FirstOrDefault();
+
+            return result;
+        }
+
+        List<string> GetIngredients(HtmlNode list)
+        {
+            var result = new List<string>();
+
+            if (null != list)
+            {
+                //result = list.Descendants("li").Select(x => x.InnerText).ToList();
+                
+                foreach (var li in list.ChildNodes)
+                {
+                    if (li.NodeType == HtmlNodeType.Element)
+                    {
+                        result.Add(li.InnerText);
+                    }
+                }
+            }
+
+            return result;
+        }
+
 
         public string ImageUrl { get; set; }
 
