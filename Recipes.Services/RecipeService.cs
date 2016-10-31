@@ -44,13 +44,9 @@ namespace Recipes.Services
 		private Recipe Create(string url)
 		{
 			Recipe result = null;
-			var parser = new PageParser();
+			var parser = new PageParserBase();
 
-			if (parser.TryParse(url))
-			{
-				result = new Recipe() { Name = parser.Title, Uri = url, ImageUri = parser.ImageUrl };
-			}
-
+            result = parser.TryParse(url);
 			return result;
 		}
 
