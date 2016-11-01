@@ -58,5 +58,32 @@ namespace Recipes.Domain
 			this.Init();
 		}
 
-	}
+        public List<string> Ingredients { get; set; }
+        public List<string> Procedure { get; set; }
+
+        public bool IsValid
+        {
+            get
+            {
+                var result = false;
+
+                result = (null != Ingredients && Ingredients.Count > 0);
+
+                if (result)
+                    result = (null != Procedure && Procedure.Count > 0);
+
+                if (result)
+                    result = !string.IsNullOrEmpty(Name);
+
+                if (result)
+                    result = !string.IsNullOrEmpty(ImageUri);
+
+                if (result)
+                    result = !string.IsNullOrEmpty(Source);
+
+
+                return result;
+            }
+        }
+    }
 }

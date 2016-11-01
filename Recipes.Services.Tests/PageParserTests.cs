@@ -17,8 +17,8 @@ namespace Recipes.Services.Tests
 		{
 			var list = new List<string>()
 			{
-"http://www.seriouseats.com/recipes/2016/02/slow-roasted-bacon-wrapped-pineapple-recipe.html",
 "http://www.epicurious.com/recipes/food/views/Sausage-Cheese-and-Basil-Lasagna-103005",
+"http://www.seriouseats.com/recipes/2016/02/slow-roasted-bacon-wrapped-pineapple-recipe.html",
 "http://www.seriouseats.com/recipes/2015/05/browned-butter-pecan-ice-cream-recipe.html#comments",
 "https://www.chefsteps.com/activities/smashed-potatoes",
 "http://www.foodnetwork.com/recipes/alton-brown/chocolate-ice-cream-recipe.html",
@@ -43,15 +43,36 @@ namespace Recipes.Services.Tests
 "http://www.seriouseats.com/recipes/2016/07/gyudon-japanese-simmered-beef-and-rice-bowl-recipe.html",
 			};
 
-			var parser = new PageParser();
-
-			foreach (var s in list)
+            foreach (var s in list)
 			{
-				var title = parser.TryParse(s);
-				Debug.WriteLine(title);
-				//Assert.IsFalse(string.IsNullOrEmpty(title));
-			}
+                var parser = PageParserFactory.Create(s);
+                var host = new UriBuilder(s).Host;
+                try
+                {
+                    var recipe = parser.TryParse(s);
+                    if (recipe.IsValid)
+                    {
+                        Debug.WriteLine(string.Format("{0} IS VALID.", host));
+                    }
+                    else
+                    {
+                        Debug.WriteLine(string.Format("{0} is NOT valid.", host));
+                    }
+                }
+                catch (Exception)
+                {
+                    Debug.WriteLine(string.Format("{0} FAILED.", new UriBuilder(s).Host));
+                }
+            }
 
-		}
-	}
-}
+        }
+
+        public string GetHost(string url)
+        {
+            var uri = new UriBuilder(url);
+            return uri.Host.ToLower();
+        }
+
+
+    }//class
+}//ns
