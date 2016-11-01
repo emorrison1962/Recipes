@@ -1,0 +1,128 @@
+﻿@model Recipes.Models.EditRecipeVM
+
+@{
+    ViewBag.Title = "Update";
+}
+
+
+<div ng-controller='editRecipeController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+
+    <div class="row-fluid">
+
+        <!--Sidebar content-->
+        <div class="sidebar col-md-2">
+            <h2>Sidebar content</h2>
+
+            <ol ng-repeat="tag in tagCatalog track by tag.TagId">
+                <li>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="tag.isChecked" ng-change="onTagChecked(tag)"> {{tag.Name}}
+                        </label>
+                    </div>
+                </li>
+            </ol>
+        </div>
+
+        <!--Body content-->
+        <div class="main col-md-offset-2 col-md-10">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Recipe</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Recipe.RecipeId)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+                        
+                        <tags-input ng-model="selectedTags" display-property="Name" add-from-autocomplete-only="true" on-tag-added="onTagAdded($tag)" on-tag-removed="onTagRemoved($tag)">
+                            <auto-complete source="getTagCatalog($query)" display-property="Name"></auto-complete>
+                        </tags-input>                               
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.Uri, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.Uri, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.Uri, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.Source, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.Source, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.Source, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.EthnicityId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.EthnicityId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.EthnicityId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.Rating, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.Rating, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.Time, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.Time, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.Time, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Recipe.ImageUri, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Recipe.ImageUri, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Recipe.ImageUri, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" value="Save" class="btn btn-default" ng-click="saveRecipe()"/>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        
+        <div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>
+            
+    </div>
+</div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        @Styles.Render("~/TagsInput/css")
+
+
+    }
+
+    <script src="~/Scripts/Views/Recipe/EditRecipe.js"></script>
+    <script src="~/Scripts/ng-tags-input.js"></script>

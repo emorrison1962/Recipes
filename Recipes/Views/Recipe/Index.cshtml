@@ -13,36 +13,28 @@
 </style>
 
 
-<div ng-controller='indexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
-    <h2>Index</h2>
-    <br />
-    <br />
+<div class="row-fluid" ng-controller='indexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
 
 
-    <div class="row">
-        <div class="col-lg-6">
-            <form ng-submit="add()">
-                <div class="input-group">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button" ng-click="add()">Add:</button>
-                    </span>
-                    <input type="text" class="form-control" placeholder="http://..." ng-model=added>
-                </div><!-- /input-group -->
-            </form>
-        </div><!-- /.col-lg-6 -->
-    </div><!-- /.row -->
+    <div class="sidebar col-md-2">
+        <!--Sidebar content-->
+        <h2>Sidebar content</h2>
+    </div>
 
+    <div class="main col-md-offset-2 col-md-10">
+        <form ng-submit="insert()" class="form-horizontal" role="form">
+            <div class="form-group ">
+                <div class="controls">
+                    <div class="input-group">
 
-    <p>
-        @Html.ActionLink("Create New", "Create")
-    </p>
+                        <span class="input-group-addon">Add</span>
+                        <input type="text" class="form-control" placeholder="http://..." ng-model=newRecipe>
+                    </div>
+                </div>
+            </div>
+        </form>
 
-
-
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Recipes</div>
-        <div class="panel-body">
+        <div>
 
             <table class="table">
                 <tr>
@@ -64,12 +56,14 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Time)
                     </th>
-                    <th></th>
+                    <th>
+                        Action
+                    </th>
                 </tr>
 
                 <tr ng-repeat="recipe in recipes">
                     <td>
-                        <a href="{{recipe.ImageUri}}" target="_blank">
+                        <a href="{{recipe.ImageUri}}">
                             <img src="{{recipe.ImageUri}}" style="max-width:200px; max-height:200px" />
                         </a>
                     </td>
@@ -93,20 +87,16 @@
                         {{recipe.Time}}
                     </td>
                     <td>
-                        @*@Html.ActionLink("Edit", "Edit", new { id = {{ recipe.ImageUri}}}) |
-                            @Html.ActionLink("Details", "Details", new { id = item.RecipeId }) |
-                            @Html.ActionLink("Delete", "Delete", new { id = item.RecipeId })*@
+                        <a ng-href="@Url.Action("Update", "Recipe")?recipeId={{recipe.RecipeId}}">Edit</a>
                     </td>
                 </tr>
 
             </table>
 
-
         </div>
 
     </div>
 
-
 </div>
 
-<script src="~/Scripts/Index.js"></script>
+<script src="~/Scripts/Views/Recipe/Index.js"></script>

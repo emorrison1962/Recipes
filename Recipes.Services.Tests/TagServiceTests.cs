@@ -15,7 +15,7 @@ namespace Recipes.Services.Tests
     [TestClass()]
     public class TagServiceTests
     {
-        TagService CreateService()
+        static public TagService CreateService()
         {
             var ctx = new DataContext();
             IRepositoryBase<Tag> repository = new TagRepository(ctx);
@@ -50,7 +50,16 @@ namespace Recipes.Services.Tests
         [TestMethod()]
         public void GetAllTest1()
         {
-            Assert.Fail();
+            var list = this.GetAll();
+            Assert.IsNotNull(list);
+            Assert.IsTrue(list.Count() > 0);
+        }
+
+        public IEnumerable<Tag> GetAll()
+        {
+            var svc = CreateService();
+            var result = svc.GetAll();
+            return result;
         }
 
         [TestMethod()]
@@ -85,7 +94,7 @@ namespace Recipes.Services.Tests
             };
 
 
-            var svc = this.CreateService();
+            var svc = CreateService();
             foreach (var s in list)
             {
                 var t = new Tag() { Name = s };

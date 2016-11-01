@@ -50,14 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
-    <Compile Include="Migrations\201608241842247_Initial.cs" />
-    <Compile Include="Migrations\201608241842247_Initial.Designer.cs">
-      <DependentUpon>201608241842247_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201608250201498_082416.cs" />
-    <Compile Include="Migrations\201608250201498_082416.Designer.cs">
-      <DependentUpon>201608250201498_082416.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
@@ -79,14 +71,6 @@
       <Project>{E707E401-A2C3-4ED3-8A10-EB098F4F5911}</Project>
       <Name>Recipes.Domain</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608241842247_Initial.resx">
-      <DependentUpon>201608241842247_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201608250201498_082416.resx">
-      <DependentUpon>201608250201498_082416.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

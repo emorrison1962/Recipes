@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Recipes.Domain
 {
-	[Table("Categories")]
+	[Table("Tags")]
 	public class Tag
 	{
 		public int TagId { get; private set; }

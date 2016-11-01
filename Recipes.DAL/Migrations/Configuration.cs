@@ -1,5 +1,6 @@
 namespace Recipes.DAL.Migrations
 {
+    using Domain;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -26,6 +27,22 @@ namespace Recipes.DAL.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            this.InsertTags(context);
         }
-    }
-}
+
+
+        void InsertTags(Recipes.DAL.Data.DataContext context)
+        {
+            context.Tags.AddOrUpdate(t => t.Name,
+                new Tag { Name = "Chicken" },
+                new Tag { Name = "Beef" },
+                new Tag { Name = "Pork" },
+                new Tag { Name = "Seafood" },
+                new Tag { Name = "Vegetable" },
+                new Tag { Name = "Dessert" },
+                new Tag { Name = "Ice Cream" });
+        }
+
+    }//class
+}//ns

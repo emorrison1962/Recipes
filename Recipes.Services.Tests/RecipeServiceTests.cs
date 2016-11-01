@@ -16,7 +16,7 @@ namespace Recipes.Services.Tests
     public class RecipeServiceTests
     {
 
-        RecipeService CreateService()
+        public static RecipeService CreateService()
         {
             var ctx = new DataContext();
             IRepositoryBase<Recipe> repository = new RecipeRepository(ctx);
@@ -40,10 +40,6 @@ namespace Recipes.Services.Tests
 
             Assert.IsNotNull(list);
         }
-
-
-
-
 
         [TestMethod()]
         public void InsertTest()
@@ -89,5 +85,27 @@ namespace Recipes.Services.Tests
             }
 
         }
-    }
-}
+
+        [TestMethod()]
+        public void UpdateTest()
+        {
+            List<Tag> tags = null;
+            {
+                var e = new TagServiceTests().GetAll();
+                tags = e.ToList();
+            }
+
+            var svc = CreateService();
+            var recipe = svc.GetById(1);
+            Assert.IsNotNull(recipe);
+
+            tags.ForEach(t => recipe.Tags.Add(t));
+
+            var result = svc.Update(recipe);
+            //Check for accurate update....
+        }
+
+
+
+    }//class
+}//ns
