@@ -16,10 +16,10 @@ namespace Recipes.Services.Parsers
 
 		}
 
-		override protected bool GetIngredients(HtmlDocument doc)
+		override protected bool GetIngredients()
 		{
 			var result = false;
-			var div = GetIngredientsDiv(doc);
+			var div = GetIngredientsDiv();
 			if (null != div)
 			{
 				var ingredientGroups = this.GetIngredientGroups(div);
@@ -38,10 +38,10 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		HtmlNode GetIngredientsDiv(HtmlDocument doc)
+		HtmlNode GetIngredientsDiv()
 		{
 			const string INGREDIENTS = "ingredients-info";
-			var result = doc.DocumentNode.Descendants(DIV).ByClass(INGREDIENTS).FirstOrDefault();
+			var result = this.HtmlDocument.DocumentNode.Descendants(DIV).ByClass(INGREDIENTS).FirstOrDefault();
 
 			return result;
 		}
@@ -78,10 +78,10 @@ namespace Recipes.Services.Parsers
 		}
 
 
-		override protected bool GetProcedures(HtmlDocument doc)
+		override protected bool GetProcedures()
 		{
 			var result = false;
-			var div = GetProceduresDiv(doc);
+			var div = GetProceduresDiv();
 			if (null != div)
 			{
 				var preparationGroups = this.GetPreparationGroups(div);
@@ -100,9 +100,9 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		HtmlNode GetProceduresDiv(HtmlDocument doc)
+		HtmlNode GetProceduresDiv()
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
+			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
 			var result = divs.ByClass("instructions").FirstOrDefault();
 
 			return result;

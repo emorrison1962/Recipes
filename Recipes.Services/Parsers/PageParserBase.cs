@@ -31,14 +31,17 @@ namespace Recipes.Services
 		#region Properties
 
 		protected string Title { get; set; }
-		protected string ImageUrl { get; set; }
+        protected string SourceUrl { get; set; }
+        protected string ImageUrl { get; set; }
 		protected Image Image { get; set; }
 		protected List<string> Ingredients { get; set; }
 		protected List<string> Procedures { get; set; }
 
-		#endregion
+        protected HtmlDocument HtmlDocument { get; set; }
 
-		public PageParserBase()
+        #endregion
+
+        public PageParserBase()
 		{
 			this.Ingredients = new List<string>();
 			this.Procedures = new List<string>();
@@ -46,30 +49,32 @@ namespace Recipes.Services
 
 		virtual public Recipe TryParse(string url)
 		{
-			var result = new Recipe();
+            this.SourceUrl = url;
+            var result = new Recipe();
 			bool success = false;
 
 			var html = this.GetContent(url);
-			var doc = new HtmlDocument();
-			doc.LoadHtml(html);
+			this.HtmlDocument = new HtmlDocument();
+            this.HtmlDocument.LoadHtml(html);
+            Debug.Assert(null != this.HtmlDocument);
 
-			success = this.GetTitle(doc);
+			success = this.GetTitle();
 			if (success)
 			{
 				success = false;
-				success = this.GetImage(doc);
+				success = this.GetImage();
 			}
 
 			if (success)
 			{
 				success = false;
-				success = this.GetIngredients(doc);
+				success = this.GetIngredients();
 			}
 
 			if (success)
 			{
 				success = false;
-				success = this.GetProcedures(doc);
+				success = this.GetProcedures();
 			}
 
 			result = new Recipe()
@@ -127,12 +132,12 @@ namespace Recipes.Services
 			return result;
 		}
 
-		protected bool GetTitle(HtmlDocument doc)
+		protected bool GetTitle()
 		{
 			const string TITLE = "title";
 
 			bool result = false;
-			var titleNode = doc.DocumentNode.Descendants(TITLE).FirstOrDefault();
+			var titleNode = this.HtmlDocument.DocumentNode.Descendants(TITLE).FirstOrDefault();
 			if (null != titleNode)
 			{
 				this.Title = WebUtility.HtmlDecode(titleNode.InnerText);
@@ -145,41 +150,41 @@ namespace Recipes.Services
 		}
 
 
-		abstract protected bool GetIngredients(HtmlDocument doc);
+		abstract protected bool GetIngredients();
 
-		virtual protected HtmlNode GetIngredientsDiv(HtmlDocument doc, string className)
+		virtual protected HtmlNode GetIngredientsDiv(string className)
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
+			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
 			var result = divs.ByClass(className).FirstOrDefault();
 
 			return result;
 		}
 
-		abstract protected bool GetProcedures(HtmlDocument doc);
+		abstract protected bool GetProcedures();
 
-		virtual protected HtmlNode GetProceduresDiv(HtmlDocument doc, string className)
+		virtual protected HtmlNode GetProceduresDiv(string className)
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
+			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
 			var result = divs.ByClass(className).FirstOrDefault();
 
 			return result;
 		}
 
 
-		protected bool GetImage(HtmlDocument doc)
+		protected bool GetImage()
 		{
 			const string IMG = "img";
 			const string SRC = "src";
 
 			bool result = false;
 
-			if (GetOpenGraphImage(doc))
+			if (GetOpenGraphImage())
 			{
 				result = true;
 			}
 			else
 			{
-				var images = doc.DocumentNode.Descendants(IMG);
+				var images = this.HtmlDocument.DocumentNode.Descendants(IMG);
 				foreach (var image in images)
 				{
 					var src = image.Attributes.FirstOrDefault(a => a.Name == SRC);
@@ -194,7 +199,7 @@ namespace Recipes.Services
 			return result;
 		}
 
-		private bool GetOpenGraphImage(HtmlDocument doc)
+		private bool GetOpenGraphImage()
 		{
 			//<meta property="og:image" content = "http://assets.epicurious.com/photos/561025b0f9a84192308aa2ca/1:1/w_600%2Ch_600/103005.jpg" />
 
@@ -204,7 +209,7 @@ namespace Recipes.Services
 			const string PROPERTY = "property";
 			const string CONTENT = "content";
 
-			var metas = doc.DocumentNode.Descendants(META);
+			var metas = this.HtmlDocument.DocumentNode.Descendants(META);
 			if (null != metas)
 			{
 				foreach (var meta in metas)
@@ -286,7 +291,7 @@ namespace Recipes.Services
 			//}
 
 			var result = seq.Where(x => 
-				x.Attributes.Where(a => "class" == a.Name && classname == a.Value).FirstOrDefault() != null);
+				x.Attributes.Where(a => "class" == a.Name && a.Value.Contains(classname)).FirstOrDefault() != null);
 			return result;
 		}
 	}

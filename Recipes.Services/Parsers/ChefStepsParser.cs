@@ -16,13 +16,13 @@ namespace Recipes.Services.Parsers
 
 		}
 
-		override protected bool GetIngredients(HtmlDocument doc)
+		override protected bool GetIngredients()
 		{
 			var result = false;
 
 			//<div class="recipe-ingredients">
 
-			var div = GetIngredientsDiv(doc);
+			var div = GetIngredientsDiv();
 			if (null != div)
 			{
 				var ingredientGroups = this.GetIngredientGroups(div);
@@ -41,9 +41,9 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		HtmlNode GetIngredientsDiv(HtmlDocument doc)
+		HtmlNode GetIngredientsDiv()
 		{
-			var result = base.GetIngredientsDiv(doc, "ingredients-wrapper padded");
+			var result = base.GetIngredientsDiv("ingredients-wrapper");
 			return result;
 		}
 
@@ -79,11 +79,11 @@ namespace Recipes.Services.Parsers
 		}
 
 
-		override protected bool GetProcedures(HtmlDocument doc)
+		override protected bool GetProcedures()
 		{
 			var result = false;
 
-			var div = GetProceduresDiv(doc);
+			var div = GetProceduresDiv();
 			if (null != div)
 			{
 				var preparationGroups = this.GetPreparationGroups(div);
@@ -102,9 +102,9 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		HtmlNode GetProceduresDiv(HtmlDocument doc)
+		HtmlNode GetProceduresDiv()
 		{
-			var result = base.GetProceduresDiv(doc, "instructions");
+			var result = base.GetProceduresDiv("instructions");
 			return result;
 		}
 

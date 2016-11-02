@@ -5,10 +5,10 @@ namespace Recipes.Services.Parsers
 {
 	class FoodNetworkParser : PageParserBase
 	{
-		protected override bool GetIngredients(HtmlDocument doc)
+		protected override bool GetIngredients()
 		{
 			var result = false;
-			var div = base.GetIngredientsDiv(doc, "col8 ingredients responsive");
+			var div = base.GetIngredientsDiv("col8 ingredients responsive");
 			if (null != div)
 			{
 				this.GetIngredients(div);
@@ -31,11 +31,10 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		protected override bool GetProcedures(HtmlDocument doc)
+		protected override bool GetProcedures()
 		{
 			var result = false;
-#warning This is not returning the div. Need to figure out the " responsive" addition to the css class.
-			var div = base.GetProceduresDiv(doc, "col10 directions responsive");
+			var div = base.GetProceduresDiv("col10 directions");
 
 			if (null != div)
 			{

@@ -12,51 +12,10 @@ namespace Recipes.Services.Parsers
 	public class SeriousEatsParser : PageParserBase
 	{
 
-		override public Recipe TryParse(string url)
-		{
-			var result = new Recipe();
-			bool success = false;
-
-			var html = this.GetContent(url);
-			var doc = new HtmlDocument();
-			doc.LoadHtml(html);
-
-			success = this.GetTitle(doc);
-			if (success)
-			{
-				success = false;
-				success = this.GetImage(doc);
-			}
-
-			if (success)
-			{
-				success = false;
-				success = this.GetIngredients(doc);
-			}
-
-			if (success)
-			{
-				success = false;
-				success = this.GetProcedures(doc);
-			}
-
-			result = new Recipe()
-			{
-				Name = this.Title,
-				Ingredients = this.Ingredients,
-				Procedure = this.Procedures,
-				Uri = url,
-				ImageUri = this.ImageUrl,
-				Source = new UriBuilder().Host
-			};
-
-			return result;
-		}
-
-		override protected bool GetIngredients(HtmlDocument doc)
+		override protected bool GetIngredients()
 		{
 			var result = false;
-			var div = GetIngredientsDiv(doc);
+			var div = GetIngredientsDiv();
 			if (null != div)
 			{
 				var list = this.GetIngredientsList(div);
@@ -71,9 +30,9 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		HtmlNode GetIngredientsDiv(HtmlDocument doc)
+		HtmlNode GetIngredientsDiv()
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
+			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
 			var result = divs.ByClass("ingredients-warpper").FirstOrDefault();
 
 			return result;
@@ -106,11 +65,11 @@ namespace Recipes.Services.Parsers
 		}
 
 
-		override protected bool GetProcedures(HtmlDocument doc)
+		override protected bool GetProcedures()
 		{
 			var result = false;
 
-			var div = GetProceduresDiv(doc);
+			var div = GetProceduresDiv();
 			if (null != div)
 			{
 				var list = this.GetProceduresList(div);
@@ -125,9 +84,9 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		HtmlNode GetProceduresDiv(HtmlDocument doc)
+		HtmlNode GetProceduresDiv()
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
+			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
 			var result = divs.Where(x => x.HasAttributes
 					&& x.Attributes.Where(a => CLASS == a.Name && "recipe-procedures" == a.Value).Count() > 0
 					).FirstOrDefault();
