@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Recipes.Services.Parsers;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -42,8 +43,11 @@ namespace Recipes.Services
                 case EPICURIOUS:
                     result = new EpicurousParser();
                     break;
+				case CHEF_STEPS:
+					result = new ChefStepsParser();
+					break;
 
-                case TWELVE_TOMATOES:
+				case TWELVE_TOMATOES:
                 case ALL_RECIPES:
                 case ALTON_BROWN:
                 case COOKING_NYTIMES:
@@ -51,7 +55,6 @@ namespace Recipes.Services
                 case FOOD_52:
                 case THE_KITCHEN_MCCABE:
                 case TWICE_COOKED_HALF_BAKED:
-                case CHEF_STEPS:
                 case DAVID_LEBOVITZ:
                 case EBAY:
                 case ELECTROLUX_APPLIANCES:
