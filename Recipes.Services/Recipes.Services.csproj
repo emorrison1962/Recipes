@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="Parsers\ChefStepsParser.cs" />
     <Compile Include="Parsers\EpicurousParser.cs" />
+    <Compile Include="Parsers\FoodNetworkParser.cs" />
     <Compile Include="Parsers\PageParserBase.cs" />
     <Compile Include="Parsers\PageParserFactory.cs" />
     <Compile Include="Parsers\SeriousEatsParser.cs" />

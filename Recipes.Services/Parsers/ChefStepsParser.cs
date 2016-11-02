@@ -19,7 +19,6 @@ namespace Recipes.Services.Parsers
 		override protected bool GetIngredients(HtmlDocument doc)
 		{
 			var result = false;
-			Debug.WriteLine(doc.ToString());
 
 			//<div class="recipe-ingredients">
 
@@ -44,9 +43,7 @@ namespace Recipes.Services.Parsers
 
 		HtmlNode GetIngredientsDiv(HtmlDocument doc)
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
-			var result = divs.ByClass("ingredients-wrapper padded").FirstOrDefault();
-
+			var result = base.GetIngredientsDiv(doc, "ingredients-wrapper padded");
 			return result;
 		}
 
@@ -85,9 +82,6 @@ namespace Recipes.Services.Parsers
 		override protected bool GetProcedures(HtmlDocument doc)
 		{
 			var result = false;
-			Debug.WriteLine(doc.ToString());
-
-			//<div class="recipe-ingredients">
 
 			var div = GetProceduresDiv(doc);
 			if (null != div)
@@ -110,9 +104,7 @@ namespace Recipes.Services.Parsers
 
 		HtmlNode GetProceduresDiv(HtmlDocument doc)
 		{
-			var divs = doc.DocumentNode.Descendants(DIV);
-			var result = divs.ByClass("instructions").FirstOrDefault();
-
+			var result = base.GetProceduresDiv(doc, "instructions");
 			return result;
 		}
 

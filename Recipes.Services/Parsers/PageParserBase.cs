@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Recipes.Services
 {
-	public class PageParserBase
+	abstract public class PageParserBase
 	{
 		#region Fields
 
@@ -145,128 +145,22 @@ namespace Recipes.Services
 		}
 
 
-		virtual protected bool GetIngredients(HtmlDocument doc)
-		{
-			var result = false;
-			Debug.WriteLine(doc.ToString());
+		abstract protected bool GetIngredients(HtmlDocument doc);
 
-			//<div class="recipe-ingredients">
-
-			var div = GetIngredientsDiv(doc);
-			if (null != div)
-			{
-				var list = this.GetIngredientsList(div);
-				if (null != list)
-				{
-					this.Ingredients = this.GetIngredients(list);
-					if (this.Ingredients.Count > 0)
-						result = true;
-				}
-			}
-
-			return result;
-		}
-
-		HtmlNode GetIngredientsDiv(HtmlDocument doc)
+		virtual protected HtmlNode GetIngredientsDiv(HtmlDocument doc, string className)
 		{
 			var divs = doc.DocumentNode.Descendants(DIV);
-			var result = divs.Where(x => x.HasAttributes
-					&& x.Attributes.Where(a => CLASS == a.Name && INGREDIENTS == a.Value).Count() > 0
-					).FirstOrDefault();
+			var result = divs.ByClass(className).FirstOrDefault();
 
 			return result;
 		}
 
-		HtmlNode GetIngredientsList(HtmlNode div)
-		{
-			HtmlNode result = null;
+		abstract protected bool GetProcedures(HtmlDocument doc);
 
-			result = div.Descendants(UL).FirstOrDefault();
-			if (null == result)
-				result = div.Descendants(OL).FirstOrDefault();
-
-			return result;
-		}
-
-		List<string> GetIngredients(HtmlNode list)
-		{
-			var result = new List<string>();
-
-			if (null != list)
-			{
-				//result = list.Descendants("li").Select(x => x.InnerText).ToList();
-				
-				foreach (var li in list.ChildNodes)
-				{
-					if (li.NodeType == HtmlNodeType.Element)
-					{
-						result.Add(li.InnerText);
-					}
-				}
-			}
-
-			return result;
-		}
-
-
-		virtual protected bool GetProcedures(HtmlDocument doc)
-		{
-			var result = false;
-			Debug.WriteLine(doc.ToString());
-
-			//<div class="recipe-ingredients">
-
-			var div = GetProceduresDiv(doc);
-			if (null != div)
-			{
-				var list = this.GetProceduresList(div);
-				if (null != list)
-				{
-					this.Procedures = this.GetProcedures(list);
-					if (this.Procedures.Count > 0)
-						result = true;
-				}
-			}
-
-			return result;
-		}
-
-		HtmlNode GetProceduresDiv(HtmlDocument doc)
+		virtual protected HtmlNode GetProceduresDiv(HtmlDocument doc, string className)
 		{
 			var divs = doc.DocumentNode.Descendants(DIV);
-			var result = divs.ByClass(INGREDIENTS).FirstOrDefault();
-			throw new NotImplementedException("INGREDIENTS??");
-
-			return result;
-		}
-
-		HtmlNode GetProceduresList(HtmlNode div)
-		{
-			HtmlNode result = null;
-
-			result = div.Descendants(UL).FirstOrDefault();
-			if (null == result)
-				result = div.Descendants(OL).FirstOrDefault();
-
-			return result;
-		}
-
-		List<string> GetProcedures(HtmlNode list)
-		{
-			var result = new List<string>();
-
-			if (null != list)
-			{
-				//result = list.Descendants("li").Select(x => x.InnerText).ToList();
-
-				foreach (var li in list.ChildNodes)
-				{
-					if (li.NodeType == HtmlNodeType.Element)
-					{
-						result.Add(li.InnerText);
-					}
-				}
-			}
+			var result = divs.ByClass(className).FirstOrDefault();
 
 			return result;
 		}
@@ -380,9 +274,19 @@ namespace Recipes.Services
 	{
 		static public IEnumerable<HtmlNode> ByClass(this IEnumerable<HtmlNode> nodes, string classname)
 		{
-			var result = nodes.Where(x => x.HasAttributes
-					&& x.Attributes.Where(a => "class" == a.Name && classname == a.Value).Count() > 0
-					);
+			var seq = nodes.Where(x => x.HasAttributes);
+			//foreach (var div in seq)
+			//{
+			//	foreach (var att in div.Attributes)
+			//	{
+			//		if (att.Name == "class")
+			//			if (att.Value.IndexOf("ingredient") > 0)
+			//				new object();
+			//	}
+			//}
+
+			var result = seq.Where(x => 
+				x.Attributes.Where(a => "class" == a.Name && classname == a.Value).FirstOrDefault() != null);
 			return result;
 		}
 	}

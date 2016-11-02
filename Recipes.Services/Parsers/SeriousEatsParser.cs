@@ -56,10 +56,6 @@ namespace Recipes.Services.Parsers
 		override protected bool GetIngredients(HtmlDocument doc)
 		{
 			var result = false;
-			Debug.WriteLine(doc.ToString());
-
-			//<div class="recipe-ingredients">
-
 			var div = GetIngredientsDiv(doc);
 			if (null != div)
 			{

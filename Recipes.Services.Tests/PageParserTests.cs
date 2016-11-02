@@ -17,11 +17,11 @@ namespace Recipes.Services.Tests
 		{
 			var list = new List<string>()
 			{
+"http://www.foodnetwork.com/recipes/alton-brown/chocolate-ice-cream-recipe.html",
 "https://www.chefsteps.com/activities/smashed-potatoes",
 "http://www.seriouseats.com/recipes/2016/02/slow-roasted-bacon-wrapped-pineapple-recipe.html",
 "http://www.epicurious.com/recipes/food/views/Sausage-Cheese-and-Basil-Lasagna-103005",
 "http://www.seriouseats.com/recipes/2015/05/browned-butter-pecan-ice-cream-recipe.html#comments",
-"http://www.foodnetwork.com/recipes/alton-brown/chocolate-ice-cream-recipe.html",
 "http://www.food.com/recipe/spicy-mexican-chocolate-ice-cream-287657",
 "http://eattender.com/recipes/patatas-bravas",
 "http://allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/",

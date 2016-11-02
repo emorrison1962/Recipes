@@ -44,7 +44,7 @@ namespace Recipes.Services
 		public Recipe Create(string url)
 		{
 			Recipe result = null;
-			var parser = new PageParserBase();
+			var parser = PageParserFactory.Create(url);
 
             result = parser.TryParse(url);
 			return result;
