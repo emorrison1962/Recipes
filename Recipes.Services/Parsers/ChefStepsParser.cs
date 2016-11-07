@@ -19,11 +19,8 @@ namespace Recipes.Services.Parsers
 		override protected bool GetIngredients()
 		{
 			var result = false;
-
-			//<div class="recipe-ingredients">
-
-			var div = GetIngredientsDiv();
-			if (null != div)
+            var div = GetIngredientsDiv("ingredients-wrapper");
+            if (null != div)
 			{
 				var ingredientGroups = this.GetIngredientGroups(div);
 				if (null != ingredientGroups)
@@ -38,12 +35,6 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
-			return result;
-		}
-
-		HtmlNode GetIngredientsDiv()
-		{
-			var result = base.GetIngredientsDiv("ingredients-wrapper");
 			return result;
 		}
 

@@ -8,7 +8,7 @@ namespace Recipes.Services.Parsers
 		protected override bool GetIngredients()
 		{
 			var result = false;
-			var div = base.GetIngredientsDiv("col8 ingredients responsive");
+			var div = base.GetIngredientsDiv("col8 ingredients");
 			if (null != div)
 			{
 				this.GetIngredients(div);

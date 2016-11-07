@@ -280,19 +280,21 @@ namespace Recipes.Services
 		static public IEnumerable<HtmlNode> ByClass(this IEnumerable<HtmlNode> nodes, string classname)
 		{
 			var seq = nodes.Where(x => x.HasAttributes);
-			//foreach (var div in seq)
-			//{
-			//	foreach (var att in div.Attributes)
-			//	{
-			//		if (att.Name == "class")
-			//			if (att.Value.IndexOf("ingredient") > 0)
-			//				new object();
-			//	}
-			//}
-
-			var result = seq.Where(x => 
+            var result = seq.Where(x => 
 				x.Attributes.Where(a => "class" == a.Name && a.Value.Contains(classname)).FirstOrDefault() != null);
-			return result;
+
+            foreach (var div in seq)
+            {
+                foreach (var att in div.Attributes)
+                {
+                    if (att.Name == "class")
+                        Debug.WriteLine(att.Value);
+                        if (att.Value.IndexOf("ingredient") > 0)
+                            new object();
+                }
+            }
+
+            return result;
 		}
 	}
 
