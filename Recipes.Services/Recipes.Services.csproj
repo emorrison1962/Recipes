@@ -46,8 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parsers\EatTenderParser.cs" />
     <Compile Include="Parsers\ChefStepsParser.cs" />
     <Compile Include="Parsers\EpicurousParser.cs" />
+    <Compile Include="Parsers\BlankParserTemplate.cs" />
+    <Compile Include="Parsers\FoodDotCom.cs" />
     <Compile Include="Parsers\FoodNetworkParser.cs" />
     <Compile Include="Parsers\PageParserBase.cs" />
     <Compile Include="Parsers\PageParserFactory.cs" />
@@ -74,8 +77,12 @@
       <Name>Recipes.Domain</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Content Include="Sample HTML Pages\EpicuriousPage1.html" />
+    <None Include="Sample HTML Pages\eattender.com.html" />
+    <None Include="Sample HTML Pages\www.food.com.html" />
+    <None Include="Sample HTML Pages\www.foodnetwork.com.html" />
+    <None Include="Sample HTML Pages\www.seriouseats.com.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

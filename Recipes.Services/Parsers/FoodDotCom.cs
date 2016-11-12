@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Recipes.Services.Parsers
 {
-	class FoodNetworkParser : PageParserBase
+	class FoodDotComParser : PageParserBase
 	{
 		protected override HtmlNode GetIngredientsDiv(string className)
 		{
@@ -19,7 +19,7 @@ namespace Recipes.Services.Parsers
 		protected override bool GetIngredients()
 		{
 			var result = false;
-			var div = base.GetIngredientsDiv("col8 ingredients responsive");
+			var div = base.GetIngredientsDiv("recipe-detail");
 			if (null != div)
 			{
 				this.GetIngredients(div);
@@ -33,6 +33,7 @@ namespace Recipes.Services.Parsers
 
 		IEnumerable<HtmlNode> GetIngredients(HtmlNode div)
 		{
+
 			var result = new List<HtmlNode>();
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
@@ -48,7 +49,7 @@ namespace Recipes.Services.Parsers
 		protected override bool GetProcedures()
 		{
 			var result = false;
-			var div = base.GetProceduresDiv("col10 directions");
+			var div = base.GetProceduresDiv("directions");
 
 			if (null != div)
 			{
@@ -66,12 +67,8 @@ namespace Recipes.Services.Parsers
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
 			{
-				var ps = li.Descendants("p");
-				foreach (var p in ps)
-				{
-					var procedure = p.InnerText;
-					this.Procedures.Add(procedure);
-				}
+				var procedure = li.InnerText;
+				this.Procedures.Add(procedure);
 			}
 		}
 	}

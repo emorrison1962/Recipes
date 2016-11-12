@@ -33,16 +33,19 @@ namespace Recipes.Services.Parsers
 		HtmlNode GetIngredientsDiv()
 		{
 			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
-			var result = divs.ByClass("ingredients-warpper").FirstOrDefault();
+			var result = divs.ByClass("recipe-ingredients").FirstOrDefault();
 
+			Debug.Assert(null != result);
 			return result;
 		}
 
 		HtmlNode GetIngredientsList(HtmlNode div)
 		{
 			HtmlNode result = null;
-			result = div.Descendants().ByClass("cs-ingredient").FirstOrDefault();
+			result = div.Descendants(UL).FirstOrDefault();
+			//result = div.Descendants().ByClass("cs-ingredient").FirstOrDefault();
 
+			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -61,6 +64,7 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
+			Debug.Assert(result.Count > 0);
 			return result;
 		}
 
@@ -91,6 +95,7 @@ namespace Recipes.Services.Parsers
 					&& x.Attributes.Where(a => CLASS == a.Name && "recipe-procedures" == a.Value).Count() > 0
 					).FirstOrDefault();
 
+			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -102,6 +107,7 @@ namespace Recipes.Services.Parsers
 			if (null == result)
 				result = div.Descendants(OL).FirstOrDefault();
 
+			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -122,6 +128,7 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
+			Debug.Assert(result.Count > 0);
 			return result;
 		}
 

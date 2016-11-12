@@ -49,22 +49,25 @@ namespace Recipes.Services
 				case FOOD_NETWORK:
 					result = new FoodNetworkParser();
 					break;
+				case FOOD:
+					result = new FoodDotComParser();
+					break;
+				case EAT_TENDER:
+					result = new EatTenderParser();
+					break;
 
 				case TWELVE_TOMATOES:
 				case ALL_RECIPES:
 				case ALTON_BROWN:
 				case COOKING_NYTIMES:
-				case EAT_TENDER:
 				case FOOD_52:
 				case THE_KITCHEN_MCCABE:
 				case TWICE_COOKED_HALF_BAKED:
 				case DAVID_LEBOVITZ:
 				case EBAY:
 				case ELECTROLUX_APPLIANCES:
-				case FOOD:
-
 				default:
-					throw new NotImplementedException();
+					throw new NotImplementedException(url);
 					//Debug.WriteLine(uri.Host);
 					break;
 			}

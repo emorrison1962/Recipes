@@ -19,6 +19,7 @@ namespace Recipes.Services
 		#region Fields
 
 		protected const string DIV = "div";
+		protected const string SECTION = "section";
 		protected const string CLASS = "class";
 		protected const string OL = "ol";
 		protected const string UL = "ul";
@@ -31,17 +32,17 @@ namespace Recipes.Services
 		#region Properties
 
 		protected string Title { get; set; }
-        protected string SourceUrl { get; set; }
-        protected string ImageUrl { get; set; }
+		protected string SourceUrl { get; set; }
+		protected string ImageUrl { get; set; }
 		protected Image Image { get; set; }
 		protected List<string> Ingredients { get; set; }
 		protected List<string> Procedures { get; set; }
 
-        protected HtmlDocument HtmlDocument { get; set; }
+		protected HtmlDocument HtmlDocument { get; set; }
 
-        #endregion
+		#endregion
 
-        public PageParserBase()
+		public PageParserBase()
 		{
 			this.Ingredients = new List<string>();
 			this.Procedures = new List<string>();
@@ -49,14 +50,18 @@ namespace Recipes.Services
 
 		virtual public Recipe TryParse(string url)
 		{
-            this.SourceUrl = url;
-            var result = new Recipe();
+			this.SourceUrl = url;
+			var result = new Recipe();
 			bool success = false;
 
 			var html = this.GetContent(url);
 			this.HtmlDocument = new HtmlDocument();
-            this.HtmlDocument.LoadHtml(html);
-            Debug.Assert(null != this.HtmlDocument);
+			this.HtmlDocument.LoadHtml(html);
+			Debug.Assert(null != this.HtmlDocument);
+
+			this.HtmlDocument.Save(string.Format(@"c:\temp\{0}.html", new UriBuilder(url).Host));
+
+			Debug.WriteLine(this.HtmlDocument.DocumentNode.InnerHtml);
 
 			success = this.GetTitle();
 			if (success)
@@ -92,29 +97,30 @@ namespace Recipes.Services
 
 		protected string GetContent(string url)
 		{
-			const string GZIP = "gzip";
-			var cli = new HttpClient();
-
-			HttpResponseMessage response = null;
+			var result = string.Empty;
 			try
 			{
-				response = cli.GetAsync(url).Result;
+				HttpClientHandler handler = new HttpClientHandler()
+				{
+					AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
+				};
+
+				using (var cli = new HttpClient(handler))
+				{
+					cli.Timeout = TimeSpan.FromSeconds(60);
+					using (var response = cli.GetAsync(url).Result)
+					{
+						result = response.Content.ReadAsStringAsync().Result;
+					}
+				}
 			}
 			catch (Exception ex)
 			{
 				Debug.Assert(false, ex.Message);
+				throw;
 			}
 
-			Debug.WriteLine(url);
-
-			var content = string.Empty;
-			if (response.Content.Headers.ContentEncoding.Contains(GZIP))
-				content = UnGzip(response);
-			else
-				content = response.Content.ReadAsStringAsync().Result;
-
-
-			return content;
+			return result;
 		}
 
 		protected string UnGzip(HttpResponseMessage response)
