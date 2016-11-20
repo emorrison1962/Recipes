@@ -7,17 +7,19 @@ namespace Recipes.Services.Parsers
 {
 	class BlankTemplateParser : PageParserBase
 	{
-		protected override void GetIngredients()
+#pragma warning disable 162
+        protected override void GetIngredients()
 		{
-			throw new NotImplementedException();
-			var node = base.GetNode("nodeType", "className");
+            throw new NotImplementedException();
+            var node = base.GetNode("nodeType", "className");
 			if (null != node)
 			{
 				this.GetIngredients(node);
 			}
 		}
+#pragma warning restore 162
 
-		void GetIngredients(HtmlNode parent)
+        void GetIngredients(HtmlNode parent)
 		{
 			var nodes = parent.Descendants(LI);
 			foreach (var node in nodes)
@@ -27,17 +29,19 @@ namespace Recipes.Services.Parsers
 			}
 		}
 
-		protected override void GetProcedures()
+#pragma warning disable 162
+        protected override void GetProcedures()
 		{
-			throw new NotImplementedException();
-			var node = base.GetNode("nodeType", "className");
+            throw new NotImplementedException();
+            var node = base.GetNode("nodeType", "className");
 			if (null != node)
 			{
 				this.GetDirections(node);
 			}
 		}
+#pragma warning restore 162
 
-		private void GetDirections(HtmlNode parent)
+        private void GetDirections(HtmlNode parent)
 		{
 			var nodes = parent.Descendants(LI);
 			foreach (var node in nodes)

@@ -5,17 +5,19 @@ namespace Recipes.Services
 {
 	internal class AltonBrownParser : PageParserBase
 	{
-		protected override void GetIngredients()
+#pragma warning disable 162
+        protected override void GetIngredients()
 		{
-			throw new NotImplementedException();
-			var div = base.GetNode(DIV, "ingredients_classname");
+            throw new NotImplementedException();
+            var div = base.GetNode(DIV, "ingredients_classname");
 			if (null != div)
 			{
 				this.GetIngredients(div);
 			}
 		}
+#pragma warning restore 162
 
-		void GetIngredients(HtmlNode div)
+        void GetIngredients(HtmlNode div)
 		{
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
@@ -25,17 +27,19 @@ namespace Recipes.Services
 			}
 		}
 
-		protected override void GetProcedures()
+#pragma warning disable 162
+        protected override void GetProcedures()
 		{
-			throw new NotImplementedException();
-			var div = base.GetNode(DIV, "directions_classname");
+            throw new NotImplementedException();
+            var div = base.GetNode(DIV, "directions_classname");
 			if (null != div)
 			{
 				this.GetDirections(div);
 			}
 		}
+#pragma warning restore 162
 
-		private void GetDirections(HtmlNode div)
+        private void GetDirections(HtmlNode div)
 		{
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)

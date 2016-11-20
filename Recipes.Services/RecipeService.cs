@@ -79,13 +79,14 @@ namespace Recipes.Services
 				this.Repository.Commit();
 
 			}
-			catch (Exception ex)
-			{
-
-				throw;
+#pragma warning disable 168
+            catch (Exception ex)
+            {
+                throw;
 			}
+#pragma warning restore 168
 
-			return this.Repository.GetById(entity.RecipeId);
+            return this.Repository.GetById(entity.RecipeId);
 		}
 
 
