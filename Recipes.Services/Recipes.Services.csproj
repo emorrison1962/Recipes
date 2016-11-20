@@ -46,14 +46,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parsers\AllRecipesParser.cs.cs" />
+    <Compile Include="Parsers\AltonBrownParser.cs" />
+    <Compile Include="Parsers\DavidLebowitzParser.cs" />
+    <Compile Include="Parsers\ElectroluxParser.cs" />
+    <Compile Include="Parsers\Food52Parser.cs" />
+    <Compile Include="Parsers\NyTimesParser.cs" />
+    <Compile Include="Parsers\TheKitchenMcCabe.cs" />
     <Compile Include="Parsers\EatTenderParser.cs" />
     <Compile Include="Parsers\ChefStepsParser.cs" />
     <Compile Include="Parsers\EpicurousParser.cs" />
-    <Compile Include="Parsers\BlankParserTemplate.cs" />
+    <Compile Include="Parsers\TwelveTomatoesParser.cs" />
+    <Compile Include="Parsers\TwiceCookedHalfBakedParser.cs" />
+    <Compile Include="Parsers\_BlankTemplateParser.cs" />
     <Compile Include="Parsers\FoodDotCom.cs" />
     <Compile Include="Parsers\FoodNetworkParser.cs" />
-    <Compile Include="Parsers\PageParserBase.cs" />
-    <Compile Include="Parsers\PageParserFactory.cs" />
+    <Compile Include="Parsers\_PageParserBase.cs" />
+    <Compile Include="Parsers\_PageParserFactory.cs" />
     <Compile Include="Parsers\SeriousEatsParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipeService.cs" />
@@ -77,12 +86,38 @@
       <Name>Recipes.Domain</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Sample HTML Pages\allrecipes.com.html" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Sample HTML Pages\eattender.com.html" />
     <None Include="Sample HTML Pages\www.food.com.html" />
     <None Include="Sample HTML Pages\www.foodnetwork.com.html" />
     <None Include="Sample HTML Pages\www.seriouseats.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\thekitchenmccabe.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\12tomatoes.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\altonbrown.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\cooking.nytimes.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\food52.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\twicecookedhalfbaked.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\www.davidlebovitz.com.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Sample HTML Pages\www.electroluxappliances.com.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

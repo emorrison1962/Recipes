@@ -7,25 +7,18 @@ namespace Recipes.Services.Parsers
 {
 	class EatTenderParser : PageParserBase
 	{
-		protected override bool GetIngredients()
+		protected override void GetIngredients()
 		{
-			var result = false;
-			var h3 = this.HtmlDocument.DocumentNode.Descendants("h3").Where(x => x.InnerText.ToLower() == "ingredients").First();
+			var h3 = this.HtmlDocument.DocumentNode.Descendants("h3").Where(x => x.InnerText.Trim().ToLower() == "ingredients").First();
 			var div = h3.ParentNode;
 			if (null != div)
 			{
 				this.GetIngredients(div);
-				if (this.Ingredients.Count > 0)
-					result = true;
 			}
-
-			Debug.Assert(result);
-			return result;
 		}
 
-		IEnumerable<HtmlNode> GetIngredients(HtmlNode div)
+		void GetIngredients(HtmlNode div)
 		{
-			var result = new List<HtmlNode>();
 			var children = div.Descendants(1);
 			foreach (var child in children)
 			{
@@ -46,26 +39,17 @@ namespace Recipes.Services.Parsers
 					}
 				}
 			}
-
-			Debug.Assert(null != result);
-			return result;
 		}
 
-		protected override bool GetProcedures()
+		protected override void GetProcedures()
 		{
-			var result = false;
-			var h3 = this.HtmlDocument.DocumentNode.Descendants("h3").Where(x => x.InnerText.ToLower() == "directions").First();
+			var h3 = this.HtmlDocument.DocumentNode.Descendants("h3").Where(x => x.InnerText.Trim().ToLower() == "directions").First();
 			var div = h3.ParentNode;
 
 			if (null != div)
 			{
 				this.GetProcedures(div);
-				if (this.Procedures.Count > 0)
-					result = true;
 			}
-
-			Debug.Assert(result);
-			return result;
 		}
 
 		private void GetProcedures(HtmlNode div)

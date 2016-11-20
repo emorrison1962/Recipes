@@ -1,13 +1,13 @@
 ﻿using HtmlAgilityPack;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 
 namespace Recipes.Services.Parsers
 {
 	class FoodDotComParser : PageParserBase
 	{
-		protected override HtmlNode GetIngredientsDiv(string className)
+		protected HtmlNode GetIngredientsNode(string className)
 		{
 			var sections = this.HtmlDocument.DocumentNode.Descendants(SECTION);
 			var section = sections.ByClass("ingredients-instructions").First();
@@ -16,50 +16,37 @@ namespace Recipes.Services.Parsers
 			Debug.Assert(null != result);
 			return result;
 		}
-		protected override bool GetIngredients()
+		protected override void GetIngredients()
 		{
-			var result = false;
-			var div = base.GetIngredientsDiv("recipe-detail");
-			if (null != div)
+			var node = base.GetNode(DIV, "recipe-detail");
+			if (null != node)
 			{
-				this.GetIngredients(div);
-				if (this.Ingredients.Count > 0)
-					result = true;
+				this.GetIngredients(node);
 			}
-
-			Debug.Assert(result);
-			return result;
 		}
 
-		IEnumerable<HtmlNode> GetIngredients(HtmlNode div)
+		void GetIngredients(HtmlNode parent)
 		{
-
-			var result = new List<HtmlNode>();
-			var lis = div.Descendants(LI);
-			foreach (var li in lis)
+			var nodes = parent.Descendants(LI);
+			foreach (var node in nodes)
 			{
-				var ingredient = li.InnerText;
-				this.Ingredients.Add(ingredient);
+				var divs = node.Descendants(DIV);
+				if (0 == divs.Count())
+				{
+					var ingredient = node.InnerText;
+					ingredient = WebUtility.HtmlDecode(ingredient).Replace("  ", " ").Trim();
+					this.Ingredients.Add(ingredient);
+				}
 			}
-
-			Debug.Assert(null != result);
-			return result;
 		}
 
-		protected override bool GetProcedures()
+		protected override void GetProcedures()
 		{
-			var result = false;
-			var div = base.GetProceduresDiv("directions");
-
+			var div = base.GetNode(DIV, "directions");
 			if (null != div)
 			{
 				this.GetDirections(div);
-				if (this.Procedures.Count > 0)
-					result = true;
 			}
-
-			Debug.Assert(result);
-			return result;
 		}
 
 		private void GetDirections(HtmlNode div)
@@ -67,9 +54,15 @@ namespace Recipes.Services.Parsers
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
 			{
-				var procedure = li.InnerText;
-				this.Procedures.Add(procedure);
+				var divs = li.Descendants(DIV);
+				if (0 == divs.Count())
+				{
+					var procedure = li.InnerText.Trim();
+					this.Procedures.Add(procedure);
+				}
 			}
+
+			Debug.Assert(this.Procedures.Count > 0);
 		}
 	}
 }

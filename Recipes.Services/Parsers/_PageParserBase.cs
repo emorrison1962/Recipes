@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.Services
 {
@@ -18,12 +17,14 @@ namespace Recipes.Services
 	{
 		#region Fields
 
+		protected const string SPAN = "span";
 		protected const string DIV = "div";
 		protected const string SECTION = "section";
 		protected const string CLASS = "class";
 		protected const string OL = "ol";
 		protected const string UL = "ul";
 		protected const string LI = "li";
+		protected const string P = "p";
 		protected const string INGREDIENTS = "recipe-ingredients";
 		protected const string PROCEDURES = "recipe-procedures";
 
@@ -61,7 +62,7 @@ namespace Recipes.Services
 
 			this.HtmlDocument.Save(string.Format(@"c:\temp\{0}.html", new UriBuilder(url).Host));
 
-			Debug.WriteLine(this.HtmlDocument.DocumentNode.InnerHtml);
+			//Debug.WriteLine(this.HtmlDocument.DocumentNode.InnerHtml);
 
 			success = this.GetTitle();
 			if (success)
@@ -73,13 +74,21 @@ namespace Recipes.Services
 			if (success)
 			{
 				success = false;
-				success = this.GetIngredients();
+				this.GetIngredients();
+				if (0 < this.Ingredients.Count)
+				{
+					success = true;
+				}
 			}
 
 			if (success)
 			{
 				success = false;
-				success = this.GetProcedures();
+				this.GetProcedures();
+				if (0 < this.Procedures.Count)
+				{
+					success = true;
+				}
 			}
 
 			result = new Recipe()
@@ -146,7 +155,7 @@ namespace Recipes.Services
 			var titleNode = this.HtmlDocument.DocumentNode.Descendants(TITLE).FirstOrDefault();
 			if (null != titleNode)
 			{
-				this.Title = WebUtility.HtmlDecode(titleNode.InnerText);
+				this.Title = WebUtility.HtmlDecode(titleNode.InnerText.Trim());
 				this.Title = this.Title.Trim();
 				result = true;
 			}
@@ -155,27 +164,17 @@ namespace Recipes.Services
 
 		}
 
+		abstract protected void GetIngredients();
 
-		abstract protected bool GetIngredients();
-
-		virtual protected HtmlNode GetIngredientsDiv(string className)
+		virtual protected HtmlNode GetNode(string nodeType, string className)
 		{
-			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
-			var result = divs.ByClass(className).FirstOrDefault();
+			var nodes = this.HtmlDocument.DocumentNode.Descendants(nodeType);
+			var result = nodes.ByClass(className).FirstOrDefault();
 
 			return result;
 		}
 
-		abstract protected bool GetProcedures();
-
-		virtual protected HtmlNode GetProceduresDiv(string className)
-		{
-			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
-			var result = divs.ByClass(className).FirstOrDefault();
-
-			return result;
-		}
-
+		abstract protected void GetProcedures();
 
 		protected bool GetImage()
 		{
@@ -253,7 +252,7 @@ namespace Recipes.Services
 			{
 				HttpWebRequest imageRequest = (HttpWebRequest)WebRequest.Create(url);
 				WebResponse imageResponse = imageRequest.GetResponse();
-				Debug.WriteLine(imageResponse.ContentType);
+				//Debug.WriteLine(imageResponse.ContentType);
 
 				using (Stream responseStream = imageResponse.GetResponseStream())
 				{
@@ -279,25 +278,64 @@ namespace Recipes.Services
 
 	}//class
 
-
+	public class PageParsingException : Exception
+	{
+		public PageParsingException(string msg)
+			: base(msg)
+		{
+		}
+	}
 
 	public static class HtmlNodeExtensions
 	{
 		static public IEnumerable<HtmlNode> ByClass(this IEnumerable<HtmlNode> nodes, string classname)
 		{
 			var seq = nodes.Where(x => x.HasAttributes);
-			//foreach (var div in seq)
-			//{
-			//	foreach (var att in div.Attributes)
-			//	{
-			//		if (att.Name == "class")
-			//			if (att.Value.IndexOf("ingredient") > 0)
-			//				new object();
-			//	}
-			//}
-
-			var result = seq.Where(x => 
+			var result = seq.Where(x =>
 				x.Attributes.Where(a => "class" == a.Name && a.Value.Contains(classname)).FirstOrDefault() != null);
+
+#if false
+			foreach (var div in seq)
+			{
+				foreach (var att in div.Attributes)
+				{
+					if (att.Name == "class")
+					{
+						//Debug.WriteLine(att.Value);
+						if (att.Value.IndexOf("ingredient") > 0)
+						{
+							new object();
+						}
+					}
+				}
+			}
+
+#endif
+			return result;
+		}
+		static public IEnumerable<HtmlNode> ByID(this IEnumerable<HtmlNode> nodes, string id)
+		{
+			var seq = nodes.Where(x => x.HasAttributes);
+			var result = seq.Where(x =>
+				x.Attributes.Where(a => "id" == a.Name && a.Value.Contains(id)).FirstOrDefault() != null);
+
+#if false
+			foreach (var div in seq)
+			{
+				foreach (var att in div.Attributes)
+				{
+					if (att.Name == "id")
+					{
+						Debug.WriteLine(att.Value);
+						if (att.Value.IndexOf("ingredient") > 0)
+						{
+							new object();
+						}
+					}
+				}
+			}
+
+#endif
 			return result;
 		}
 	}

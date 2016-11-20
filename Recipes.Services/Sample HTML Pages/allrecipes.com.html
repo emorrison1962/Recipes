@@ -1,0 +1,1575 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>White Chocolate and Raspberry Ice Cream Recipe - Allrecipes.com</title>
+	<!-- Begin comScore Tag - Part 1 -->
+	<!-- End comScore Tag Part 1-->
+	<!-- Maxymiser script start -->
+	<!-- Maxymiser script end -->
+</head>
+<!-- ARLOG SERVER: RD0003FFA8A07E LOCAL_IP: 10.255.18.15 MERCH_KEY: MerchData_4_1_1_222319_***_68 -->
+<body ng-app="allrecipes">
+	<a id="top"></a>
+	<!-- Begin comScore Tag - Part 2 -->
+	<noscript>
+		<img src="http://b.scorecardresearch.com/p?c1=2&c2=6036305&cv=2.0&cj=1">
+	</noscript>
+	<!-- End comScore Tag - Part 2 -->
+	<div class="slider-container" global-ui-events="">
+		<div id="docking-leaderboard-container" class="leaderboard-wrapper" data-ad-container-autocollapse="">
+			<div class="docking-leaderboard-container">
+				<div id="div-gpt-leaderboard-fixed-1" data-tier="1" class="docking-leaderboard"></div>
+			</div>
+		</div>
+		<div class="site-content">
+			<header class="header new-nav">
+				<section ng-controller="ar_controllers_top_nav" ng-init="init()">
+					<ul class="ar-nav-section">
+						<li class="ar-logo-tab">
+						</li>
+						<li class="browse-recipes">
+						</li>
+						<li class="search-tab" ng-controller="ar_controllers_search">
+							<div class="nav-search">
+								<input id="searchText" type="text" placeholder="Find a recipe" ng-model="search.keywords" ng-keypress="isEnterKey($event) && performSearch()">
+								<button class="btn-basic--small search-button" ng-click="performSearch()">
+									<span class="icon svg-icon--top-nav-bar--search-magnify svg-icon--top-nav-bar--search-magnify-dims"></span>
+								</button>
+								<div popup-trigger="topNavSearchMenu" id="ingredientSearch" class="ingredient-searchtxt" ar-event-focus="click" ar-event-focus-id="setFocus-keywordSearch">Ingredient Search</div>
+							</div>
+						</li>
+						<li class="social-notification" popup-trigger="notifications" ng-class="{active: notifications_showing}">
+							<div class="socialNotification" ng-controller="ar_controllers_notifications" ng-click="setNotificationsViewed()" ng-cloak="">
+								<span class="svg-icon--top-nav-bar--nav-bell svg-icon--top-nav-bar--nav-bell-dims"></span>
+								<span class="notification-count" ng-show="displayCount" ng-bind="notificationCount"></span>
+							</div>
+						</li>
+						<li class="nav-favorites" ng-click="setAnalyticsCookie('favorites')">
+						</li>
+						<li class="nav-profile anonymous-user">
+						</li>
+						<li ng-class="{active:topNavSearchMenu_showing}" class="small-screen search-phone--landscape">
+						</li>
+						<li class="small-screen profile-phone--landscape" ng-class="{active:topNavProfileMenu_showing}" popup-trigger="topNavProfileMenu">
+						</li>
+						<li class="hamburger-tab" ng-class="{active: topNavHamburgerMenu_showing}" popup-trigger="topNavHamburgerMenu">
+						</li>
+					</ul>
+					<social-notification popup-panel="notifications" ng-cloak=""></social-notification>
+					<div class="nav-tab nav-tab__search ng-hide" popup-panel="topNavSearchMenu" ng-cloak="">
+						<form>
+							<div data-ng-controller="ar_controllers_search">
+								<span class="icon--close" title="Close Ingredient Search" hidewhenclicked=""></span>
+								<div class="input-wrap--home">
+									<span class="search-spyglass"><img alt="Allrecipes" height="23" src="http://images.media-allrecipes.com/ar-images/icons/NavSearchIcon.svg" width="23"></span>
+									<input id="searchText" type="text" placeholder="Keywords" ng-model="search.keywords" class="setFocus-keywordSearch">
+								</div>
+								<div class="input-wrap--home ingredients" ar-assign-scrollable-classes="{ outermostWrapper: 'ingredients', clippingFrame: 'ingredient-clipping-frame', draggableElement: 'ingredient-scroller' }">
+									<div class="ingredient-clipping-frame">
+										<ul class="ingredient-scroller" ng-mousedown="mouseDown($event)" ng-mouseup="mouseUp($event)" ar-touchstart="touchStart($event)" ar-touchend="touchEnd($event)" unselectable="on" onselectstart="return false;">
+											<li ng-repeat="ingredient in search.ingredientsInclude">
+												<span>
+													<span ng-bind="::ingredient"></span>
+													<span class="icon--x ignore-ar-touchstart ignore-ar-touchend" ng-click="removeIngredientInclude(ingredient, $event)" unsubscribe-global-click-handler="">&#x2715;</span>
+												</span>
+											</li>
+										</ul>
+									</div>
+									<div class="ingredient-add-exclude">
+										<input id="includeIngText" type="text" ng-attr-placeholder="{{includeIngPlaceholderText}}" name="txtIncludeIng" ng-model="includeIngredient" ng-focus="hideAds();" ng-blur="showAds()" ng-keydown="(isBackspaceKey($event) && removeLastIngredientInclude($event)) || (isTabKey($event) && addIngredientInclude($event))" class="setFocus-includeIng">
+									</div>
+									<a class="btn-basic--small include" ng-click="addIngredientInclude($event)" ar-event-focus="click" ar-event-focus-id="setFocus-includeIng" ng-class="{ 'grayed-out': includeIngHitMax }"><span>+</span></a>
+								</div>
+								<div class="input-wrap--home ingredients" ar-assign-scrollable-classes="{ outermostWrapper: 'ingredients', clippingFrame: 'ingredient-clipping-frame', draggableElement: 'ingredient-scroller' }">
+									<div class="ingredient-clipping-frame">
+										<ul class="ingredient-scroller" ng-mousedown="mouseDown($event)" ng-mouseup="mouseUp($event)" ar-touchstart="touchStart($event)" ar-touchend="touchEnd($event)" unselectable="on" onselectstart="return false;">
+											<li ng-repeat="ingredient in search.ingredientsExclude">
+												<span class="exclude-item">
+													<span ng-bind="::ingredient"></span>
+													<span class="icon--x ignore-ar-touchstart ignore-ar-touchend" ng-click="removeIngredientExclude(ingredient, $event)" unsubscribe-global-click-handler="">&#x2715;</span>
+												</span>
+											</li>
+										</ul>
+									</div>
+									<div class="ingredient-add-exclude">
+										<input id="excludeIngText" type="text" ng-attr-placeholder="{{excludeIngPlaceholderText}}" name="txtExcludeIng" ng-model="excludeIngredient" ng-focus="hideAds();" ng-blur="showAds()" ng-keydown="(isBackspaceKey($event) && removeLastIngredientExclude($event)) || (isTabKey($event) && addIngredientExclude($event))" class="setFocus-excludeIng">
+									</div>
+									<a class="btn-basic--small exclude" ng-click="addIngredientExclude($event)" ar-event-focus="click" ar-event-focus-id="setFocus-excludeIng" ng-class="{ 'grayed-out': excludeIngHitMax }"><span>&#8212;</span></a>
+								</div>
+								<div class="nav-tab__buttons">
+									<button class="btn-basic--small btn-search" ng-click="performSearch()" ng-cloak="">Go</button>
+								</div>
+							</div>
+							<ar-notification></ar-notification>
+						</form>
+					</div>
+					<div popup-panel="topBrowseRecipePanel" class="browse-recipe-tab social ng-hide" ng-cloak="" id="topBrowseRecipePanel">
+						<section class="hero-link  nav-tab__options recipe-nav-tab__options">
+							<div class="grid underline_hero_link">
+								<ul class="browse-hubs">
+									<li class="browse-hubs__categories">
+										<h3>
+											Meal Type
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											Ingredient
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											Diet &amp; Health
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											Seasonal
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											Dish Type
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											Cooking Style
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											World Cuisine
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+									<li class="browse-hubs__categories">
+										<h3>
+											Special Collections
+										</h3><span class="icon--chevron-right"></span>
+										<ul class="browse-hubs__subcategories">
+											<li>
+											</li>
+											<li>
+											</li>
+											<li>
+											</li>
+										</ul>
+									</li>
+								</ul>
+							</div>
+						</section>
+					</div>
+					<!-- user sign in area -->
+					<div class="nav-tab social profile-nav ng-hide" popup-panel="topNavProfileMenu" ng-cloak="">
+						<ul class="nav-tab__options">
+							<li ng-click="setAnalyticsCookie('profile|feed', 'menu')">
+							</li>
+							<li ng-click="setAnalyticsCookie('profile|profile', 'menu')">
+							</li>
+							<li ng-click="setAnalyticsCookie('profile|favorites', 'menu')">
+							</li>
+							<li ng-click="setAnalyticsCookie('profile|friends', 'menu')">
+							</li>
+							<li ng-click="setAnalyticsCookie('profile|shopping list', 'menu')">
+							</li>
+							<li ng-click="setAnalyticsCookie('profile|settings', 'menu')">
+							</li>
+						</ul>
+						<div class="signin" ng-click="setAnalyticsCookie('profile|sign in ', 'menu')">
+							<button onclick=" location.href='/account/authenticationwelcome/?actionsource=' +(typeof dataLayer != ='undefined' ? dataLayer.page.category.contentType : '' ) " class="btn-basic--large btn-gold" id="navmenu_signin_signup">Sign In <em>or</em> Sign Up</button>
+						</div>
+					</div>
+					<!-- hub links, etc. -->
+					<div class="nav-tab last ng-hide" popup-panel="topNavHamburgerMenu" ng-cloak="">
+						<ul class="nav-tab__options">
+							<li class="underline_link">
+							</li>
+							<li ng-click="setAnalyticsData('allrecipes magazine')">
+							</li>
+							<li ng-click="setAnalyticsData('dinner spinner tv')">
+							</li>
+							<li ng-click="setAnalyticsData('shop')">
+							</li>
+							<li class="underline_link" ng-click="setAnalyticsData('cooking school')">
+							</li>
+							<li ng-click="setAnalyticsData('articles and tips')">
+							</li>
+							<li ng-click="setAnalyticsData('profile|blogs')">
+							</li>
+							<li ng-click="setAnalyticsCookie('newsletters')">
+							</li>
+							<li ng-click="setAnalyticsData('ask the community')">
+							</li>
+							<li class="underline_link" ng-click="setAnalyticsData('help')">
+							</li>
+							<li>
+							</li>
+						</ul>
+					</div>
+				</section>
+			</header>
+			<div class="container-content body-content">
+				<div id="ad-is-mobile"></div>
+				<div id="ad-is-tablet"></div>
+				<div class="recipe-container-outer">
+					<section class="ar_recipe_index full-page" itemscope="" itemtype="http://schema.org/Recipe">
+						<ul class="breadcrumbs breadcrumbs" data-scroll-left="">
+							<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+							</li>
+							<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" data-list-item="">
+							</li>
+							<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" data-list-item="">
+							</li>
+							<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" data-list-item="">
+							</li>
+							<li itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb" data-list-item="">
+							</li>
+						</ul>
+						<div class="summary-background">
+							<div class="summaryGroup clearfix">
+								<section class="hero-photo hero-photo--downsized">
+									<ar-save-item class="favorite" data-id="222319" data-type="'Recipe'" data-name="&quot;White Chocolate and Raspberry Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/250x250/1126127.jpg'" data-clicksource="'recipe hero photo'"></ar-save-item>
+									<span ng-controller="ar_controllers_recipe_photo" ng-hide="showplayer" class="hero-photo__image">
+									</span>
+									<ar-notification></ar-notification>
+									<div class="photo-with-video">
+									</div>
+								</section>
+								<section class="recipe-summary clearfix">
+									<h1 class="recipe-summary__h1" itemprop="name">White Chocolate and Raspberry Ice Cream</h1>
+									<!--rating stars-->
+									<div class="recipe-summary__stars">
+										<div class="rating-stars" data-scroll-to-anchor="reviews" data-ratingstars="5">
+											<img height="20" width="20" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											<img height="20" width="20" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											<img height="20" width="20" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											<img height="20" width="20" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											<img height="20" width="20" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+										</div>
+										<span itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating" class="aggregate-rating">
+										</span>
+									</div>
+									<!-- total made it count & read review link -->
+									<div class="summary-stats-box">
+										<div class="total-made-it" ng-cloak="" data-ng-show="show" data-ng-controller="ar_controllers_recipe_summary" data-ng-init="init(6)">
+											<span ng-controller="ar_controllers_recipe_reviews" ng-init="init(222319, 2, 9, 'Recipe', 5, 'MostHelpful')">
+												<a class="read--reviews" ng-click="$event.preventDefault();reviewModalDialog(0, sortBy)" target="_self">
+													<span class="made-it-count" ng-bind="totalRecipeMadeCount |largeNumberDisplay"></span><span>&nbsp;made it</span><span>&nbsp; |&nbsp;</span>
+													<span class="review-count">4 reviews</span>
+												</a>
+											</span>
+										</div>
+									</div>
+									<div class="submitter">
+										<div class="submitter__img">
+											<span><span class="icon--cook-card-follower" title="Followers"></span><span><format-large-number number="197"></format-large-number></span></span>
+										</div>
+										<p>
+											<span class="submitter__byline">Recipe by: </span><span class="submitter__name" itemprop="author">pelicangal</span>
+										</p>
+										<div class="submitter__description" itemprop="description">
+											&#34;A very rich and yummy ice cream made with a custard base.&#34;
+										</div>
+									</div>
+								</section>
+							</div>
+						</div>
+						<div ng-controller="ar_controllers_recipe_toolbar" ng-init="init(222319, 'Recipe')">
+							<div class="dropdown-heart" data-show-on-scroll="700" ng-show="(yTrigger == true) && (saved == false)" ng-cloak="">
+							</div>
+							<section class="recipe-navbar">
+								<a id="print-recipe" ng-href="print/?recipeType=Recipe&{{ printServings }}">
+									<span class="svg-icon--recipe-navbar--print svg-icon--recipe-navbar--print-dims"></span>
+									<span>Print</span>
+								</a>
+							</section>
+						</div>
+						<div data-ad-container-autocollapse="" class="ad-recipe-page-middle-container ad-mobile-only reserve-ad-space">
+							<div id="ad-recipepagemiddle-2" class="ad-recipe-page-middle-2">
+								<div id="div-gpt-mob-square-fixed-1" data-tier="1"></div>
+							</div>
+							<span class="advertisement">ADVERTISEMENT</span>
+						</div>
+						<section class="recipe-ingredients" ng-controller="ar_controllers_recipe_ingredient" ng-init="init(12,222319,'Recipe',0, 'White Chocolate and Raspberry Ice Cream')">
+							<div id="msg-add-to-shoppinglist" class="ng-hide" ng-cloak="">
+								<span>Added to shopping list.</span>
+							</div>
+							<h2 class="heading__h2--gutters recipe-ingredients__header">Ingredients</h2>
+							<span class="recipe-ingredients__header__toggles">
+								<span class="ready-in-time__container">
+									<span class="ready-in-time">3 h 30 m</span>
+									<span class="icon--stats-clock"></span>
+								</span>
+							</span>
+							<section class="adjustServings panel ng-hide" ng-class="isServingsPopup ? 'nav-tab' : ''" popup-panel="servingsSection" ignore-global="{{ isServingsPopup ? false : true }}" ng-cloak="">
+								<div id="msg-scale" style="display:none;">for serving adjustment</div>
+								<div class="" style="display:none;">Serving size has been adjusted!</div>
+								<div class="subtext">Original recipe yields 12 servings</div>
+								<ul class="adjust-servings__form">
+									<li>
+										<input ng-model="servings" type="number" name="servings" data-role="none" id="servings" class="" min="0" max="300" value="12" data-original="12" ng-focus="hideAds()" ng-blur="showAds()">
+									</li>
+									<li class="adjust-servings__select">
+										<label class="radio-lbl">
+											<input type="radio" data-role="none" name="isMetric" checked="checked" ng-value="false" ng-model="isMetric"><span></span>
+										</label>
+										<span class="measurement-title">US</span>
+									</li>
+									<li class="adjust-servings__select">
+										<label class="radio-lbl">
+											<input type="radio" data-role="none" name="isMetric" ng-value="true" ng-model="isMetric"><span></span>
+										</label>
+										<span class="measurement-title">Metric</span>
+									</li>
+								</ul>
+								<div id="msg-directions" style="display:none;">Note:  Recipe directions are for original size.</div>
+							</section>
+							<section class="ng-hide recipe-nutrition panel" ng-class="isNutritionPopup ? 'nav-tab' : ''" popup-panel="nutritionSection" ignore-global="{{ isNutritionPopup ? false : true }}" ng-cloak="">
+								<div class="recipe-nutrition__form" itemprop="nutrition" itemscope="" itemtype="http://schema.org/NutritionInformation" ng-show="fullNutrition===false">
+									<h3>Nutrition</h3>
+									<p ng-bind="'Amount per serving (' + servings + ' total)'">
+										<ul class="nutrientLine">
+											<li class="nutrientLine__item">Calories:</li>
+											<li class="nutrientLine__item--amount" itemprop="calories"><span>343</span> kcal</li>
+											<li class="nutrientLine__item--grid">
+												<div class="nutriRating">
+													<div class="nutriGradient" style="width: 17%;"></div>
+												</div>
+											</li>
+											<li class="nutrientLine__item--percent">17%</li>
+										</ul>
+										<ul class="nutrientLine">
+											<li class="nutrientLine__item">Fat: </li>
+											<li class="nutrientLine__item--amount" itemprop="fatContent"><span>23.8</span> g</li>
+											<li class="nutrientLine__item--grid">
+												<div class="nutriRating">
+													<div class="nutriGradient" style="width: 37%;"></div>
+												</div>
+											</li>
+											<li class="nutrientLine__item--percent">37%</li>
+										</ul>
+										<ul class="nutrientLine">
+											<li class="nutrientLine__item">Carbs: </li>
+											<li class="nutrientLine__item--amount" itemprop="carbohydrateContent"><span>29.3</span>g</li>
+											<li class="nutrientLine__item--grid">
+												<div class="nutriRating">
+													<div class="nutriGradient" style="width: 9%;"></div>
+												</div>
+											</li>
+											<li class="nutrientLine__item--percent">9%</li>
+										</ul>
+										<ul class="nutrientLine">
+											<li class="nutrientLine__item">Protein: </li>
+											<li class="nutrientLine__item--amount" itemprop="proteinContent"><span>4.3</span> g</li>
+											<li class="nutrientLine__item--grid">
+												<div class="nutriRating">
+													<div class="nutriGradient" style="width: 9%;"></div>
+												</div>
+											</li>
+											<li class="nutrientLine__item--percent">9%</li>
+										</ul>
+										<ul class="nutrientLine">
+											<li class="nutrientLine__item">Cholesterol: </li>
+											<li class="nutrientLine__item--amount" itemprop="cholesterolContent"><span>146</span> mg</li>
+											<li class="nutrientLine__item--grid">
+												<div class="nutriRating">
+													<div class="nutriGradient" style="width: 49%;"></div>
+												</div>
+											</li>
+											<li class="nutrientLine__item--percent">49%</li>
+										</ul>
+										<ul class="nutrientLine">
+											<li>Sodium: </li>
+											<li class="nutrientLine__item--amount" itemprop="sodiumContent"><span>79</span> mg</li>
+											<li class="nutrientLine__item--grid">
+												<div class="nutriRating">
+													<div class="nutriGradient" style="width: 3%;"></div>
+												</div>
+											</li>
+											<li class="nutrientLine__item--percent">3%</li>
+										</ul>
+									<p class="recipe-nutrition__blurb">Based on a 2,000 calorie diet</p>
+								</div>
+								<div class="recipe-nutrition__form" itemprop="nutrition" itemscope="" itemtype="http://schema.org/NutritionInformation" ng-show="fullNutrition===true">
+									<!-- DETAILED NUTRITION -->
+									<div id="nutritiontable" class="fullNutrition">
+										<h3>Nutritional Information</h3>
+										<p class="recipe-title" ng-bind="::title">
+											<div class="top light-underline">
+												1 Serving <br>
+												Servings Per Recipe: <span ng-bind="servings"></span><br>
+												<strong>Amount Per Serving</strong><br>
+												<nutrition-line nutrient="::nutrition.calories" hideunits="true" hidepercent="true" plainname="true"></nutrition-line>
+												<nutrition-line nutrient="::nutrition.caloriesFromFat" boldvalue="true" hideunits="true" hidepercent="true" plainname="true"></nutrition-line>
+											</div>
+											<div class="daily-value-container bold-underline">
+												<label class="daily-value">% Daily Value *</label>
+											</div>
+											<ul class="nutrDetList bold-underline">
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.fat"></nutrition-line>
+												</li>
+												<li class="indent light-underline">
+													<nutrition-line nutrient="::nutrition.saturatedFat"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.cholesterol"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.sodium"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.carbohydrates"></nutrition-line>
+												</li>
+												<li class="indent light-underline">
+													<nutrition-line nutrient="::nutrition.sugars"></nutrition-line>
+												</li>
+												<li class="indent light-underline">
+													<nutrition-line nutrient="::nutrition.fiber"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.protein"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.vitaminA"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.vitaminC"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.calcium"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.iron"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.potassium"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.thiamin"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.niacin"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.vitaminB6"></nutrition-line>
+												</li>
+												<li class="light-underline">
+													<nutrition-line nutrient="::nutrition.magnesium"></nutrition-line>
+												</li>
+												<li>
+													<nutrition-line nutrient="::nutrition.folate"></nutrition-line>
+												</li>
+											</ul>
+											<ul class="key">
+												<li>
+													<span class="left">*</span>
+													<span class="right">Percent Daily Values are based on a 2,000 calorie diet. Your daily values may be higher or lower depending on your calorie needs.</span>
+												</li>
+												<li>
+													<span class="left">**</span>
+													<span class="right">Nutrient information is not available for all ingredients. Amount is based on available nutrient data.</span>
+												</li>
+												<li>
+													<span class="left">(-)</span>
+													<span class="right">Information is not currently available for this nutrient. If you are following a medically restrictive diet, please consult your doctor or registered dietitian before preparing this recipe for personal consumption.</span>
+												</li>
+											</ul>
+											<div class="button-container">
+											</div>
+									</div>
+								</div>
+							</section>
+							<ar-notification></ar-notification>
+							<div class="lo-reservespace">
+								<div class="lo-column" ng-controller="ar_controllers_local_offers" ng-cloak="" ng-if="localOffersService.localOffersFeatureEnabled()">
+									<div class="lo-container--slider ">
+										<div class="title">
+											<h2>On Sale</h2><span>What's on sale near you.</span>
+										</div>
+										<div class="onoffswitch">
+											<input type="checkbox" name="myonoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" data-ng-model="userToggleEnabled" ng-model-options="{ getterSetter: true }">
+											<label class="onoffswitch-label" for="myonoffswitch" id="local-offers-toggle-slider">
+												<span class="onoffswitch-inner"></span>
+												<span class="onoffswitch-switch"></span>
+											</label>
+										</div>
+										<div data-ng-show="userToggleEnabled()">
+											<input type="checkbox" data-ng-click="showSettings = !showSettings" data-ng-class="{active:showSettings}">
+											<label class="location-toggle-btn"></label>
+										</div>
+										<div class="dotted-line--local-offers"></div>
+									</div>
+									<div data-ng-show="localOffersService.localOffersUserEnabled()">
+										<section class="sail local-offers" ng-show="showSettings">
+											<div class="buttons-container">
+												<div class="lo-container--settings">
+													<button class="button-reg find-me ui-link" data-ng-click="findMe()"><span class="pin icon icon--map-pin--white"></span> Find Me</button>
+													<p>or</p>
+													<div class="zip-container">
+														<input type="text" max="99999" placeholder="Enter zip code" class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset" ng-model="userZipCode">
+														<button class="button-reg ui-link" data-ng-click="getRetailersByZipCode()">OK</button>
+													</div>
+													<p>Sort stores by</p>
+													<button class="button-reg sort-by ui-link" data-ng-class="{active:sortingOption === 'ClosestToMe'}" data-ng-click="sortRetailersList('ClosestToMe')">Closest to me</button>
+													<button class="button-reg sort-by ui-link" data-ng-class="{active:sortingOption === 'MostDeals'}" data-ng-click="sortRetailersList('MostDeals')">Most deals</button>
+												</div>
+												<div class="dotted-line--local-offers"></div>
+											</div>
+										</section>
+										<section class="sail local-offers">
+											<div class="error-msg" data-ng-show="errorMessage">
+												<span data-ng-bind="errorMessage"></span>
+											</div>
+										</section>
+										<div class="sail local-offers" id="storesOutput"></div>
+										<div class="local-offers">
+											<div class="lo-message-box" ng-show="displayOverlay">
+												<div class="lo-msg-arrow-up"></div>
+												<div class="lo-message-box__box">
+													<div class="lo-message-box__title">
+														<div class="lo-message-box__title__text">These nearby stores have ingredients on sale!</div>
+														<div class="lo-message-box__title__icon">
+															<span class="icon--close" ng-click="closeOverlay()"></span>
+														</div>
+													</div>
+													<a>
+														<div class="lo-message-box__button" ng-click="closeOverlay(); findMe();">
+															<div class="lo-message-box__button__title">Find the closest stores</div>
+															<div class="lo-message-box__button__subtitle">(uses your location)</div>
+														</div>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div id="clientID"></div>
+								</div>
+							</div>
+							<ul class="checklist dropdownwrapper list-ingredients-1" ng-hide="reloaded" id="lst_ingredients_1">
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="16276" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,16276)">
+										<span class="recipe-ingred_txt added" data-id="16276" data-nameid="16276" itemprop="ingredients">1 cup whole milk</span>
+									</label>
+									<div data-ng-repeat='deal in deals["16276"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["16276"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="1526" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,1526)">
+										<span class="recipe-ingred_txt added" data-id="1526" data-nameid="1526" itemprop="ingredients">3/4 cup white sugar</span>
+									</label>
+									<div data-ng-repeat='deal in deals["1526"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["1526"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="20345" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,20345)">
+										<span class="recipe-ingred_txt added" data-id="20345" data-nameid="20345" itemprop="ingredients">1 vanilla bean, slit lengthwise, seeds scraped</span>
+									</label>
+									<div data-ng-repeat='deal in deals["20345"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["20345"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="16421" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,16421)">
+										<span class="recipe-ingred_txt added" data-id="16421" data-nameid="16421" itemprop="ingredients">1 pinch salt</span>
+									</label>
+									<div data-ng-repeat='deal in deals["16421"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["16421"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="16319" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,16319)">
+										<span class="recipe-ingred_txt added" data-id="16319" data-nameid="16319" itemprop="ingredients">5 egg yolks</span>
+									</label>
+									<div data-ng-repeat='deal in deals["16319"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["16319"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<ul class="checklist dropdownwrapper list-ingredients-2" ng-hide="reloaded" id="lst_ingredients_2">
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="20189" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,20189)">
+										<span class="recipe-ingred_txt added" data-id="20189" data-nameid="20189" itemprop="ingredients">1 (8 ounce) package white chocolate chips</span>
+									</label>
+									<div data-ng-repeat='deal in deals["20189"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["20189"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="16258" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,16258)">
+										<span class="recipe-ingred_txt added" data-id="16258" data-nameid="16258" itemprop="ingredients">2 cups heavy whipping cream</span>
+									</label>
+									<div data-ng-repeat='deal in deals["16258"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["16258"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="16424" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,16424)">
+										<span class="recipe-ingred_txt added" data-id="16424" data-nameid="16424" itemprop="ingredients">1 teaspoon vanilla extract</span>
+									</label>
+									<div data-ng-repeat='deal in deals["16424"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["16424"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[true]">
+										<input data-id="11077" name="ingredientCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveIngredient($event,11077)">
+										<span class="recipe-ingred_txt added" data-id="11077" data-nameid="11077" itemprop="ingredients">1 (12 ounce) package frozen raspberries</span>
+									</label>
+									<div data-ng-repeat='deal in deals["11077"]'>
+										<div class="offer-container" data-ng-class='{"hide-deals":!deals["11077"] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show='deal.isBIU' data-ng-bind-html='deal.price'></span>
+													<span ng-show='!deal.isBIU' class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html='deal.clickThroughText'></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li class="checkList__line">
+									<label class="checkList__item" id="btn-addtolist">
+										<input ng-model="allIngredientsCheckBox" name="slCheckbox" data-role="none" type="checkbox" ng-click="saveRecipe('222319','Recipe')">
+										<span class="recipe-ingred_txt added white">Add all ingredients to list</span>
+									</label>
+								</li>
+							</ul>
+							<ul ng-cloak="" ng-repeat="column in ingredientColumns" class="checklist {{ 'list-ingredients-' + column.index }}" id="{{ 'lst_ingredients_' + column.index }}" data-repeat-complete="ingredientsLoaded()">
+								<li ng-repeat="ingredient in ingredients | ar_filters_slice:column.start:column.end" class="checkList__line">
+									<label ng-class="{true: 'checkList__item'}[ingredient.displayType != 'Heading']">
+										<input data-id="{{ingredient.ingredientID}}" name="ingredientCheckbox" type="checkbox" value="N" ng-model="ingredient.isChecked" ng-click="saveIngredient($event,ingredient)">
+										<span class="recipe-ingred_txt" data-id="{{ingredient.ingredientID}}" data-nameid="{{ingredient.ingredientid}}"><span ng-bind="ingredient.displayValue"></span></span>
+									</label>
+									<div data-ng-repeat='deal in deals[ingredient.ingredientID]'>
+										<div class="offer-container" ng-class='{"hide-deals":!deals[ingredient.ingredientID] || !localOffersService.localOffersUserEnabled()}' ng-cloak="">
+											<div class="left">
+												<p>
+													<span class="offer-name" data-ng-bind-html='deal.description'></span>
+													<br>
+													<span ng-show="deal.isBIU" data-ng-bind-html='deal.price'></span>
+													<span ng-show="!deal.isBIU" class='unit-cost' data-ng-bind-html='deal.priceWithExpiration'></span>
+													<br>
+													<a data-no-follow-if-external="" ng-href='{{deal.actionUrl}}' target="_blank" data-ng-click='fireClickPixels(deal.clickPixels)' data-ng-bind-html="deal.clickThroughText"></a>
+													<br>
+													<span class="advertisement" ng-show='deal.isBIU'>ADVERTISEMENT</span>
+												</p>
+												<div class="tracking-element" load-dom-script="" script="deal.moatUrl"></div>
+												<img class="tracking-element" data-ng-repeat="trackingUrl in deal.trackingPixels track by $index" data-ng-src="{{trackingUrl}}">
+												<img class="tracking-element" data-ng-repeat="clickUrl in listClickPixels track by $index" data-ng-src="{{clickUrl}}">
+											</div>
+											<div class="right">
+												<img data-ng-src='{{deal.imageUrl}}' class="offer-photo">
+											</div>
+										</div>
+									</div>
+								</li>
+								<li ng-show="column.index == 2" class="checkList__line">
+									<label class="checkList__item" id="btn-addtolist">
+										<input name="slCheckbox" data-role="none" type="checkbox" value="N" ng-click="saveRecipe('222319','Recipe')">
+										<span class="recipe-ingred_txt added white">Add all ingredients to list</span>
+									</label>
+								</li>
+							</ul>
+							<div class="lo-smu-output" data-ng-controller="ar_controllers_recipe_mws" data-ng-show="mws" data-ng-cloak="">
+								<div class="lo-smu-container">
+									<img data-ng-src='{{mws.originalImagUrl}}' class="lo-smu-photo">
+									<p class="lo-smu-title">May we suggest</p>
+									<div class="lo-smu-text">
+										<p class="offer-name" data-ng-bind-html="mws.defaultDisplayDescription">
+										<p data-ng-bind-html="mws.title">
+										<p><a data-no-follow-if-external="" data-ng-click="fireClickPixel(mws.clickPixels)" data-ng-href='{{mws.actionUrl}}' target="_blank" data-ng-bind-html='mws.clickThroughText'></a></p>
+										<p class="lo-smu-ad">ADVERTISEMENT</p>
+										<div class="tracking-element" load-dom-script="" script="mws.moatUrl"></div>
+										<img class="tracking-element" data-ng-repeat="trackingUrl in mws.trackingPixels track by $index" data-ng-src="{{trackingUrl}}" alt="">
+										<img class="tracking-element" data-ng-repeat="clickPixel in listClickPixels track by $index" data-ng-src="{{clickPixel}}">
+									</div>
+								</div>
+							</div>
+						</section>
+						<section class="recipe-directions" data-ng-controller="ar_controllers_directions" data-ng-init="init(222319)">
+							<h2 class=" heading__h2--gutters">
+								Directions
+							</h2>
+							<span class="recipe-directions__header--toggles">
+								<span class="recipe-directions--print"><a ng-href="print/?recipeType=Recipe&{{ printServings }}" data-internal-referrer-link="recipe button" data-click-id="recipe button"><span class="kf-text print">Print</span> <span class="icon--recipe-directions-print"></span></a></span>
+							</span>
+							<div class="directions--section">
+								<div class="directions--section__steps">
+									<!-- cooking stats -->
+									<ul class="prepTime">
+										<li class="prepTime__item"><span class="icon--stats-clock"></span></li>
+										<li class="prepTime__item">
+											<p class="prepTime__item--type">Prep</p><time itemprop="prepTime" datetime="PT10M"><span class="prepTime__item--time">10</span> m</time>
+										</li>
+										<li class="prepTime__item">
+											<p class="prepTime__item--type">Cook</p><time itemprop="cookTime" datetime="PT20M"><span class="prepTime__item--time">20</span> m</time>
+										</li>
+										<li class="prepTime__item">
+											<p class="prepTime__item--type">Ready In</p><time itemprop="totalTime" datetime="PT3H30M"><span class="prepTime__item--time">3</span> h <span class="prepTime__item--time">30</span> m</time>
+										</li>
+									</ul>
+									<ol class="list-numbers recipe-directions__list" itemprop="recipeInstructions">
+										<li class="step" ng-class="{'finished': stepIsActive0}" ng-click="stepIsActive0 = !stepIsActive0"><span class="recipe-directions__list--item">Heat milk, sugar, vanilla bean and seeds, and salt in a saucepan over medium heat until warm, about 5 minutes.</span></li>
+										<li class="step" ng-class="{'finished': stepIsActive1}" ng-click="stepIsActive1 = !stepIsActive1"><span class="recipe-directions__list--item">Whisk egg yolks and about 1 cup warm milk mixture in a bowl; stir egg mixture into saucepan. Continue to cook and stir until custard thickens enough to coat the back of a spoon, 5 to 7 minutes. Remove vanilla bean. Stir white chocolate chips into custard until melted. Pour custard into a large bowl and stir in heavy cream and vanilla extract. Cover and refrigerate until chilled.</span></li>
+										<li class="step" ng-class="{'finished': stepIsActive2}" ng-click="stepIsActive2 = !stepIsActive2"><span class="recipe-directions__list--item">Pour the chilled mixture into an ice cream maker and freeze according to manufacturer&#39;s directions until it reaches &quot;soft-serve&quot; consistency.</span></li>
+										<li class="step" ng-class="{'finished': stepIsActive3}" ng-click="stepIsActive3 = !stepIsActive3"><span class="recipe-directions__list--item">Heat raspberries in a saucepan over medium heat until raspberries begin to fall apart, 7 to 10 minutes. Press raspberries through a sieve over a bowl to remove the seeds; discard seeds.</span></li>
+										<li class="step" ng-class="{'finished': stepIsActive4}" ng-click="stepIsActive4 = !stepIsActive4"><span class="recipe-directions__list--item">Gently swirl raspberries into the soft ice cream creating ribbons of raspberries. Transfer ice cream to a one- or two-quart lidded plastic container; cover surface with plastic wrap and seal. For best results, ice cream should ripen in the freezer for at least 2 hours or overnight.</span></li>
+									</ol>
+									<ol class="list-numbers recipe-directions__list recipeNotes ng-hide" ng-show="itemNote" ng-cloak="">
+										<li class="step"><span class="recipe-directions__list--item" ng-bind-html="itemNote"></span></li>
+									</ol>
+								</div>
+								<div class="directions--section__right-side">
+									<div class="directions--section__tipsAndTricks">
+										<div class="directions--section__tipsAndTricks__title">
+											<span class="directions--section__tipsAndTricks__title__font">You might also like</span>
+										</div>
+										<div class="relatedVideos">
+											<div class="relatedVideos__item">
+												<div class="relatedVideos__thumbnail__icon-hasVideo">
+												</div>
+												<div class="relatedVideos__details">
+												</div>
+											</div>
+											<div class="relatedVideos__item">
+												<div class="relatedVideos__thumbnail__icon-hasVideo">
+												</div>
+												<div class="relatedVideos__details">
+												</div>
+											</div>
+											<div class="relatedVideos__item">
+												<div class="relatedVideos__thumbnail__icon-hasVideo">
+												</div>
+												<div class="relatedVideos__details">
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="mag-cta-desktop">
+										<div class="mag-cta" data-ng-controller="ar_controllers_mag_subscription">
+											<a ng-href="{{CtaSubscriptionUrl}}" target="_blank" class="ad-mag-homeBtm">
+												<h2>Get the magazine</h2>
+												<img class="ad-mag-homeBtm__th" alt="Subscribe to Allrecipes Magazine" title="Allrecipes Magazine" src="http://images.media-allrecipes.com/images/61544.png">
+												<div class="ad-mag-homeBtm__text">
+													<h4> Get a full year for just $7.99!</h4>
+													<p>Cook 5-star weekday dinners every time.</p>
+												</div>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+						<div data-ng-controller="ar_controllers_made_it" data-ng-init="init(222319, 0, '', '', 0, 0, 0, 6)">
+							<!-- made recipe toolbar -->
+							<section id="recipe-toolbar" class="recipe-toolbar">
+								<!-- photo upload block -->
+								<div class="recipe-toolbar__buttons">
+									<div class="toolbar-i-made-it">
+										<ul>
+											<li>
+												<a class="btns-one-small bg-orange-gold" data-ng-click="save();">
+													<span class="svg-icon--recipe-page--imadeit-white svg-icon--recipe-page--imadeit-white-dims"></span>
+													<h4 class="light">I made it!</h4>
+												</a>
+											</li>
+										</ul>
+									</div>
+									<div data-ng-controller="ar_controllers_photo_upload" ng-init="init(0,222319,true,'i made it')">
+									</div>
+									<ar-notification></ar-notification>
+								</div>
+							</section>
+						</div>
+						<h2 class="heading__h2--gutters share">Share</h2>
+						<section ng-controller="ar_controllers_share_item" id="shareRecipe">
+							<section class="recipe-share share-container">
+								<a ng-click="socialShareStart('222319', 'pinterest'); socialShareNavigate('http://pinterest.com/pin/create/button/?url=http%3a//allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/?lnkid=usspnt&amp;media=http%3a//images.media-allrecipes.com/userphotos/250x250/1126127.jpg&amp;description=White%20Chocolate%20and%20Raspberry%20Ice%20Cream%20-%20Allrecipes.com', '_blank', PinterestTargetParams);" class="pinterest"></a>
+								<a ng-click="socialShareStart('222319', 'facebook'); socialShareNavigate('https://facebook.com/sharer.php?u=http%3a//allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/?lnkid=ussfac', '_blank', FacebookTargetParams);" class="facebook"></a>
+								<a ng-click="socialShareStart('222319', 'stumbleupon'); socialShareNavigate('https://www.stumbleupon.com/submit?url=http%3a//allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/?lnkid=usssup', '_blank', StumbleTargetParams);" class="stumbleUpon"></a>
+								<a ng-click="socialShareStart('222319', 'twitter'); socialShareNavigate('https://twitter.com/intent/tweet?url=http%3a//allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/?lnkid=usstwt&amp;text=White%20Chocolate%20and%20Raspberry%20Ice%20Cream%20-%20Allrecipes.com&amp;via=Allrecipes', '_blank', TwitterTargetParams);" class="twitter"></a>
+								<a ng-click="socialShareStart('222319', 'google+'); socialShareNavigate('https://plus.google.com/share?url=http%3a//allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/?lnkid=ussgog', '_blank', GoogleTargetParams);" class="google"></a>
+							</section>
+							<section class="email-recipe">
+								<form name="emailForm" ng-submit="sendEmail('222319', 'recipe')" novalidate="">
+									<section class="show-form ng-hide" ng-cloak="" ng-show="showForm">
+										<div class="input-wrap">
+											<input type="email" placeholder="{{::emailPlaceholderText}}" name="txtEmail" ng-model="toEmailAddress" class="ng-valid-email" ng-focus="hideAds(); AddEmailEnabled = true;" ng-blur="showAds()">
+											<a class="btn-basic--small" ng-show="AddEmailEnabled" ng-click="addEmail()">Add</a>
+										</div>
+										<ol class="email-recipe__recipients">
+											<li ng-repeat="email in toEmailList">
+												<a class="btn-basic--small btn-gold"><span ng-bind="email.address"></span><span class="icon--x" ng-click="deleteEmail(email.address)"></span></a>
+											</li>
+										</ol>
+										<div class="input-wrap">
+											<input type="text" placeholder="My name" name="txtName" ng-model="fromName" required="" class="" ng-focus="hideAds()" ng-blur="showAds()">
+										</div>
+										<textarea class="email-recipe__note" placeholder="My note (optional)" rows="10" name="txtNote" ng-model="emailNote" ng-focus="hideAds()" ng-blur="showAds()"></textarea>
+										<div class="email-recipe__buttons">
+											<a class="btns-two-small" ng-click="cancel()">Cancel</a>
+											<input class="btns-two-small" type="submit" value="Send">
+											<span ng-bind="errorMessage"></span>
+										</div>
+									</section>
+								</form>
+							</section>
+						</section>
+						<section class="grid similar-recipes--details" id="grid_recipeListItems" ng-controller="ar_controller_similar_recipes" ng-init="init()" ng-cloak="">
+							<h2 class="heading__h2--gutters similar notPhoneView">Similar: <span></span></h2>
+							<h2 class="heading__h2--gutters similar phoneView" popup-trigger="similar-content-nav">
+								Similar: <span class="selected-content">{{title}}<span class="icon--chevron-down"></span></span>
+								<span popup-panel="similar-content-nav" class="similar-content-nav ng-hide">
+								</span>
+							</h2>
+							<div class="similar-recipes__wrap">
+								<!--navigation for carousel -->
+								<div class="carousel-navigation">
+									<a carousel-scroll-left="similarRecipes" ng-if="similarRecipes_atLeftBound===false">
+										<div class="icon--chevron-left"></div>
+									</a>
+									<a carousel-scroll-right="similarRecipes" ng-if="similarRecipes_atRightBound===false">
+										<div class="icon--chevron-right"></div>
+									</a>
+								</div>
+								<div class="similar-recipes__container">
+									<div id="scrollDiv" carousel-scroll-target="similarRecipes" scroll-event="">
+										<div id="insideScroll" class="grid slider">
+											<ul class="recipe-carousel" id="similarRecipes" ng-show="isSet(1)">
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="213110" data-type="'Recipe'" data-name="&quot;Richer Than Rich German Chocolate Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/597344.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="132935" data-type="'Recipe'" data-name="&quot;Divine Cherry Chocolate Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/931124.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="230469" data-type="'Recipe'" data-name="&quot;Smooth Raspberry Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/937850.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="232358" data-type="'Recipe'" data-name="&quot;Homemade Mint Chocolate Chip Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/1033810.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="244185" data-type="'Recipe'" data-name="&quot;Overnight Delight White Coffee Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/3927440.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="233308" data-type="'Recipe'" data-name="&quot;Simple Mint Chocolate Chip Strawberry Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/1034150.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="232356" data-type="'Recipe'" data-name="&quot;Simple Chocolate Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/1097081.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="234765" data-type="'Recipe'" data-name="&quot;Nuclear Chocolate Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/1115252.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="234762" data-type="'Recipe'" data-name="&quot;Strawberry Chocolate Chip Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/1358945.jpg'"></ar-save-item>
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar recipe')">
+													<div class="slider-card__recipes">
+														<ar-save-item class='favorite' data-id="244421" data-type="'Recipe'" data-name="&quot;White Chocolate Pumpkin Spice Ice Cream&quot;" data-imageurl="'http://images.media-allrecipes.com/userphotos/150x150/0.jpg'"></ar-save-item>
+													</div>
+												</li>
+											</ul>
+											<ul class="video-carousel" id="relatedVideos" ng-show="isSet(2)">
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar video')">
+													<div class="slider-card__videos">
+													</div>
+												</li>
+											</ul>
+											<ul class="hub-carousel" id="relatedCategories" ng-show="isSet(3)">
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar categories')">
+													<div class="slider-card__hub">
+													</div>
+												</li>
+											</ul>
+											<ul class="article-carousel" id="relatedArticles" ng-show="isSet(4)">
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+												<li class="slider-card" ng-click="setAnalyticsCookie('similar article')">
+													<div class="slider-card__articles">
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+						<div class="mag-cta-mobile">
+							<div class="mag-cta" data-ng-controller="ar_controllers_mag_subscription">
+								<a ng-href="{{CtaSubscriptionUrl}}" target="_blank" class="ad-mag-homeBtm">
+									<h2>Get the magazine</h2>
+									<img class="ad-mag-homeBtm__th" alt="Subscribe to Allrecipes Magazine" title="Allrecipes Magazine" src="http://images.media-allrecipes.com/images/61544.png">
+									<div class="ad-mag-homeBtm__text">
+										<h4> Get a full year for just $7.99!</h4>
+										<p>Cook 5-star weekday dinners every time.</p>
+									</div>
+								</a>
+							</div>
+						</div>
+						<section id="reviews" class="recipe-reviews" ng-controller="ar_controllers_recipe_reviews" ng-init="init('222319', 2, 9, 'Recipe', 1, 'MostHelpful')">
+							<h2 class="heading__h2--gutters review">Reviews</h2>
+							<span class="recipe-reviews__header--count">4</span>
+							<div class="current-user review-container clearfix current--reviewer" data-ng-controller="ar_controllers_rate_and_review">
+								<div ng-show="model.userReview.rating == 0" class="current-user__rateballoon own-review" ng-cloak="">
+									<img class="img-profile rateballoon" alt="profile image" src="http://images.media-allrecipes.com/mobile/allrecipes/images/icon-user-default_v2.png">
+								</div>
+								<div ng-show="model.userReview.rating != 0" class="current-user__review own-review" ng-cloak="">
+									<article class="reviewer-info imadeit-enabled">
+										<div class="review-wrapper">
+											<ul class="cook-details">
+												<li>
+													<a ng-href=""><img class="img-profile elevate-cook-thumbnail" alt="profile image" src="http://images.media-allrecipes.com/mobile/allrecipes/images/icon-user-default_v2.png"></a>
+												</li>
+												<li>
+													<h4>My review</h4>
+													<div class="stars-and-date-container">
+														<div data-star-rating="" data-rating="{{model.userReview.rating}}"></div>
+														<div class="review-date" ng-bind="model.userReview.date | date:'M/d/yyyy'"></div>
+													</div>
+												</li>
+											</ul>
+											<div ng-bind="model.userReview.text" class="reviewer--text"></div>
+										</div>
+										<div class="icon--edit-review">
+											<ul>
+												<li class="cook-review--count">
+												</li>
+												<li>
+												</li>
+											</ul>
+										</div>
+									</article>
+								</div>
+							</div>
+							<div class="review-divider review-container review-ad-space">
+								<div data-ad-container-autocollapse="" class="ad-recipe-page-middle-container ad-desktop-only">
+									<sideloaded-ad ad-slot-hc-type="div-gpt-lazy-leaderboard-fixed-tier3" desktop-only="true" class="ad-recipe-page-middle-3"></sideloaded-ad>
+								</div>
+							</div>
+							<div class="tabs reviews-sort">
+								<div ng-click="getReviews('MostHelpful')" ng-class="{'selected':sortBy=='MostHelpful'}">Most helpful</div>
+								<div ng-click="getReviews('MostPositive')" ng-class="{'selected':sortBy=='MostPositive'}">Most positive</div>
+								<div ng-click="getReviews('LeastPositive')" ng-class="{'selected':sortBy=='LeastPositive'}">Least positive</div>
+								<div ng-click="getReviews('Newest')" ng-class="{'selected':sortBy=='Newest'}">Newest</div>
+							</div>
+							<div class="review-container dropdown-menu">
+								<div ng-controller="ar_controllers_review_details" class="review-detail-nav">
+									<div class="review-detail-nav__container dropdown-menu">
+										<div class="review-detail-nav__sort__dropdownlist" ng-click="toggleShowSortOptions()" id="sort">
+											<span>
+												<span class="review-detail-nav__sort__dropdownlist__text" ng-bind="'Reviews: ' + sortByFriendlyName[sortBy]"></span><span ng-class="indicatorStyle"></span>
+											</span>
+										</div>
+									</div>
+									<ul class="sort-nav exposed" data-ng-cloak="" ng-class="showSortFiltersStyle" ng-click="toggleShowSortOptions()">
+										<li ng-click="getReviews('MostHelpful')" ng-class="{'btn-grey':sortBy == 'MostHelpful'}" ng-bind="::sortByFriendlyName['MostHelpful']"></li>
+										<li ng-click="getReviews('MostPositive')" ng-class="{'btn-grey':sortBy == 'MostPositive'}" ng-bind="::sortByFriendlyName['MostPositive']"></li>
+										<li ng-click="getReviews('LeastPositive')" ng-class="{'btn-grey':sortBy == 'LeastPositive'}" ng-bind="::sortByFriendlyName['LeastPositive']"></li>
+										<li ng-click="getReviews('Newest')" ng-class="{'btn-grey':sortBy == 'Newest'}" ng-bind="::sortByFriendlyName['Newest']"></li>
+									</ul>
+								</div>
+							</div>
+							<section ar-initial-reviews="">
+								<div class="review-container clearfix" itemprop="review" itemscope="" itemtype="http://schema.org/Review">
+									<article class="reviewer-info imadeit-enabled">
+										<div class="recipe-details-cook-stats-container">
+										</div>
+										<div class="stars-and-date-container">
+											<div class="rating-stars" data-scroll-to-anchor="reviews" data-ratingstars="5">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											</div>
+											<div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
+											</div>
+											<div class="review-date">8/21/2013</div>
+										</div>
+									</article>
+									<p itemprop="reviewBody">
+										We loved this ice cream. We have tried about 3 other recipes for ice cream. Because the eggs here are not refrigerated, it was important for me to find a recipe that cooked the egg.  The consist...
+									</p>
+									<div class="review-detail">
+									</div>
+								</div>
+								<div class="review-container clearfix" itemprop="review" itemscope="" itemtype="http://schema.org/Review">
+									<article class="reviewer-info imadeit-enabled">
+										<div class="recipe-details-cook-stats-container">
+										</div>
+										<div class="stars-and-date-container">
+											<div class="rating-stars" data-scroll-to-anchor="reviews" data-ratingstars="5">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											</div>
+											<div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
+											</div>
+											<div class="review-date">5/21/2013</div>
+										</div>
+									</article>
+									<p itemprop="reviewBody">
+										This was a creamy as I had hoped it would be&#8230;.some custard recipes take on an eggy taste, but not this one&#8230; I am impressed and will be making this one again and again over the summer. I added wh...
+									</p>
+									<div class="review-detail">
+									</div>
+								</div>
+								<div class="review-container clearfix" itemprop="review" itemscope="" itemtype="http://schema.org/Review">
+									<article class="reviewer-info imadeit-enabled">
+										<div class="recipe-details-cook-stats-container">
+										</div>
+										<div class="stars-and-date-container">
+											<div class="rating-stars" data-scroll-to-anchor="reviews" data-ratingstars="5">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											</div>
+											<div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
+											</div>
+											<div class="review-date">9/4/2014</div>
+										</div>
+									</article>
+									<p itemprop="reviewBody">
+										This is OUTSTANDING!  If you love white chocolate as I do.  My husband loved it and he&#39;s not a vanilla nor white chocolate lover.  I have several recipes of my own for vanilla ice cream that do ...
+									</p>
+									<div class="review-detail">
+									</div>
+								</div>
+								<div class="review-divider"></div>
+								<div class="review-container clearfix" itemprop="review" itemscope="" itemtype="http://schema.org/Review">
+									<article class="reviewer-info imadeit-enabled">
+										<div class="recipe-details-cook-stats-container">
+										</div>
+										<div class="stars-and-date-container">
+											<div class="rating-stars" data-scroll-to-anchor="reviews" data-ratingstars="5">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+												<img height="14" width="14" src="http://images.media-allrecipes.com/ar-images/icons/rating-stars/full-star-2015.svg">
+											</div>
+											<div itemprop="reviewRating" itemscope="" itemtype="http://schema.org/Rating">
+											</div>
+											<div class="review-date">3/11/2015</div>
+										</div>
+									</article>
+									<p itemprop="reviewBody">
+										OUTSTANDING!!!! My family all loved this recipe.  Followed it to and didn&#39;t make any changes.  I have made ice cream before and this is so far the best!!!
+									</p>
+									<div class="review-detail">
+									</div>
+								</div>
+							</section>
+							<div class="recipe-reviews__more-container">
+								<div ng-repeat="review in reviews" ng-bind-html="review" dynamic="html" class="additional-recipe-reviews"></div>
+								<div ng-click="getReviews()" class="more-button" data-ng-hide="!moreReviewsAvailable">
+									<a class="moreReviews btns-one-small">More Reviews</a>
+								</div>
+							</div>
+						</section>
+						<!-- once the feature toggle is moved the zergnet javascript down into the scripts section below -->
+						<section class="zergnet">
+							<h2 class="heading__h2--gutters">
+								Other stories that may interest you
+							</h2>
+							<div id="zergnet-widget-33596" class="zergnet-reserve-space"></div>
+						</section>
+					</section>
+					<aside id="recipe-page-right-rail" class="recipe-page-right-rail four-tabs">
+						<div data-ng-controller="ar_controllers_next_recipe" data-ng-click="trackRecipeId(213110)">
+						</div>
+						<div class="ad-search-grid reserve-ad-space" data-ad-container-autocollapse="">
+							<div id="ad-skyscrapermultisize" class="ad-skyscrapermultisize">
+								<div id="div-gpt-square-flex-1" data-tier="1"></div>
+							</div>
+							<span class="advertisement">ADVERTISEMENT</span>
+						</div>
+						<div class="ad-search-grid reserve-ad-space" data-ad-container-autocollapse="">
+							<div id="ad-bottom-right3" class="ad-skyscrapermultisize">
+								<div id="div-gpt-square-fixed-1" data-tier="2"></div>
+							</div>
+							<span class="advertisement">ADVERTISEMENT</span>
+						</div>
+						<div class="ad-search-grid reserve-ad-space" data-ad-container-autocollapse="">
+							<div id="ad-bottom-right1" class="ad-skyscrapermultisize">
+								<div id="div-gpt-square-fixed-2" data-tier="3"></div>
+							</div>
+							<span class="advertisement">ADVERTISEMENT</span>
+						</div>
+						<div class="ad-search-grid reserve-ad-space" data-ad-container-autocollapse="">
+							<div id="ad-bottom-right2" class="ad-skyscrapermultisize">
+								<div id="div-gpt-square-fixed-3" data-tier="4"></div>
+							</div>
+							<span class="advertisement">ADVERTISEMENT</span>
+						</div>
+					</aside>
+				</div>
+			</div>
+			<footer id="pageFooter" class="full-page">
+				<div class="ad-recipe-page-footer-container">
+					<div id="div-gpt-leaderboard-fixed-3" class="ad-recipe-page-footer" data-tier="4"></div>
+					<span class="advertisement">ADVERTISEMENT</span>
+				</div>
+				<section masonry="" class="grid grid-fixed" preserve-order="" item-selector="article">
+					<article class=" grid-col grid-col--tiles">
+						<ul class="social-sharing__icons">
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</article>
+					<article class="grid-col grid-col--tiles">
+						<ul>
+							<li>About Us</li>
+							<li></li>
+							<li></li>
+						</ul>
+					</article>
+					<article class="grid-col grid-col--tiles footer_advertising">
+						<ul>
+							<li>Advertising</li>
+							<li></li>
+							<li></li>
+						</ul>
+					</article>
+					<article class="grid-col grid-col--tiles">
+						<ul>
+							<li>Support</li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</article>
+					<article class="grid-col grid-col--tiles" ng-controller="ar_controllers_footerLinks" data-siteurl="allrecipes.com">
+						<ul>
+							<li>Global Community</li>
+							<li>
+								<select id="country-selector" ng-options="site.name for site in arSites" ng-change="changeSite()" ng-model="selectedItem"><option style="display:none" value="">Select location</select>
+							</li>
+							<li>&copy; 2016 Allrecipes.com <br>All Rights Reserved </li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li>
+								<!--  Ghostery Inc tag  cid: 1333  pid: 282-->
+								<a id="footer_top_button" class="btns-one-small" data-scroll-to-anchor="top" data-show-on-scroll="700" ng-show="yTrigger == true" ng-cloak="">Top</a>
+							</li>
+						</ul>
+					</article>
+					<article class="grid-col grid-col--tiles">
+						<ul>
+							<li>More Allrecipes</li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+							<li></li>
+						</ul>
+					</article>
+				</section>
+				<div data-ng-controller="ar_controllers_deferredAction" data-ng-init="wireupAdIntegrationListeners();executePostLoginEvents();">
+					<ar-notification></ar-notification>
+					<div data-loading-indicator=""></div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	<div id='ad-footer' class="ad-footer--fixed">
+		<div id="div-gpt-mob-adhesive-banner-fixed" data-tier="1"></div>
+	</div>
+	<!-- Google Tag Manager -->
+	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-MW2LG9" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager -->
+</body>
+</html>

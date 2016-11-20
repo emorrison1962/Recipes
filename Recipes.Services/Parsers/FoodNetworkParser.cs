@@ -1,5 +1,4 @@
 ﻿using HtmlAgilityPack;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -7,7 +6,7 @@ namespace Recipes.Services.Parsers
 {
 	class FoodNetworkParser : PageParserBase
 	{
-		protected override HtmlNode GetIngredientsDiv(string className)
+		protected HtmlNode GetIngredientsNode(string className)
 		{
 			var sections = this.HtmlDocument.DocumentNode.Descendants(SECTION);
 			var section = sections.ByClass("ingredients-instructions").First();
@@ -16,49 +15,32 @@ namespace Recipes.Services.Parsers
 			Debug.Assert(null != result);
 			return result;
 		}
-		protected override bool GetIngredients()
+		protected override void GetIngredients()
 		{
-			var result = false;
-			var div = base.GetIngredientsDiv("col8 ingredients responsive");
+			var div = base.GetNode(DIV, "col8 ingredients");
 			if (null != div)
 			{
 				this.GetIngredients(div);
-				if (this.Ingredients.Count > 0)
-					result = true;
 			}
-
-			Debug.Assert(result);
-			return result;
 		}
 
-		IEnumerable<HtmlNode> GetIngredients(HtmlNode div)
+		void GetIngredients(HtmlNode div)
 		{
-			var result = new List<HtmlNode>();
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
 			{
-				var ingredient = li.InnerText;
+				var ingredient = li.InnerText.Trim();
 				this.Ingredients.Add(ingredient);
 			}
-
-			Debug.Assert(null != result);
-			return result;
 		}
 
-		protected override bool GetProcedures()
+		protected override void GetProcedures()
 		{
-			var result = false;
-			var div = base.GetProceduresDiv("col10 directions");
-
+			var div = base.GetNode(DIV, "col10 directions");
 			if (null != div)
 			{
 				this.GetDirections(div);
-				if (this.Procedures.Count > 0)
-					result = true;
 			}
-
-			Debug.Assert(result);
-			return result;
 		}
 
 		private void GetDirections(HtmlNode div)
@@ -69,7 +51,7 @@ namespace Recipes.Services.Parsers
 				var ps = li.Descendants("p");
 				foreach (var p in ps)
 				{
-					var procedure = p.InnerText;
+					var procedure = p.InnerText.Trim();
 					this.Procedures.Add(procedure);
 				}
 			}

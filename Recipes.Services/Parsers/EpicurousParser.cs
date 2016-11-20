@@ -1,24 +1,13 @@
 ﻿using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.Services.Parsers
 {
 	public class EpicurousParser : PageParserBase
 	{
-
-		public EpicurousParser()
+		override protected void GetIngredients()
 		{
-
-		}
-
-		override protected bool GetIngredients()
-		{
-			var result = false;
 			var div = GetIngredientsDiv();
 			if (null != div)
 			{
@@ -30,12 +19,8 @@ namespace Recipes.Services.Parsers
 						var ingredients = this.GetIngredients(ingredientGroup);
 						this.Ingredients.AddRange(ingredients);
 					}
-					if (this.Ingredients.Count > 0)
-						result = true;
 				}
 			}
-
-			return result;
 		}
 
 		HtmlNode GetIngredientsDiv()
@@ -63,13 +48,13 @@ namespace Recipes.Services.Parsers
 			if (null != ingredientGroup)
 			{
 				var strong = ingredientGroup.Descendants("strong").First();
-				result.Add(strong.InnerText);
+				result.Add(strong.InnerText.Trim());
 
 				foreach (var li in ingredientGroup.Descendants(LI))
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText);
+						result.Add(li.InnerText.Trim());
 					}
 				}
 			}
@@ -78,9 +63,8 @@ namespace Recipes.Services.Parsers
 		}
 
 
-		override protected bool GetProcedures()
+		override protected void GetProcedures()
 		{
-			var result = false;
 			var div = GetProceduresDiv();
 			if (null != div)
 			{
@@ -92,12 +76,8 @@ namespace Recipes.Services.Parsers
 						var preparation = this.GetProcedures(preparationGroup);
 						this.Procedures.AddRange(preparation);
 					}
-					if (this.Procedures.Count > 0)
-						result = true;
 				}
 			}
-
-			return result;
 		}
 
 		HtmlNode GetProceduresDiv()
@@ -121,7 +101,7 @@ namespace Recipes.Services.Parsers
 			if (null != preparationGroup)
 			{
 				var strong = preparationGroup.Descendants("strong").First();
-				result.Add(strong.InnerText);
+				result.Add(strong.InnerText.Trim());
 
 				foreach (var li in preparationGroup.Descendants(LI))
 				{

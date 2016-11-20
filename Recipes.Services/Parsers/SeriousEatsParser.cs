@@ -1,20 +1,16 @@
 ﻿using HtmlAgilityPack;
-using Recipes.Domain;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.Services.Parsers
 {
 	public class SeriousEatsParser : PageParserBase
 	{
 
-		override protected bool GetIngredients()
+		override protected void GetIngredients()
 		{
-			var result = false;
 			var div = GetIngredientsDiv();
 			if (null != div)
 			{
@@ -22,12 +18,8 @@ namespace Recipes.Services.Parsers
 				if (null != list)
 				{
 					this.Ingredients = this.GetIngredients(list);
-					if (this.Ingredients.Count > 0)
-						result = true;
 				}
 			}
-
-			return result;
 		}
 
 		HtmlNode GetIngredientsDiv()
@@ -59,7 +51,7 @@ namespace Recipes.Services.Parsers
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText);
+						result.Add(li.InnerText.Trim());
 					}
 				}
 			}
@@ -69,10 +61,8 @@ namespace Recipes.Services.Parsers
 		}
 
 
-		override protected bool GetProcedures()
+		override protected void GetProcedures()
 		{
-			var result = false;
-
 			var div = GetProceduresDiv();
 			if (null != div)
 			{
@@ -80,12 +70,8 @@ namespace Recipes.Services.Parsers
 				if (null != list)
 				{
 					this.Procedures = this.GetProcedures(list);
-					if (this.Procedures.Count > 0)
-						result = true;
 				}
 			}
-
-			return result;
 		}
 
 		HtmlNode GetProceduresDiv()
@@ -117,14 +103,17 @@ namespace Recipes.Services.Parsers
 
 			if (null != list)
 			{
-				//result = list.Descendants("li").Select(x => x.InnerText).ToList();
+				//result = list.Descendants("li").Select(x => x.InnerText.Trim()).ToList();
 
 				foreach (var li in list.ChildNodes)
 				{
-					if (li.NodeType == HtmlNodeType.Element)
+					var divs = li.Descendants(DIV);
+					var sb = new StringBuilder();
+					foreach (var div in divs)
 					{
-						result.Add(li.InnerText);
+						sb.AppendFormat("{0} ", div.InnerText.Trim());
 					}
+					result.Add(sb.ToString().Trim());
 				}
 			}
 
