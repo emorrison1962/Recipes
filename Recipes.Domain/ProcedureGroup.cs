@@ -8,6 +8,7 @@ namespace Recipes.Domain
 {
     public class ProcedureGroup
     {
+		public int ProcedureGroupId { get; set; }
 		public string Text { get; set; }
 		public HashSet<ProcedureGroupItem> Items { get; set; }
 

@@ -8,6 +8,7 @@ namespace Recipes.Domain
 {
     public class IngredientGroup
     {
+		public int IngredientGroupId { get; set; }
 		public string Text { get; set; }
 		public HashSet<IngredientGroupItem> Items { get; set; }
 

@@ -50,6 +50,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
+    <Compile Include="Migrations\201703070418163_030617.cs" />
+    <Compile Include="Migrations\201703070418163_030617.Designer.cs">
+      <DependentUpon>201703070418163_030617.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703070440225_030617_B.cs" />
+    <Compile Include="Migrations\201703070440225_030617_B.Designer.cs">
+      <DependentUpon>201703070440225_030617_B.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703070452108_030617_C.cs" />
+    <Compile Include="Migrations\201703070452108_030617_C.Designer.cs">
+      <DependentUpon>201703070452108_030617_C.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
@@ -71,6 +83,17 @@
       <Project>{E707E401-A2C3-4ED3-8A10-EB098F4F5911}</Project>
       <Name>Recipes.Domain</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703070418163_030617.resx">
+      <DependentUpon>201703070418163_030617.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703070440225_030617_B.resx">
+      <DependentUpon>201703070440225_030617_B.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703070452108_030617_C.resx">
+      <DependentUpon>201703070452108_030617_C.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

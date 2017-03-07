@@ -15,5 +15,16 @@ namespace Recipes.DAL.Repositories
 		{
 
 		}
+
+		public override Recipe GetById(int id)
+		{
+			var result = _dbSet
+				.Include("IngredientGroups.Items")
+				.Include("ProcedureGroups.Items")
+				.Where(r => r.RecipeId == id).FirstOrDefault();
+			//var result = _dbSet.Find(id);
+			return result;
+		}
+
 	}
 }

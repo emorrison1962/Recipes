@@ -6,18 +6,28 @@
 
 
 <div class="row-fluid" ng-controller='recipeViewController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
-
-	<h2>View</h2>
-
-	<div>
-		<h4>{{model.recipe.Name}}</h4>
-		<hr />
-		<dl class="dl-horizontal"></dl>
+	<h2>{{recipe.Name}}</h2>
+	<img src="{{recipe.ImageUri}}" style="max-width:400px; max-height:400px" />
+	
+	<div id="ingredients">
+		<h4>Ingredients:</h4>
+        <div ng-repeat="ingredientGroup in recipe.IngredientGroups">
+            <strong>{{ingredientGroup.Text}}</strong>
+            <ul >
+                <li ng-repeat="ingredientItem in ingredientGroup.Items">{{ingredientItem.Text}}</li>
+            </ul>
+        </div>
 	</div>
+
+	<div id="procedures">
+		<h4>Procedure:</h4>
+	</div>
+
 	<p>
 		@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
 		@Html.ActionLink("Back to List", "Index")
 	</p>
 </div>
+<h4>{{msg}}</h4>
 
 <script src="~/Scripts/Views/Recipe/View.js"></script>

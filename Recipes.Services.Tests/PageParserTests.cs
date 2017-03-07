@@ -11,7 +11,6 @@ namespace Recipes.Services.Tests
 	[TestClass()]
 	public class PageParserTests
 	{
-		[Ignore]
 		[TestMethod()]
 		public void ParseTest()
 		{
@@ -20,7 +19,6 @@ namespace Recipes.Services.Tests
 				"https://food52.com/recipes/34179-fried-goat-cheese-with-honey-and-black-pepper?utm_source=Facebook&utm_medium=SocialMarketing&utm_campaign=Social",
 				"http://eattender.com/recipes/patatas-bravas",
 				"http://allrecipes.com/recipe/222319/white-chocolate-and-raspberry-ice-cream/",
-				"http://altonbrown.com/serious-vanilla-ice-cream-recipe/",
 
 
 				//success
@@ -50,6 +48,7 @@ namespace Recipes.Services.Tests
 				//failure
 				//"https://www.chefsteps.com/activities/sous-vide-burgers",
 				//"https://www.chefsteps.com/activities/smashed-potatoes",
+				//"http://altonbrown.com/serious-vanilla-ice-cream-recipe/",
 			};
 
 			foreach (var s in list)
@@ -69,9 +68,10 @@ namespace Recipes.Services.Tests
 						Debug.WriteLine(string.Format("{0} is NOT valid.", host));
 					}
 				}
-				catch (Exception)
+				catch (Exception ex)
 				{
 					Debug.WriteLine(string.Format("{0} FAILED.", new UriBuilder(s).Host));
+					Debug.WriteLine(ex.ToString());
 				}
 			}
 

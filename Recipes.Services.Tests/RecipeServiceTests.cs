@@ -6,6 +6,7 @@ using Recipes.Domain;
 using Recipes.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,8 +81,17 @@ namespace Recipes.Services.Tests
 
             foreach (var url in list)
             {
-                var recipe = new Recipe() { Uri = url };
-                svc.Insert(recipe);
+				try
+				{
+					var recipe = new Recipe() { Uri = url };
+					svc.Insert(recipe);
+					new object();
+				}
+				catch (Exception ex)
+				{
+					Debug.WriteLine(url);
+					new object();
+				}
             }
 
         }

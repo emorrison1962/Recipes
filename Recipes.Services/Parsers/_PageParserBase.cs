@@ -37,12 +37,8 @@ namespace Recipes.Services
         protected string SourceUrl { get; set; }
         protected string ImageUrl { get; set; }
         protected Image Image { get; set; }
-        List<IngredientGroup> Ingredients { get; }
-        List<ProcedureGroup> Procedures { get; }
-
 		protected List<IngredientGroup> IngredientGroups { get; set; }
 		protected List<ProcedureGroup> ProcedureGroups { get; set; }
-
 		protected HtmlDocument HtmlDocument { get; set; }
 
         #endregion
@@ -79,7 +75,7 @@ namespace Recipes.Services
             {
                 success = false;
                 this.GetIngredients();
-                if (0 < this.Ingredients.Count)
+                if (0 < this.IngredientGroups.Count)
                 {
                     success = true;
                 }
@@ -89,7 +85,7 @@ namespace Recipes.Services
             {
                 success = false;
                 this.GetProcedures();
-                if (0 < this.Procedures.Count)
+                if (0 < this.ProcedureGroups.Count)
                 {
                     success = true;
                 }
@@ -99,8 +95,8 @@ namespace Recipes.Services
             result = new Recipe()
             {
                 Name = this.Title,
-                IngredientGroups = this.Ingredients,
-                ProcedureGroups = this.Procedures,
+                IngredientGroups = this.IngredientGroups,
+                ProcedureGroups = this.ProcedureGroups,
                 Uri = url,
                 ImageUri = this.ImageUrl,
                 Source = new UriBuilder().Host
