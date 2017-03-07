@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Diagnostics;
 using System.Linq;
 
@@ -32,10 +33,10 @@ namespace Recipes.Services
 				Debug.Assert(2 == spans.Count());
 				if (2 != spans.Count())
 					throw new PageParsingException("Unexpectedhtml html schema");
-				var span0Txt = spans[0].InnerText.Trim();
-				var span1Txt = spans[1].InnerText.Trim();
+				var span0Txt = spans[0].InnerText.FromHtml();
+				var span1Txt = spans[1].InnerText.FromHtml();
 				var ingredient = string.Format("{0} {1}", span0Txt, span1Txt);
-				this.Ingredients.Add(ingredient);
+				this.Add(ingredient);
 			}
 		}
 
@@ -54,8 +55,8 @@ namespace Recipes.Services
 			var lis = parent.Descendants(LI);
 			foreach (var li in lis)
 			{
-				var procedure = li.InnerText.Trim();
-				this.Procedures.Add(procedure);
+				var procedure = li.InnerText.FromHtml();
+				this.Add(new ProcedureGroupItem(procedure));
 			}
 		}
 	}

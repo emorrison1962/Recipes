@@ -1,12 +1,9 @@
 ﻿using Recipes.Contracts.Repositories;
 using Recipes.Contracts.Services;
-using Recipes.DAL.Repositories;
 using Recipes.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.Services
 {
@@ -21,7 +18,8 @@ namespace Recipes.Services
 
 		public IEnumerable<Recipe> GetAll()
 		{
-			var result = this.Repository.GetAll();
+			var result = this.Repository.GetAll().ToList();
+			result.Sort();
 			return result;
 		}
 
@@ -46,7 +44,7 @@ namespace Recipes.Services
 			Recipe result = null;
 			var parser = PageParserFactory.Create(url);
 
-            result = parser.TryParse(url);
+			result = parser.TryParse(url);
 			return result;
 		}
 
@@ -56,7 +54,17 @@ namespace Recipes.Services
 		}
 		public void Delete(int id)
 		{
-			this.Repository.Delete(id);
+			try
+			{
+				this.Repository.Delete(id);
+				this.Repository.Commit();
+			}
+#pragma warning disable 168
+			catch (Exception ex)
+			{
+				throw;
+			}
+#pragma warning restore 168
 		}
 
 		public Recipe GetById(int id)
@@ -80,13 +88,13 @@ namespace Recipes.Services
 
 			}
 #pragma warning disable 168
-            catch (Exception ex)
-            {
-                throw;
+			catch (Exception ex)
+			{
+				throw;
 			}
 #pragma warning restore 168
 
-            return this.Repository.GetById(entity.RecipeId);
+			return this.Repository.GetById(entity.RecipeId);
 		}
 
 

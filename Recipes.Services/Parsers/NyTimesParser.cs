@@ -1,12 +1,32 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace Recipes.Services
 {
     internal class NyTimesParser : PageParserBase
     {
-        protected override void GetIngredients()
+		override protected bool GetTitle()
+		{
+			bool result = false;
+
+			var div = base.GetNode(this.HtmlDocument.DocumentNode, DIV, "title-container");
+			
+			var titleNode = this.GetNode(div, "h1", "recipe-title");
+			if (null != titleNode)
+			{
+				this.Title = WebUtility.HtmlDecode(titleNode.InnerText.FromHtml());
+				this.Title = this.Title.Trim();
+				result = true;
+			}
+
+			return result;
+
+		}
+
+		protected override void GetIngredients()
         {
             var node = base.GetNode("section", "recipe-ingredients-wrap")
                 .Descendants(UL).ByClass("recipe-ingredients").First();
@@ -31,10 +51,10 @@ namespace Recipes.Services
                 var spans = li.Descendants(SPAN);
                 foreach (var span in spans)
                 {
-                    sb.AppendFormat("{0} ", span.InnerText.Trim());
+                    sb.AppendFormat("{0} ", span.InnerText.FromHtml());
                 }
                 var ingredient = sb.ToString().Trim();
-                this.Ingredients.Add(ingredient);
+                this.Add(ingredient);
             }
         }
 
@@ -52,8 +72,8 @@ namespace Recipes.Services
             var lis = parent.Descendants(LI);
             foreach (var li in lis)
             {
-                var procedure = li.InnerText.Trim();
-                this.Procedures.Add(procedure);
+                var procedure = li.InnerText.FromHtml();
+                this.Add(new ProcedureGroupItem(procedure));
             }
         }
     }

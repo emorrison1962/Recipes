@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Recipes.Services.Parsers
 	{
 		protected override void GetIngredients()
 		{
-			var h3 = this.HtmlDocument.DocumentNode.Descendants("h3").Where(x => x.InnerText.Trim().ToLower() == "ingredients").First();
+			var h3 = this.HtmlDocument.DocumentNode.Descendants("h3").Where(x => x.InnerText.FromHtml().ToLower() == "ingredients").First();
 			var div = h3.ParentNode;
 			if (null != div)
 			{
@@ -25,8 +26,8 @@ namespace Recipes.Services.Parsers
 				//Debug.WriteLine(child.Name);
 				if (child.Name == "h4")
 				{
-					var ingredient = child.InnerText.Trim();
-					this.Ingredients.Add(ingredient);
+					var ingredient = child.InnerText.FromHtml();
+					this.Add(new IngredientGroup(ingredient));
 				}
 
 				else if (child.Name == "ul")
@@ -34,8 +35,8 @@ namespace Recipes.Services.Parsers
 					var lis = child.Descendants(LI);
 					foreach (var li in lis)
 					{
-						var ingredient = li.InnerText.Trim();
-						this.Ingredients.Add(ingredient);
+						var ingredient = li.InnerText.FromHtml();
+						this.Add(ingredient);
 					}
 				}
 			}
@@ -61,8 +62,8 @@ namespace Recipes.Services.Parsers
 				//Debug.WriteLine(child.Name);
 				if (child.Name == "h4")
 				{
-					var procedure = child.InnerText.Trim();
-					this.Procedures.Add(procedure);
+					var procedure = child.InnerText.FromHtml();
+					this.Add(new ProcedureGroup(procedure));
 				}
 
 				else if (child.Name == "ol")
@@ -70,13 +71,13 @@ namespace Recipes.Services.Parsers
 					var lis = child.Descendants(LI);
 					foreach (var li in lis)
 					{
-						var procedure = li.InnerText.Trim();
-						this.Procedures.Add(procedure);
+						var procedure = li.InnerText.FromHtml();
+						this.Add(new ProcedureGroupItem(procedure));
 					}
 				}
 			}
 
-			Debug.Assert(this.Procedures.Count > 0);
+			Debug.Assert(this.ProcedureGroups.Count > 0);
 		}
 	}//class
 }//ns

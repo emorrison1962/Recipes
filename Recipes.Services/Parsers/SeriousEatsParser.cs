@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,10 +15,11 @@ namespace Recipes.Services.Parsers
 			var div = GetIngredientsDiv();
 			if (null != div)
 			{
-				var list = this.GetIngredientsList(div);
-				if (null != list)
+				var node = this.GetIngredientsList(div);
+				if (null != node)
 				{
-					this.Ingredients = this.GetIngredients(list);
+					var ingredients = this.GetIngredients(node);
+					ingredients.ForEach(x => this.Add(x));
 				}
 			}
 		}
@@ -51,7 +53,7 @@ namespace Recipes.Services.Parsers
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText.Trim());
+						result.Add(li.InnerText.FromHtml());
 					}
 				}
 			}
@@ -66,10 +68,11 @@ namespace Recipes.Services.Parsers
 			var div = GetProceduresDiv();
 			if (null != div)
 			{
-				var list = this.GetProceduresList(div);
-				if (null != list)
+				var node = this.GetProceduresList(div);
+				if (null != node)
 				{
-					this.Procedures = this.GetProcedures(list);
+					var procedures = this.GetProcedures(node);
+					procedures.ForEach(x => this.Add(new ProcedureGroupItem(x)));
 				}
 			}
 		}
@@ -103,17 +106,21 @@ namespace Recipes.Services.Parsers
 
 			if (null != list)
 			{
-				//result = list.Descendants("li").Select(x => x.InnerText.Trim()).ToList();
+                //result = list.Descendants("li").Select(x => x.InnerText.FromHtml()).ToList();
 
-				foreach (var li in list.ChildNodes)
+                foreach (var li in list.ChildNodes)
 				{
 					var divs = li.Descendants(DIV);
 					var sb = new StringBuilder();
 					foreach (var div in divs)
 					{
-						sb.AppendFormat("{0} ", div.InnerText.Trim());
+						var s = div.InnerText.FromHtml().Trim();
+						if (!string.IsNullOrEmpty(s))
+							sb.AppendFormat("{0} ", s);
 					}
-					result.Add(sb.ToString().Trim());
+					var sbStr = sb.ToString().Trim();
+					if (!string.IsNullOrEmpty(sbStr))
+						result.Add(sbStr);
 				}
 			}
 

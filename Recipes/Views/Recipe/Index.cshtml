@@ -1,101 +1,103 @@
 ﻿@model IEnumerable<Recipes.Domain.Recipe>
 
 @{
-    ViewBag.Title = "Index";
+	ViewBag.Title = "Index";
 }
 
 
 <style>
-    img {
-        display: block;
-        margin: 0 auto;
-    }
+	img {
+		display: block;
+		margin: 0 auto;
+	}
 </style>
 
 
 <div class="row-fluid" ng-controller='indexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
 
 
-    <div class="sidebar col-md-2">
-        <!--Sidebar content-->
-        <h2>Sidebar content</h2>
-    </div>
+	<div class="sidebar col-md-2">
+		<!--Sidebar content-->
+		<h2>Sidebar content</h2>
+	</div>
 
-    <div class="main col-md-offset-2 col-md-10">
-        <form ng-submit="insert()" class="form-horizontal" role="form">
-            <div class="form-group ">
-                <div class="controls">
-                    <div class="input-group">
+	<div class="main col-md-offset-2 col-md-10">
+		<form ng-submit="insert()" class="form-horizontal" role="form">
+			<div class="form-group ">
+				<div class="controls">
+					<div class="input-group">
 
-                        <span class="input-group-addon">Add</span>
-                        <input type="text" class="form-control" placeholder="http://..." ng-model=newRecipe>
-                    </div>
-                </div>
-            </div>
-        </form>
+						<span class="input-group-addon">Add</span>
+						<input type="text" class="form-control" placeholder="http://..." ng-model=newRecipe>
+					</div>
+				</div>
+			</div>
+		</form>
 
-        <div>
+		<div>
 
-            <table class="table">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ImageUri)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Source)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.EthnicityId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Rating)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Time)
-                    </th>
-                    <th>
-                        Action
-                    </th>
-                </tr>
+			<table class="table">
+				<tr>
+					<th>
+						@Html.DisplayNameFor(model => model.ImageUri)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Name) 
+						<input type="text" name="fname" ng-model="filter" ng-change="filterChanged()">
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Source)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.EthnicityId)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Rating)
+					</th>
+					<th>
+						@Html.DisplayNameFor(model => model.Time)
+					</th>
+					<th>
+						Action
+					</th>
+				</tr>
 
-                <tr ng-repeat="recipe in recipes">
-                    <td>
-                        <a href="{{recipe.ImageUri}}">
-                            <img src="{{recipe.ImageUri}}" style="max-width:200px; max-height:200px" />
-                        </a>
-                    </td>
-                    <td>
-                        <p>
-                            <a href="{{recipe.Uri}}" target="_blank">
-                                <h4>{{recipe.Name}}</h4>
-                            </a>
-                        </p>
-                    </td>
-                    <td>
-                        {{recipe.Source}}
-                    </td>
-                    <td>
-                        {{recipe.EthnicityId}}
-                    </td>
-                    <td>
-                        {{recipe.Rating}}
-                    </td>
-                    <td>
-                        {{recipe.Time}}
-                    </td>
-                    <td>
-                        <a ng-href="@Url.Action("Update", "Recipe")?recipeId={{recipe.RecipeId}}">Edit</a>
-                    </td>
-                </tr>
+				<tr ng-repeat="recipe in visibleRecipes">
+					<td>
+						<a ng-href="@Url.Action("View", "Recipe")?recipeId={{recipe.RecipeId}}">
+							<img src="{{recipe.ImageUri}}" style="max-width:200px; max-height:200px" />
+						</a>
+					</td>
+					<td>
+						<p>
+							<a ng-href="@Url.Action("View", "Recipe")?recipeId={{recipe.RecipeId}}">
+								<h4>{{recipe.Name}}</h4>
+							</a>
+						</p>
+					</td>
+					<td>
+						<a class="glyphicon glyphicon-globe" aria-hidden="true" href="{{recipe.Uri}}" target="_blank"/>
+					</td>
+					<td>
+						{{recipe.EthnicityId}}
+					</td>
+					<td>
+						{{recipe.Rating}}
+					</td>
+					<td>
+						{{recipe.Time}}
+					</td>
+					<td>
+						<a class="glyphicon glyphicon-pencil" aria-hidden="true" ng-href="@Url.Action("Update", "Recipe")?recipeId={{recipe.RecipeId}}"/>&nbsp;
+						<a class="glyphicon glyphicon-trash" aria-hidden="true" ng-href="@Url.Action("Delete", "Recipe")?recipeId={{recipe.RecipeId}}"/>
+					</td>
+				</tr>
 
-            </table>
+			</table>
 
-        </div>
+		</div>
 
-    </div>
+	</div>
 
 </div>
 

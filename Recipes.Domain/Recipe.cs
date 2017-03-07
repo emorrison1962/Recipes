@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.Domain
 {
 	[Serializable]
-	public class Recipe
+	public class Recipe : IComparable<Recipe>
 	{
 		static int _nextInstanceID = 0;
 		int _instanceID;
@@ -18,6 +14,22 @@ namespace Recipes.Domain
 		public string Uri { get; set; }
 		public string Source { get; set; }
 		public List<Tag> Tags { get; set; }
+
+		public List<IngredientGroup> IngredientGroups { get; set; }
+		public List<ProcedureGroup> ProcedureGroups { get; set; }
+
+		public List<string> GetIngredientStrings()
+		{
+			var result = new List<string>();
+			result = this.GetText<IngredientGroupItem>((dynamic)this.IngredientGroups);
+			return result;
+		} 
+		public List<string> GetProcedureStrings()
+		{
+			var result = new List<string>();
+			result = this.GetText<ProcedureGroupItem>((dynamic)this.ProcedureGroups);
+			return result;
+		}
 
 		//[JsonIgnore]
 		public int? EthnicityId { get; set; }
@@ -58,32 +70,53 @@ namespace Recipes.Domain
 			this.Init();
 		}
 
-        public List<string> Ingredients { get; set; }
-        public List<string> Procedure { get; set; }
+		public int CompareTo(Recipe other)
+		{
+			var result = this.Name.CompareTo(other.Name);
+			return result;
+		}
 
-        public bool IsValid
-        {
-            get
-            {
-                var result = false;
+		public bool IsValid
+		{
+			get
+			{
+				var result = false;
 
-                result = (null != Ingredients && Ingredients.Count > 0);
+#warning **** FIXME ****
+				//result = (null != Ingredients && Ingredients.Groups.Select(x => x.Items).Count() > 0);
 
-                if (result)
-                    result = (null != Procedure && Procedure.Count > 0);
+				//if (result)
+				//    result = (null != Procedure && Procedure.Groups.Select(x => x.Items).Count() > 0);
 
-                if (result)
-                    result = !string.IsNullOrEmpty(Name);
+				if (result)
+					result = !string.IsNullOrEmpty(Name);
 
-                if (result)
-                    result = !string.IsNullOrEmpty(ImageUri);
+				if (result)
+					result = !string.IsNullOrEmpty(ImageUri);
 
-                if (result)
-                    result = !string.IsNullOrEmpty(Source);
+				if (result)
+					result = !string.IsNullOrEmpty(Source);
 
 
-                return result;
-            }
-        }
-    }
-}
+				return result;
+			}
+		}
+		List<string> GetText<T>(List<GroupBase<T>> groups) where T: GroupItemBase
+		{
+			var result = new List<string>();
+			foreach (var g in groups)
+			{
+				if (!string.IsNullOrEmpty(g.Text))
+					result.Add(g.Text);
+				foreach (var i in g.Items)
+				{
+					if (!string.IsNullOrEmpty(i.Text))
+						result.Add(i.Text);
+				}
+			}
+
+			return result;
+		}
+
+	}//class
+}//ns

@@ -1,0 +1,23 @@
+﻿@model Recipes.Models.RecipeVMBase
+
+@{
+    ViewBag.Title = "View";
+}
+
+
+<div class="row-fluid" ng-controller='recipeViewController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+
+	<h2>View</h2>
+
+	<div>
+		<h4>{{model.recipe.Name}}</h4>
+		<hr />
+		<dl class="dl-horizontal"></dl>
+	</div>
+	<p>
+		@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+		@Html.ActionLink("Back to List", "Index")
+	</p>
+</div>
+
+<script src="~/Scripts/Views/Recipe/View.js"></script>

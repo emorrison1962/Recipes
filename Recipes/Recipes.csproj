@@ -200,7 +200,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <!--    <Compile Include="Models\IdentityModels.cs" />-->
-    <Compile Include="Models\EditRecipeVM.cs" />
+    <Compile Include="Models\RecipeVMBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -252,6 +252,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Views\Recipe\EditRecipe.js" />
+    <Content Include="Scripts\Views\Recipe\View.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\Views\Recipe\Index.js" />
     <Content Include="Web.config" />
@@ -272,6 +273,7 @@
     <Content Include="Views\Recipe\Update.cshtml" />
     <Content Include="Scripts\jquery-3.1.0.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.0.min.map" />
+    <Content Include="Views\Recipe\View.cshtml" />
     <!--    <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />

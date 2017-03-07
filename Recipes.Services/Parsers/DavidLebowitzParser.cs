@@ -1,4 +1,6 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
+using System;
 using System.Linq;
 
 namespace Recipes.Services
@@ -7,7 +9,7 @@ namespace Recipes.Services
 	{
 		protected override void GetIngredients()
 		{
-			var div = this.HtmlDocument.DocumentNode.Descendants("blockquote").First();
+			var div = base.GetNode(DIV, "wpurp-recipe-ingredient");
 			if (null != div)
 			{
 				this.GetIngredients(div);
@@ -16,17 +18,32 @@ namespace Recipes.Services
 
 		void GetIngredients(HtmlNode div)
 		{
-			var lis = div.Descendants(LI);
-			foreach (var li in lis)
+			var spans = div.Descendants(SPAN).ToList();
+			var count = spans.Count();
+			if (count % 3 != 0)
+				throw new Exception("Unexpected Html Schema.");
+			 
+			for (int i = 0; i < count; i+= 3)
 			{
-				var ingredient = li.InnerText.Trim();
-				this.Ingredients.Add(ingredient);
+				var span1 = spans[i];
+				var span2 = spans[i+1];
+				var span3 = spans[i+2];
+
+				var s1 = span1.InnerText.FromHtml().Trim();
+				var s2 = span2.InnerText.FromHtml().Trim();
+				var s3 = span3.InnerText.FromHtml().Trim();
+
+
+
+				var ingredient = string.Format("{0} {1} {2}", s1, s2, s3);
+				if (!string.IsNullOrEmpty(ingredient))
+					this.Add(ingredient);
 			}
 		}
 
 		protected override void GetProcedures()
 		{
-			var div = this.HtmlDocument.DocumentNode.Descendants("blockquote").First();
+			var div = base.GetNode(DIV, "wpurp-recipe-instruction"); 
 			if (null != div)
 			{
 				this.GetDirections(div);
@@ -35,11 +52,12 @@ namespace Recipes.Services
 
 		private void GetDirections(HtmlNode div)
 		{
-			var ps = div.Descendants(P);
-			foreach (var p in ps)
+			var spans = div.Descendants(SPAN);
+			foreach (var span in spans)
 			{
-				var procedure = p.InnerText.Trim();
-				this.Procedures.Add(procedure);
+				var procedure = span.InnerText.FromHtml().Trim();
+				if (!string.IsNullOrEmpty(procedure))
+					this.Add(new ProcedureGroupItem(procedure));
 			}
 		}
 	}

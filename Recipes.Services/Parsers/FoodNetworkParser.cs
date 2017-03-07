@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Diagnostics;
 using System.Linq;
 
@@ -6,18 +7,9 @@ namespace Recipes.Services.Parsers
 {
 	class FoodNetworkParser : PageParserBase
 	{
-		protected HtmlNode GetIngredientsNode(string className)
-		{
-			var sections = this.HtmlDocument.DocumentNode.Descendants(SECTION);
-			var section = sections.ByClass("ingredients-instructions").First();
-			var result = section.Descendants(DIV).ByClass("ingredients").First();
-
-			Debug.Assert(null != result);
-			return result;
-		}
 		protected override void GetIngredients()
 		{
-			var div = base.GetNode(DIV, "col8 ingredients");
+			var div = base.GetNode(DIV, "o-Ingredients__m-Body");
 			if (null != div)
 			{
 				this.GetIngredients(div);
@@ -29,14 +21,15 @@ namespace Recipes.Services.Parsers
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
 			{
-				var ingredient = li.InnerText.Trim();
-				this.Ingredients.Add(ingredient);
+				var ingredient = li.InnerText.FromHtml().Trim();
+				if (!string.IsNullOrEmpty(ingredient))
+					this.Add(ingredient);
 			}
 		}
 
 		protected override void GetProcedures()
 		{
-			var div = base.GetNode(DIV, "col10 directions");
+			var div = base.GetNode(DIV, "o-Method__m-Body");
 			if (null != div)
 			{
 				this.GetDirections(div);
@@ -45,15 +38,12 @@ namespace Recipes.Services.Parsers
 
 		private void GetDirections(HtmlNode div)
 		{
-			var lis = div.Descendants(LI);
-			foreach (var li in lis)
+			var ps = div.Descendants("p");
+			foreach (var p in ps)
 			{
-				var ps = li.Descendants("p");
-				foreach (var p in ps)
-				{
-					var procedure = p.InnerText.Trim();
-					this.Procedures.Add(procedure);
-				}
+				var procedure = p.InnerText.FromHtml().Trim();
+				if (!string.IsNullOrEmpty(procedure))
+					this.Add(new ProcedureGroup(procedure));
 			}
 		}
 	}

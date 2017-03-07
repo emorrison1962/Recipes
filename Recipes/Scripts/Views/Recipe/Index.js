@@ -5,13 +5,14 @@ var indexController = myApp.controller("indexController", ['$scope', '$window', 
     $scope.isBusy = true;
 
     $scope.recipes = [];
+    $scope.visibleRecipes = [];
     $scope.newRecipe = '';
-
-    $log.error('Testing....');
+    $scope.filter = '';
 
 
     $scope.init = function (model) {
-        $scope.recipes = model;
+    	$scope.recipes = model;
+    	$scope.visibleRecipes = model;
         $log.debug($scope.recipes);
     }
 
@@ -36,6 +37,28 @@ var indexController = myApp.controller("indexController", ['$scope', '$window', 
             $scope.status = response.status;
         });
     }
+
+    $scope.filterChanged = function (model) {
+    	$log.info('+filterChanged');
+    	$scope.visibleRecipes = $scope.recipes.filter($scope.filterFunc);
+    	$log.info('-filterChanged');
+    }
+
+    	
+    $scope.filterFunc = function (recipe, index, arr) {
+    	$log.info('+filterFunc');
+
+    	var result = false;
+    	if (-1 < recipe.Name.toLowerCase().search($scope.filter.toLowerCase()))
+    		result = true;
+
+    	$log.info('-filterFunc');
+    	return result;
+    }
+
+
+
+
 
 }]);
 

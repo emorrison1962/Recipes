@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 
 namespace Recipes.Services
 {
@@ -26,8 +27,8 @@ namespace Recipes.Services
 			var ps = div.Descendants(P);
 			foreach (var p in ps)
 			{
-				var procedure = p.InnerText.Trim();
-				this.Procedures.Add(procedure);
+				var procedure = p.InnerText.FromHtml();
+				this.Add(new ProcedureGroupItem(procedure));
 			}
 		}
 	}

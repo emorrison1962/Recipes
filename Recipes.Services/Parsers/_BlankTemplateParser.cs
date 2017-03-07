@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,8 +25,8 @@ namespace Recipes.Services.Parsers
 			var nodes = parent.Descendants(LI);
 			foreach (var node in nodes)
 			{
-				var ingredient = node.InnerText.Trim();
-				this.Ingredients.Add(ingredient);
+				var ingredient = node.InnerText.FromHtml();
+				this.Add(ingredient);
 			}
 		}
 
@@ -46,8 +47,8 @@ namespace Recipes.Services.Parsers
 			var nodes = parent.Descendants(LI);
 			foreach (var node in nodes)
 			{
-				var procedure = node.InnerText.Trim();
-				this.Procedures.Add(procedure);
+				var procedure = node.InnerText.FromHtml();
+				this.Add(new ProcedureGroupItem(procedure));
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,8 +17,9 @@ namespace Recipes.Services.Parsers
 				{
 					foreach (var ingredientGroup in ingredientGroups)
 					{
+						this.Add(new IngredientGroup());
 						var ingredients = this.GetIngredients(ingredientGroup);
-						this.Ingredients.AddRange(ingredients);
+						ingredients.ForEach(x => this.Add(x));
 					}
 				}
 			}
@@ -48,13 +50,13 @@ namespace Recipes.Services.Parsers
 			if (null != ingredientGroup)
 			{
 				var strong = ingredientGroup.Descendants("strong").First();
-				result.Add(strong.InnerText.Trim());
+				result.Add(strong.InnerText.FromHtml());
 
 				foreach (var li in ingredientGroup.Descendants(LI))
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText.Trim());
+						result.Add(li.InnerText.FromHtml());
 					}
 				}
 			}
@@ -73,8 +75,9 @@ namespace Recipes.Services.Parsers
 				{
 					foreach (var preparationGroup in preparationGroups)
 					{
+						this.Add(new ProcedureGroup());
 						var preparation = this.GetProcedures(preparationGroup);
-						this.Procedures.AddRange(preparation);
+						preparation.ForEach(x => this.Add(new ProcedureGroupItem(x)));
 					}
 				}
 			}
@@ -101,13 +104,13 @@ namespace Recipes.Services.Parsers
 			if (null != preparationGroup)
 			{
 				var strong = preparationGroup.Descendants("strong").First();
-				result.Add(strong.InnerText.Trim());
+				result.Add(strong.InnerText.FromHtml());
 
 				foreach (var li in preparationGroup.Descendants(LI))
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText.Trim());
+						result.Add(li.InnerText.FromHtml());
 					}
 				}
 			}

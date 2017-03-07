@@ -1,13 +1,7 @@
 ﻿using Recipes.Contracts.Repositories;
-using Recipes.DAL.Data;
-using Recipes.DAL.Repositories;
 using Recipes.Domain;
 using Recipes.Models;
 using Recipes.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Recipes.Controllers
@@ -33,32 +27,51 @@ namespace Recipes.Controllers
 
 		public JsonResult Insert(string url)
 		{
-			var recipe = this.RecipeService.Insert(new Recipe() { Uri = url});
+			var recipe = this.RecipeService.Insert(new Recipe() { Uri = url });
 
 			var result = Json(recipe, JsonRequestBehavior.AllowGet);
 			return result;
 		}
 
-        [HttpGet]
-        public ActionResult Update(int recipeId)
+		[HttpGet]
+		public ActionResult View(int recipeId)
 		{
-            var recipe = this.RecipeService.GetById(recipeId);
+			var recipe = this.RecipeService.GetById(recipeId);
 			var tags = this.TagService.GetAll();
-			var vm = new EditRecipeVM(recipe, tags);
+			var vm = new RecipeVMBase(recipe, tags);
 
 			var result = View(vm);
 			return result;
 		}
 
-        [HttpPost]
-        public ActionResult UpdateRecipe(Recipe recipe)
+		[HttpGet]
+		public ActionResult Update(int recipeId)
 		{
-            this.RecipeService.Update(recipe);
+			var recipe = this.RecipeService.GetById(recipeId);
+			var tags = this.TagService.GetAll();
+			var vm = new RecipeVMBase(recipe, tags);
 
-            //var result = Json(recipe, JsonRequestBehavior.AllowGet);
-            //return result;
-            return this.RedirectToAction("Index");
-        }
+			var result = View(vm);
+			return result;
+		}
 
-    }
+		[HttpGet]
+		public ActionResult Delete(int recipeId)
+		{
+			var recipe = this.RecipeService.GetById(recipeId);
+			this.RecipeService.Delete(recipeId);
+			return this.RedirectToAction("Index");
+		}
+
+		[HttpPost]
+		public ActionResult UpdateRecipe(Recipe recipe)
+		{
+			this.RecipeService.Update(recipe);
+
+			//var result = Json(recipe, JsonRequestBehavior.AllowGet);
+			//return result;
+			return this.RedirectToAction("Index");
+		}
+
+	}
 }

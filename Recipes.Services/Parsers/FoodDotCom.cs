@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -33,9 +34,9 @@ namespace Recipes.Services.Parsers
 				var divs = node.Descendants(DIV);
 				if (0 == divs.Count())
 				{
-					var ingredient = node.InnerText;
-					ingredient = WebUtility.HtmlDecode(ingredient).Replace("  ", " ").Trim();
-					this.Ingredients.Add(ingredient);
+					var ingredient = node.InnerText.FromHtml();
+					ingredient = ingredient.Replace("  ", " ").Trim();
+					this.Add(ingredient);
 				}
 			}
 		}
@@ -57,12 +58,12 @@ namespace Recipes.Services.Parsers
 				var divs = li.Descendants(DIV);
 				if (0 == divs.Count())
 				{
-					var procedure = li.InnerText.Trim();
-					this.Procedures.Add(procedure);
+					var procedure = li.InnerText.FromHtml();
+					this.Add(new ProcedureGroupItem(procedure));
 				}
 			}
 
-			Debug.Assert(this.Procedures.Count > 0);
+			Debug.Assert(this.ProcedureGroups.Count > 0);
 		}
 	}
 }

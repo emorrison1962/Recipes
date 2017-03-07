@@ -66,6 +66,10 @@
     <Compile Include="TagServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\KitchenPC\KitchenPC\Core\Core.csproj">
+      <Project>{51CD9FFD-2615-4E55-90D5-C18B1BF7FE07}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Recipes.Contracts\Recipes.Contracts.csproj">
       <Project>{8EC87091-238E-481A-934A-715C5D068EC6}</Project>
       <Name>Recipes.Contracts</Name>

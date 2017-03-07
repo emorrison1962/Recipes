@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
 
 namespace Recipes.Services
 {
@@ -18,8 +19,9 @@ namespace Recipes.Services
 			var nodes = parent.Descendants(P);
 			foreach (var node in nodes)
 			{
-				var ingredient = node.InnerText.Trim();
-				this.Ingredients.Add(ingredient);
+				var ingredient = node.InnerText.FromHtml().Trim();
+				if (!string.IsNullOrEmpty(ingredient))
+					this.Add(ingredient);
 			}
 		}
 
@@ -37,8 +39,8 @@ namespace Recipes.Services
 			var nodes = parent.Descendants(P);
 			foreach (var node in nodes)
 			{
-				var procedure = node.InnerText.Trim();
-				this.Procedures.Add(procedure);
+				var procedure = node.InnerText.FromHtml();
+				this.Add(new ProcedureGroupItem(procedure));
 			}
 		}
 	}

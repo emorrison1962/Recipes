@@ -1,4 +1,7 @@
 ﻿using HtmlAgilityPack;
+using Recipes.Domain;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Recipes.Services.Parsers
 {
@@ -6,20 +9,30 @@ namespace Recipes.Services.Parsers
 	{
 		protected override void GetIngredients()
 		{
-			var div = base.GetNode(DIV, "recipe-detail");
-			if (null != div)
+			var containers = new List<HtmlNode>();
+			var c1 = base.GetNode(UL, "list-ingredients-1");
+			var c2 = base.GetNode(UL, "list-ingredients-2");
+			containers.Add(c1);
+			containers.Add(c2);
+			
+			if (null != containers)
 			{
-				this.GetIngredients(div);
+				this.GetIngredients(containers);
 			}
 		}
 
-		void GetIngredients(HtmlNode div)
+		void GetIngredients(List<HtmlNode> containers)
 		{
-			var lis = div.Descendants(LI);
-			foreach (var li in lis)
+			foreach (var container in containers)
 			{
-				var ingredient = li.InnerText.Trim();
-				this.Ingredients.Add(ingredient);
+				var spans = base.GetNodes(container, SPAN, "recipe-ingred_txt");
+
+				foreach (var span in spans)
+				{
+					var ingredient = span.InnerText.FromHtml().Trim();
+					if (!string.IsNullOrEmpty(ingredient))
+						this.Add(new IngredientGroupItem(ingredient));
+				}
 			}
 		}
 
@@ -37,8 +50,13 @@ namespace Recipes.Services.Parsers
 			var lis = div.Descendants(LI);
 			foreach (var li in lis)
 			{
-				var procedure = li.InnerText.Trim();
-				this.Procedures.Add(procedure);
+				var span = base.GetNode(li, SPAN, "recipe-directions__list--item");
+				if (null != span)
+				{
+					var procedure = span.InnerText.FromHtml().Trim();
+					if (!string.IsNullOrEmpty(procedure))
+						this.Add(new ProcedureGroupItem(procedure));
+				}
 			}
 		}
 	}
