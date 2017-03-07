@@ -21,6 +21,13 @@
 
 	<div id="procedures">
 		<h4>Procedure:</h4>
+		<div ng-repeat="procedureGroup in recipe.ProcedureGroups">
+			<strong>{{procedureGroup.Text}}</strong>
+			<ul>
+				<li><label for="first_radio_btn">First</label> <input type="radio" id="first_radio_btn" name="choice" value="" /></li>
+<li ng-repeat="procedureItem in procedureGroup.Items">{{procedureItem.Text}}</li>
+			</ul>
+		</div>
 	</div>
 
 	<p>
