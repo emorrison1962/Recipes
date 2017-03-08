@@ -37,9 +37,9 @@ namespace Recipes.Services
         protected string SourceUrl { get; set; }
         protected string ImageUrl { get; set; }
         protected Image Image { get; set; }
-		protected List<IngredientGroup> IngredientGroups { get; set; }
-		protected List<ProcedureGroup> ProcedureGroups { get; set; }
-		protected HtmlDocument HtmlDocument { get; set; }
+        protected List<IngredientGroup> IngredientGroups { get; set; }
+        protected List<ProcedureGroup> ProcedureGroups { get; set; }
+        protected HtmlDocument HtmlDocument { get; set; }
 
         #endregion
 
@@ -116,19 +116,19 @@ namespace Recipes.Services
                 };
 
                 using (var cli = new HttpClient(handler))
-				{
-					cli.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/json");
-					cli.Timeout = TimeSpan.FromSeconds(60);
+                {
+                    cli.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/json");
+                    cli.Timeout = TimeSpan.FromSeconds(60);
                     using (var response = cli.GetAsync(url).Result)
                     {
-						if (response.IsSuccessStatusCode)
-						{
-							result = response.Content.ReadAsStringAsync().Result;
-						}
-						else
-						{
-							throw new Exception("Error Getting Url.");
-						}
+                        if (response.IsSuccessStatusCode)
+                        {
+                            result = response.Content.ReadAsStringAsync().Result;
+                        }
+                        else
+                        {
+                            throw new Exception("Error Getting Url.");
+                        }
                     }
                 }
             }
@@ -174,9 +174,9 @@ namespace Recipes.Services
         }
 
         abstract protected void GetIngredients();
-		abstract protected void GetProcedures();
+        abstract protected void GetProcedures();
 
-		virtual protected HtmlNode GetNode(string nodeType, string className)
+        virtual protected HtmlNode GetNode(string nodeType, string className)
         {
             var nodes = this.HtmlDocument.DocumentNode.Descendants(nodeType);
             var result = nodes.ByClass(className).FirstOrDefault();
@@ -184,29 +184,29 @@ namespace Recipes.Services
             return result;
         }
 
-		virtual protected List<HtmlNode> GetNodes(string nodeType, string className)
-		{
-			var nodes = this.HtmlDocument.DocumentNode.Descendants(nodeType);
-			var result = nodes.ByClass(className).ToList();
+        virtual protected List<HtmlNode> GetNodes(string nodeType, string className)
+        {
+            var nodes = this.HtmlDocument.DocumentNode.Descendants(nodeType);
+            var result = nodes.ByClass(className).ToList();
 
-			return result;
-		}
+            return result;
+        }
 
-		virtual protected HtmlNode GetNode(HtmlNode parent, string nodeType, string className)
-		{
-			var nodes = parent.Descendants(nodeType);
-			var result = nodes.ByClass(className).FirstOrDefault();
+        virtual protected HtmlNode GetNode(HtmlNode parent, string nodeType, string className)
+        {
+            var nodes = parent.Descendants(nodeType);
+            var result = nodes.ByClass(className).FirstOrDefault();
 
-			return result;
-		}
+            return result;
+        }
 
-		virtual protected List<HtmlNode> GetNodes(HtmlNode parent, string nodeType, string className)
-		{
-			var nodes = parent.Descendants(nodeType);
-			var result = nodes.ByClass(className).ToList();
+        virtual protected List<HtmlNode> GetNodes(HtmlNode parent, string nodeType, string className)
+        {
+            var nodes = parent.Descendants(nodeType);
+            var result = nodes.ByClass(className).ToList();
 
-			return result;
-		}
+            return result;
+        }
 
 
         protected bool GetImage()
@@ -308,58 +308,58 @@ namespace Recipes.Services
             return result;
         }
 
-		protected void Add(IngredientGroup g)
-		{
-			if (null == g)
-				throw new ArgumentNullException("IngredientGroup g");
-			this.IngredientGroups.Add(g);
-		}
+        protected void Add(IngredientGroup g)
+        {
+            if (null == g)
+                throw new ArgumentNullException("IngredientGroup g");
+            this.IngredientGroups.Add(g);
+        }
 
-		protected void Add(ProcedureGroup g)
-		{
-			if (null == g)
-				throw new ArgumentNullException("ProcedureGroup g");
-			this.ProcedureGroups.Add(g);
-		}
+        protected void Add(ProcedureGroup g)
+        {
+            if (null == g)
+                throw new ArgumentNullException("ProcedureGroup g");
+            this.ProcedureGroups.Add(g);
+        }
 
-		protected void AddIngredient(string igiText)
-		{
-			if (string.IsNullOrEmpty(igiText))
-				throw new ArgumentException("parameter igiText is null or Empty.");
-			var i = new IngredientGroupItem(igiText);
-			this.Add(i);
-		}
-		protected void Add(IngredientGroupItem i)
-		{
-			if (null == i)
-				throw new ArgumentNullException("IngredientGroupItem i");
+        protected void AddIngredient(string igiText)
+        {
+            if (string.IsNullOrEmpty(igiText))
+                throw new ArgumentException("parameter igiText is null or Empty.");
+            var i = new IngredientGroupItem(igiText);
+            this.Add(i);
+        }
+        protected void Add(IngredientGroupItem i)
+        {
+            if (null == i)
+                throw new ArgumentNullException("IngredientGroupItem i");
 
-			var g = this.IngredientGroups.LastOrDefault();
-			if (null == g)
-			{
-				g = new IngredientGroup();
-				this.IngredientGroups.Add(g);
-			}
-			g.Add(i);
-		}
+            var g = this.IngredientGroups.LastOrDefault();
+            if (null == g)
+            {
+                g = new IngredientGroup();
+                this.IngredientGroups.Add(g);
+            }
+            g.Add(i);
+        }
 
-		protected void Add(ProcedureGroupItem i)
-		{
-			if (null == i)
-				throw new ArgumentNullException("ProcedureGroupItem i");
+        protected void Add(ProcedureGroupItem i)
+        {
+            if (null == i)
+                throw new ArgumentNullException("ProcedureGroupItem i");
 
-			var g = this.ProcedureGroups.LastOrDefault();
-			if (null == g)
-			{
-				g = new ProcedureGroup();
-				this.ProcedureGroups.Add(g);
-			}
-			g.Add(i);
-		}
+            var g = this.ProcedureGroups.LastOrDefault();
+            if (null == g)
+            {
+                g = new ProcedureGroup();
+                this.ProcedureGroups.Add(g);
+            }
+            g.Add(i);
+        }
 
-	}//class
+    }//class
 
-	public class PageParsingException : Exception
+    public class PageParsingException : Exception
     {
         public PageParsingException(string msg)
             : base(msg)
@@ -427,6 +427,43 @@ namespace Recipes.Services
             return result;
         }
 
-	}//class
+        static public HtmlNode GetNode(this HtmlNode parent, string nodeType, string className = null)
+        {
+            var result = parent.GetNodes(nodeType, className).FirstOrDefault();
+            return result;
+        }
+
+        static public List<HtmlNode> GetNodes(this HtmlNode parent, string nodeType, string className = null)
+        {
+            var result = parent.Descendants(nodeType).ToList();
+            if (null != className)
+            {
+                result = result.ByClass(className).ToList();
+            }
+
+            return result;
+        }
+
+        #region HtmlDocument Extensions
+
+        static public HtmlNode GetNode(this HtmlDocument doc, string nodeType, string className = null)
+        {
+            var result = doc.GetNodes(nodeType, className).FirstOrDefault();
+            return result;
+        }
+
+        static public List<HtmlNode> GetNodes(this HtmlDocument doc, string nodeType, string className = null)
+        {
+            var result = doc.DocumentNode.Descendants(nodeType).ToList();
+            if (null != className)
+            {
+                result = result.ByClass(className).ToList();
+            }
+            return result;
+        }
+
+        #endregion
+
+    }//class
 
 }//ns

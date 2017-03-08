@@ -15,8 +15,8 @@
             <strong>{{ingredientGroup.Text}}</strong>
             <ul  style="list-style-type: none;">
                 <li ng-repeat="ingredientItem in ingredientGroup.Items">
-                    <label class="checkbox-inline" for="cbIngredientItem-{{$index}}">
-                        <input id="cbIngredientItem-{{$index}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                    <label class="checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
+                        <input id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                     </label>
                 </li>
             </ul>
@@ -29,8 +29,8 @@
 			<strong>{{procedureGroup.Text}}</strong>
 			<ul style="list-style-type: none;">
                 <li ng-repeat="procedureItem in procedureGroup.Items">
-                    <label class="checkbox-inline" for="cbProcedureItem-{{$index}}">
-                        <input id="cbProcedureItem-{{$index}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
+                    <label class="checkbox-inline" for="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}">
+                        <input id="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
                     </label>
                 </li>
 			</ul>
@@ -42,6 +42,5 @@
 		@Html.ActionLink("Back to List", "Index")
 	</p>
 </div>
-<h4>{{msg}}</h4>
 
 <script src="~/Scripts/Views/Recipe/View.js"></script>
