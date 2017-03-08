@@ -29,7 +29,13 @@ namespace Recipes.Domain
 		}
 		public IngredientGroupItem(string text)
 		{
-			this.Product = new Domain.Product(text);
+            this.Text = text;
+            //this.Product = new Domain.Product(text);
 		}
-    }
-}
+        public override string ToString()
+        {
+            return base.ToString() + string.Format(", Text={0}", this.Text);
+        }
+
+    }//class
+}//ns

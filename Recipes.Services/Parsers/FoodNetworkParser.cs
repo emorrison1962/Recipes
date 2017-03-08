@@ -23,7 +23,7 @@ namespace Recipes.Services.Parsers
 			{
 				var ingredient = li.InnerText.FromHtml().Trim();
 				if (!string.IsNullOrEmpty(ingredient))
-					this.Add(ingredient);
+					this.AddIngredient(ingredient);
 			}
 		}
 
@@ -43,7 +43,7 @@ namespace Recipes.Services.Parsers
 			{
 				var procedure = p.InnerText.FromHtml().Trim();
 				if (!string.IsNullOrEmpty(procedure))
-					this.Add(new ProcedureGroup(procedure));
+					this.AddIngredient(procedure);
 			}
 		}
 	}

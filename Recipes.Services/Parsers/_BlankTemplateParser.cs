@@ -26,7 +26,7 @@ namespace Recipes.Services.Parsers
 			foreach (var node in nodes)
 			{
 				var ingredient = node.InnerText.FromHtml();
-				this.Add(ingredient);
+				this.AddIngredient(ingredient);
 			}
 		}
 

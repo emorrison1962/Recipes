@@ -13,8 +13,12 @@
 		<h4>Ingredients:</h4>
         <div ng-repeat="ingredientGroup in recipe.IngredientGroups">
             <strong>{{ingredientGroup.Text}}</strong>
-            <ul >
-                <li ng-repeat="ingredientItem in ingredientGroup.Items">{{ingredientItem.Text}}</li>
+            <ul  style="list-style-type: none;">
+                <li ng-repeat="ingredientItem in ingredientGroup.Items">
+                    <label class="checkbox-inline" for="cbIngredientItem-{{$index}}">
+                        <input id="cbIngredientItem-{{$index}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                    </label>
+                </li>
             </ul>
         </div>
 	</div>
@@ -23,9 +27,12 @@
 		<h4>Procedure:</h4>
 		<div ng-repeat="procedureGroup in recipe.ProcedureGroups">
 			<strong>{{procedureGroup.Text}}</strong>
-			<ul>
-				<li><label for="first_radio_btn">First</label> <input type="radio" id="first_radio_btn" name="choice" value="" /></li>
-<li ng-repeat="procedureItem in procedureGroup.Items">{{procedureItem.Text}}</li>
+			<ul style="list-style-type: none;">
+                <li ng-repeat="procedureItem in procedureGroup.Items">
+                    <label class="checkbox-inline" for="cbProcedureItem-{{$index}}">
+                        <input id="cbProcedureItem-{{$index}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
+                    </label>
+                </li>
 			</ul>
 		</div>
 	</div>

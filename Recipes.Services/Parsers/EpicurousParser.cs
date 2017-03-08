@@ -1,6 +1,7 @@
 ﻿using HtmlAgilityPack;
 using Recipes.Domain;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Recipes.Services.Parsers
@@ -9,23 +10,22 @@ namespace Recipes.Services.Parsers
 	{
 		override protected void GetIngredients()
 		{
-			var div = GetIngredientsDiv();
+			var div = GetIngredientsContainerNode();
 			if (null != div)
 			{
-				var ingredientGroups = this.GetIngredientGroups(div);
-				if (null != ingredientGroups)
+				var igNodes = this.GetIngredientGroupNodes(div);
+				if (null != igNodes)
 				{
-					foreach (var ingredientGroup in ingredientGroups)
+					foreach (var igNode in igNodes)
 					{
-						this.Add(new IngredientGroup());
-						var ingredients = this.GetIngredients(ingredientGroup);
-						ingredients.ForEach(x => this.Add(x));
+						var group = this.GetIngredientGroup(igNode);
+						this.Add(group);
 					}
 				}
 			}
 		}
 
-		HtmlNode GetIngredientsDiv()
+		HtmlNode GetIngredientsContainerNode()
 		{
 			const string INGREDIENTS = "ingredients-info";
 			var result = this.HtmlDocument.DocumentNode.Descendants(DIV).ByClass(INGREDIENTS).FirstOrDefault();
@@ -33,7 +33,7 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		List<HtmlNode> GetIngredientGroups(HtmlNode div)
+		List<HtmlNode> GetIngredientGroupNodes(HtmlNode div)
 		{
 			List<HtmlNode> result = null;
 
@@ -43,20 +43,24 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		List<string> GetIngredients(HtmlNode ingredientGroup)
+		IngredientGroup GetIngredientGroup(HtmlNode igNode)
 		{
-			var result = new List<string>();
+            IngredientGroup result = null;
 
-			if (null != ingredientGroup)
+            Debug.WriteLine(igNode.InnerHtml);
+
+			if (null != igNode)
 			{
-				var strong = ingredientGroup.Descendants("strong").First();
-				result.Add(strong.InnerText.FromHtml());
+                var strong = igNode.Descendants("strong").First();
+                var groupText = strong.InnerText.FromHtml();
+                result = new IngredientGroup(groupText);
 
-				foreach (var li in ingredientGroup.Descendants(LI))
+				foreach (var li in igNode.Descendants(LI))
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText.FromHtml());
+                        var itemText = li.InnerText.FromHtml();
+                        result.Add(itemText);
 					}
 				}
 			}
@@ -67,23 +71,22 @@ namespace Recipes.Services.Parsers
 
 		override protected void GetProcedures()
 		{
-			var div = GetProceduresDiv();
+			var div = GetProceduresContainerNode();
 			if (null != div)
 			{
-				var preparationGroups = this.GetPreparationGroups(div);
-				if (null != preparationGroups)
+				var pgNodes = this.GetPreparationGroupNodes(div);
+				if (null != pgNodes)
 				{
-					foreach (var preparationGroup in preparationGroups)
+					foreach (var pgNode in pgNodes)
 					{
-						this.Add(new ProcedureGroup());
-						var preparation = this.GetProcedures(preparationGroup);
-						preparation.ForEach(x => this.Add(new ProcedureGroupItem(x)));
+						var group = this.GetProcedureGroup(pgNode);
+                        this.Add(group);
 					}
 				}
 			}
 		}
 
-		HtmlNode GetProceduresDiv()
+		HtmlNode GetProceduresContainerNode()
 		{
 			var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
 			var result = divs.ByClass("instructions").FirstOrDefault();
@@ -91,26 +94,28 @@ namespace Recipes.Services.Parsers
 			return result;
 		}
 
-		List<HtmlNode> GetPreparationGroups(HtmlNode div)
+		List<HtmlNode> GetPreparationGroupNodes(HtmlNode div)
 		{
 			var result = div.Descendants(LI).ByClass("preparation-group").ToList();
 			return result;
 		}
 
-		List<string> GetProcedures(HtmlNode preparationGroup)
+        ProcedureGroup GetProcedureGroup(HtmlNode pgNode)
 		{
-			var result = new List<string>();
+            ProcedureGroup result = null;
 
-			if (null != preparationGroup)
+			if (null != pgNode)
 			{
-				var strong = preparationGroup.Descendants("strong").First();
-				result.Add(strong.InnerText.FromHtml());
+				var strong = pgNode.Descendants("strong").First();
+                var groupText = strong.InnerText.FromHtml();
+                result = new ProcedureGroup(groupText);
 
-				foreach (var li in preparationGroup.Descendants(LI))
+				foreach (var li in pgNode.Descendants(LI))
 				{
 					if (li.NodeType == HtmlNodeType.Element)
 					{
-						result.Add(li.InnerText.FromHtml());
+                        var itemText = li.InnerText.FromHtml();
+                        result.Add(itemText);
 					}
 				}
 			}

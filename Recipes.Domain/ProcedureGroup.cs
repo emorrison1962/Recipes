@@ -26,8 +26,6 @@ namespace Recipes.Domain
 			this.Text = text;
 		}
 
-
-
 		public void Add(ProcedureGroupItem i)
 		{
 			if (null == i)
@@ -35,5 +33,21 @@ namespace Recipes.Domain
 
 			this.Items.Add(i);
 		}
-	}//class
+
+        public void Add(string pgiText)
+        {
+            if (string.IsNullOrEmpty(pgiText))
+                throw new ArgumentException("parameter igiText is null or Empty.");
+
+            var i = new ProcedureGroupItem(pgiText);
+            this.Add(i);
+        }
+
+
+        public override string ToString()
+        {
+            return base.ToString() + string.Format(", Text={0}", this.Text);
+        }
+
+    }//class
 }//ns

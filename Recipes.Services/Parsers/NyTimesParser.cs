@@ -54,7 +54,7 @@ namespace Recipes.Services
                     sb.AppendFormat("{0} ", span.InnerText.FromHtml());
                 }
                 var ingredient = sb.ToString().Trim();
-                this.Add(ingredient);
+                this.AddIngredient(ingredient);
             }
         }
 

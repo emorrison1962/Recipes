@@ -25,7 +25,7 @@ namespace Recipes.Services.Parsers
 					foreach (var ingredientGroup in ingredientGroups)
 					{
 						var ingredients = this.GetIngredients(ingredientGroup);
-						ingredients.ForEach(x => this.Add(x));
+						ingredients.ForEach(x => this.AddIngredient(x));
 					}
 				}
 			}

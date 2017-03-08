@@ -36,7 +36,7 @@ namespace Recipes.Services.Parsers
 					foreach (var li in lis)
 					{
 						var ingredient = li.InnerText.FromHtml();
-						this.Add(ingredient);
+						this.AddIngredient(ingredient);
 					}
 				}
 			}

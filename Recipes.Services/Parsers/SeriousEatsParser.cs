@@ -19,7 +19,7 @@ namespace Recipes.Services.Parsers
 				if (null != node)
 				{
 					var ingredients = this.GetIngredients(node);
-					ingredients.ForEach(x => this.Add(x));
+					ingredients.ForEach(x => this.AddIngredient(x));
 				}
 			}
 		}

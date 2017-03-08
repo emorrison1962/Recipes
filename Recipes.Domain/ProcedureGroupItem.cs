@@ -13,5 +13,11 @@
 		{
 			this.Text = text;
 		}
-	}
-}
+
+        public override string ToString()
+        {
+            return base.ToString() + string.Format(", Text={0}", this.Text);
+        }
+
+    }//class
+}//ns

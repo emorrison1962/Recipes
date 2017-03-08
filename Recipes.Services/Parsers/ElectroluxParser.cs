@@ -21,7 +21,7 @@ namespace Recipes.Services
 			{
 				var ingredient = node.InnerText.FromHtml().Trim();
 				if (!string.IsNullOrEmpty(ingredient))
-					this.Add(ingredient);
+					this.AddIngredient(ingredient);
 			}
 		}
 

@@ -37,7 +37,7 @@ namespace Recipes.Services
 
 				var ingredient = string.Format("{0} {1} {2}", s1, s2, s3);
 				if (!string.IsNullOrEmpty(ingredient))
-					this.Add(ingredient);
+					this.AddIngredient(ingredient);
 			}
 		}
 

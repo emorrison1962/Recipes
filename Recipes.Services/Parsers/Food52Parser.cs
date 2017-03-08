@@ -36,7 +36,7 @@ namespace Recipes.Services
 				var span0Txt = spans[0].InnerText.FromHtml();
 				var span1Txt = spans[1].InnerText.FromHtml();
 				var ingredient = string.Format("{0} {1}", span0Txt, span1Txt);
-				this.Add(ingredient);
+				this.AddIngredient(ingredient);
 			}
 		}
 

@@ -36,7 +36,7 @@ namespace Recipes.Services.Parsers
 				{
 					var ingredient = node.InnerText.FromHtml();
 					ingredient = ingredient.Replace("  ", " ").Trim();
-					this.Add(ingredient);
+					this.AddIngredient(ingredient);
 				}
 			}
 		}

@@ -322,7 +322,7 @@ namespace Recipes.Services
 			this.ProcedureGroups.Add(g);
 		}
 
-		protected void Add(string igiText)
+		protected void AddIngredient(string igiText)
 		{
 			if (string.IsNullOrEmpty(igiText))
 				throw new ArgumentException("parameter igiText is null or Empty.");
