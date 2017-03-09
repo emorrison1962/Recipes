@@ -1,4 +1,5 @@
 ﻿using Recipes.Contracts.Repositories;
+using Recipes.Contracts.Services;
 using Recipes.Domain;
 using Recipes.Models;
 using Recipes.Services;
@@ -9,13 +10,13 @@ namespace Recipes.Controllers
 	public class RecipeController : Controller
 	{
 
-		RecipeService RecipeService { get; set; }
-		TagService TagService { get; set; }
+        IServiceBase<Recipe> RecipeService { get; set; }
+        IServiceBase<Tag> TagService { get; set; }
 
-		public RecipeController(IRepositoryBase<Recipe> recipeRepository, IRepositoryBase<Tag> tagRepository)
+		public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService)
 		{
-			this.RecipeService = new RecipeService(recipeRepository);
-			this.TagService = new TagService(tagRepository);
+            this.RecipeService = recipeService;
+            this.TagService = tagService;
 		}
 		// GET: Recipe
 		public ActionResult Index()
@@ -36,9 +37,7 @@ namespace Recipes.Controllers
 		[HttpGet]
 		public ActionResult View(int recipeId)
 		{
-			var recipe = this.RecipeService.GetById(recipeId);
-			var tags = this.TagService.GetAll();
-			var vm = new RecipeVMBase(recipe, tags);
+			var vm = new RecipeVM(recipeId);
 
 			var result = View(vm);
 			return result;
@@ -47,9 +46,7 @@ namespace Recipes.Controllers
 		[HttpGet]
 		public ActionResult Update(int recipeId)
 		{
-			var recipe = this.RecipeService.GetById(recipeId);
-			var tags = this.TagService.GetAll();
-			var vm = new RecipeVMBase(recipe, tags);
+			var vm = new RecipeVM(recipeId);
 
 			var result = View(vm);
 			return result;

@@ -52,6 +52,7 @@
     <Compile Include="ProcedureGroup.cs" />
     <Compile Include="ProcedureGroupItem.cs" />
     <Compile Include="Product.cs" />
+    <Compile Include="ShoppingList.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Ethnicity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

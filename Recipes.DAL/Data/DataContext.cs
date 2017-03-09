@@ -16,10 +16,10 @@ namespace Recipes.DAL.Data
 		}
 		public DbSet<Recipe> Recipes { get; set; }
 		public DbSet<Tag> Tags { get; set; }
-		public DbSet<Ethnicity> Ethnicities { get; set; }
+        public DbSet<Ethnicity> Ethnicities { get; set; }
+        public DbSet<ShoppingList> ShoppingLists { get; set; }
 
-
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Recipe>()
 						.HasMany<Tag>(s => s.Tags)

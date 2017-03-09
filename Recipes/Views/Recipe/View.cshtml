@@ -1,4 +1,4 @@
-﻿@model Recipes.Models.RecipeVMBase
+﻿@model Recipes.Models.RecipeVM
 
 @{
     ViewBag.Title = "View";
@@ -16,7 +16,7 @@
             <ul  style="list-style-type: none;">
                 <li ng-repeat="ingredientItem in ingredientGroup.Items">
                     <label class="checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
-                        <input id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                        <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                     </label>
                 </li>
             </ul>

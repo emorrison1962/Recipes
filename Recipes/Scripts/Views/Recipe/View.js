@@ -8,11 +8,18 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 
 
 	$scope.init = function (model) {
-		$scope.recipe = model.Recipe;
-		$log.debug($scope.recipe);
-	}
+	    $scope.recipe = model.Recipe;
+	    $log.debug($scope.recipe);
+	};
 
-
+	$scope.ingredientItemChecked = function (item) {
+	    if (employeeVM.IsEnrolled) {
+	        $scope.course.Enrollments.push({ CourseID: $scope.course.CourseID, EmployeeID: employeeVM.Employee.EmployeeID });
+	    }
+	    else {
+	        $scope.course.Enrollments.Remove(employeeVM.Employee.EmployeeID);
+	    }
+	};
 
 }]);
 
