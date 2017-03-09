@@ -31,7 +31,6 @@ namespace Recipes.DAL.Migrations
             this.InsertTags(context);
         }
 
-
         void InsertTags(Recipes.DAL.Data.DataContext context)
         {
             context.Tags.AddOrUpdate(t => t.Name,
@@ -44,5 +43,5 @@ namespace Recipes.DAL.Migrations
                 new Tag { Name = "Ice Cream" });
         }
 
-    }//class
-}//ns
+    }
+}

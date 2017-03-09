@@ -7,11 +7,11 @@ using System.Linq;
 
 namespace Recipes.Models
 {
+    [Serializable]
     public class RecipeVM
     {
         IServiceBase<Recipe> _recipeService;
         IServiceBase<Tag> _tagService;
-        IServiceBase<ShoppingList> _shoppingListService;
 
         public IServiceBase<Recipe> RecipeService
         {
@@ -35,20 +35,9 @@ namespace Recipes.Models
             set { _tagService = value; }
         }
 
-        public IServiceBase<ShoppingList> ShoppingListService
-        {
-            get
-            {
-                if (null == _shoppingListService)
-                    _shoppingListService = Unity.Resolve<IServiceBase<ShoppingList>>();
-                return _shoppingListService;
-            }
-            set { _shoppingListService = value; }
-        }
-
         public Recipe Recipe { get; set; }
         public IEnumerable<Tag> TagCatalog { get; set; }
-        public ShoppingList ShoppingList { get; set; }
+        public ShoppingListVM ShoppingList { get; set; }
 
 
         public RecipeVM(int recipeId)
@@ -57,12 +46,11 @@ namespace Recipes.Models
             {
                 var r = this.RecipeService.GetById(recipeId);
                 var t = this.TagService.GetAll();
-                var sl = this.ShoppingListService.GetAll().FirstOrDefault();
 
                 this.Recipe = r;
                 Debug.Assert(r.RecipeId > 0);
                 this.TagCatalog = t;
-                this.ShoppingList = sl;
+                this.ShoppingList = new ShoppingListVM();
             }
             catch (Exception ex)
             {

@@ -201,7 +201,8 @@
     </Compile>
     <!--    <Compile Include="Models\IdentityModels.cs" />-->
     <Compile Include="Helpers\Unity.cs" />
-    <Compile Include="Models\RecipeVMBase.cs" />
+    <Compile Include="Models\RecipeVM.cs" />
+    <Compile Include="Models\ShoppingListVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
