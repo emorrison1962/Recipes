@@ -7,28 +7,29 @@ using System.Linq;
 
 namespace Recipes.Services
 {
-	public class RecipeService : IServiceBase<Recipe>
+	public class RecipeService : ServiceBase<Recipe> 
 	{
 		IRepositoryBase<Recipe> Repository { get; set; }
 
 		public RecipeService(IRepositoryBase<Recipe> repository)
+            : base(repository)
 		{
 			this.Repository = repository;
 		}
 
-		public IEnumerable<Recipe> GetAll()
+		override public IEnumerable<Recipe> GetAll()
 		{
 			var result = this.Repository.GetAll().ToList();
 			result.Sort();
 			return result;
 		}
 
-		public IEnumerable<Recipe> GetAll(object filter)
+        override public IEnumerable<Recipe> GetAll(object filter)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Recipe Insert(Recipe recipe)
+        override public Recipe Insert(Recipe recipe)
 		{
 			var result = this.Create(recipe.Uri);
 			if (null != result)
@@ -39,7 +40,7 @@ namespace Recipes.Services
 			return result;
 		}
 
-		public Recipe Create(string url)
+        public Recipe Create(string url)
 		{
 			Recipe result = null;
 			var parser = PageParserFactory.Create(url);
@@ -48,11 +49,11 @@ namespace Recipes.Services
 			return result;
 		}
 
-		public void Delete(Recipe entity)
+        override public void Delete(Recipe entity)
 		{
 			throw new NotImplementedException();
 		}
-		public void Delete(int id)
+        override public void Delete(int id)
 		{
 			try
 			{
@@ -67,19 +68,19 @@ namespace Recipes.Services
 #pragma warning restore 168
 		}
 
-		public Recipe GetById(int id)
+        override public Recipe GetById(int id)
 		{
 			return this.Repository.GetById(id);
 		}
-		public Recipe GetFullObject(object id)
+        override public Recipe GetFullObject(object id)
 		{
 			throw new NotImplementedException();
 		}
-		public IEnumerable<Recipe> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
+        override public IEnumerable<Recipe> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
 		{
 			throw new NotImplementedException();
 		}
-		public Recipe Update(Recipe entity)
+        override public Recipe Update(Recipe entity)
 		{
 			try
 			{

@@ -1,8 +1,16 @@
-﻿namespace Recipes.Domain
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Recipes.Domain
 {
 	public class ProcedureGroupItem : GroupItemBase
 	{
 		public int ProcedureGroupItemId { get; set; }
+        public int? ProcedureGroupRefId { get; set; }
+
+        [ForeignKey("ProcedureGroupRefId")]
+        public virtual ProcedureGroup ProcedureGroup { get; set; }
+
+
 
 		public ProcedureGroupItem()
 		{

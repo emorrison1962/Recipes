@@ -12,12 +12,15 @@ namespace Recipes.Controllers
 
         IServiceBase<Recipe> RecipeService { get; set; }
         IServiceBase<Tag> TagService { get; set; }
+        IShoppingListService ShoppingListService { get; set; }
 
-		public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService)
+		public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService, IShoppingListService shoppingListService)
 		{
             this.RecipeService = recipeService;
             this.TagService = tagService;
-		}
+            this.ShoppingListService = shoppingListService;
+
+        }
 		// GET: Recipe
 		public ActionResult Index()
 		{
@@ -70,5 +73,13 @@ namespace Recipes.Controllers
 			return this.RedirectToAction("Index");
 		}
 
-	}
+        [HttpPost]
+        public ActionResult UpdateShoppingList(ShoppingListVM vm)
+        {
+            this.ShoppingListService.Update(vm.ShoppingListId, vm.Items);
+
+            return null;
+        }
+
+    }
 }

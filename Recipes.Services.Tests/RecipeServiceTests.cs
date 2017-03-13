@@ -87,11 +87,13 @@ namespace Recipes.Services.Tests
 					svc.Insert(recipe);
 					new object();
 				}
-				catch (Exception ex)
+#pragma warning disable 168
+                catch (Exception ex)
 				{
 					Debug.WriteLine(url);
 					new object();
 				}
+#pragma warning restore 168
             }
 
         }

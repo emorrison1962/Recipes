@@ -8,26 +8,19 @@ using System.Linq;
 
 namespace Recipes.Services
 {
-    public class ShoppingListService : IServiceBase<ShoppingList>
+    public class ShoppingListService : ServiceBase<ShoppingList>, IShoppingListService
     {
         IRepositoryBase<ShoppingList> Repository { get; set; }
+        IServiceBase<IngredientGroupItem> IngredientGroupItemService { get; set; }
 
-        public ShoppingListService(IRepositoryBase<ShoppingList> repository)
+        public ShoppingListService(IRepositoryBase<ShoppingList> repository, IServiceBase<IngredientGroupItem> ingredientGroupItemService)
+            : base(repository)
         {
             this.Repository = repository;
+            this.IngredientGroupItemService = ingredientGroupItemService;
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(ShoppingList entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<ShoppingList> GetAll()
+        override public IEnumerable<ShoppingList> GetAll()
         {
             List<ShoppingList> result;
             try
@@ -44,27 +37,7 @@ namespace Recipes.Services
             return result;
         }
 
-        public IEnumerable<ShoppingList> GetAll(object filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ShoppingList GetById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ShoppingList GetFullObject(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<ShoppingList> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ShoppingList Insert(ShoppingList entity)
+        override public ShoppingList Insert(ShoppingList entity)
         {
             try
             {
@@ -80,7 +53,7 @@ namespace Recipes.Services
             return entity;
         }
 
-        public ShoppingList Update(ShoppingList entity)
+        override public ShoppingList Update(ShoppingList entity)
         {
             try
             {
@@ -94,7 +67,49 @@ namespace Recipes.Services
             }
 #pragma warning restore 168
 
-            return this.Repository.GetById(entity.ShoppingListId);
+            return entity;
         }
-    }
-}
+
+        public bool Update(int id, List<int> items)
+        {
+            var result = false;
+
+            var existing = this.GetById(id);
+
+            var inserts = (
+                from itemId in items
+                where !(from existingItem in existing.Items select existingItem.IngredientGroupItemId)
+                  .Contains(itemId)
+                select itemId).ToList();
+            foreach (var insert in inserts)
+            {
+                var existingIgi = this.IngredientGroupItemService.GetById(insert);
+                existing.Items.Add(existingIgi);
+            }
+
+
+            var deletes = (
+                from existingItem in existing.Items
+                where !(from itemId in items select itemId)
+                  .Contains(existingItem.IngredientGroupItemId)
+                select existingItem).ToList();
+            deletes.ForEach(x => existing.Items.Remove(x));
+
+            try
+            {
+                this.Repository.Update(existing);
+                this.Repository.Commit();
+                result = true;
+            }
+#pragma warning disable 168
+            catch (Exception ex)
+            {
+                throw;
+            }
+#pragma warning restore 168
+
+            return result;
+        }
+
+    }//class
+}//ns

@@ -1,37 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Recipes.Domain
 {
     public class IngredientGroupItem : GroupItemBase
-	{
-		public int IngredientGroupItemId { get; set; }
+    {
 
-		//override public string Text {
-		//	get
-		//	{
-		//		return this.Product.Text;
-		//	}
-		//	set { this.Product.Text = value; } }
+        #region Properties
 
-		[NotMapped]
-		public Product Product { get; set; }
-		[NotMapped]
-		public Amount Amount { get; set; }
+        public int IngredientGroupItemId { get; set; }
 
-		public IngredientGroupItem()
-		{
+        public int? IngredientGroupRefId { get; set; }
 
-		}
-		public IngredientGroupItem(string text)
-		{
+        [ForeignKey("IngredientGroupRefId")]
+        public virtual IngredientGroup IngredientGroup { get; set; }
+
+
+        [NotMapped]
+        public Product Product { get; set; }
+        [NotMapped]
+        public Amount Amount { get; set; }
+
+        #endregion
+
+        public IngredientGroupItem()
+        {
+
+        }
+        public IngredientGroupItem(string text)
+        {
             this.Text = text;
             //this.Product = new Domain.Product(text);
-		}
+        }
         public override string ToString()
         {
             return base.ToString() + string.Format(", Text={0}", this.Text);
