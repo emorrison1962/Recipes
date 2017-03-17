@@ -4,44 +4,69 @@
     ViewBag.Title = "View";
 }
 
+<style>
+img.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+    max-height: 400px;
+    box-shadow: 10px 10px 5px #888888;
+ }
+
+li {
+    line-height: 1.0;
+}
+
+</style>
 
 <div class="row-fluid" ng-controller='recipeViewController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
-	<h2>{{recipe.Name}}</h2>
-	<img src="{{recipe.ImageUri}}" style="max-width:400px; max-height:400px" />
-	
-	<div id="ingredients">
-		<h4>Ingredients:</h4>
-        <div ng-repeat="ingredientGroup in recipe.IngredientGroups">
-            <strong>{{ingredientGroup.Text}}</strong>
-            <ul  style="list-style-type: none;">
-                <li ng-repeat="ingredientItem in ingredientGroup.Items">
-                    <label class="checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
-                        <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
-                    </label>
-                </li>
-            </ul>
+    <div class="col-md-offset-2 col-md-6">
+        <div class="page-header">
+            <h2>{{recipe.Name}}</h2>
         </div>
-        <button ng-click="saveShoppingList()">Save Shopping List</button>
-	</div>
+        <img class="displayed img-rounded" src="{{recipe.ImageUri}}" />
+        <br/>
+        <div id="ingredients" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Ingredients</h3>
+            </div>
+            <div class="panel-body" ng-repeat="ingredientGroup in recipe.IngredientGroups">
+                <h4 class="h4">{{ingredientGroup.Text}}</h4>
+                <ul class="list-unstyled">
+                    <li ng-repeat="ingredientItem in ingredientGroup.Items">
+                        <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
+                            <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-default" ng-click="saveShoppingList()">Save Shopping List</button>
+            </div>
+        </div>
 
-	<div id="procedures">
-		<h4>Procedure:</h4>
-		<div ng-repeat="procedureGroup in recipe.ProcedureGroups">
-			<strong>{{procedureGroup.Text}}</strong>
-			<ul style="list-style-type: none;">
-                <li ng-repeat="procedureItem in procedureGroup.Items">
-                    <label class="checkbox-inline" for="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}">
-                        <input id="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
-                    </label>
-                </li>
-			</ul>
-		</div>
-	</div>
+            <div id="procedures" class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Procedure</h3>
+                </div>
+                <div class="panel-body" ng-repeat="procedureGroup in recipe.ProcedureGroups">
+                    <h4 class="h4">{{procedureGroup.Text}}</h4>
+                    <ul class="list-unstyled">
+                        <li ng-repeat="procedureItem in procedureGroup.Items">
+                            <label class="checkbox-inline" for="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}">
+                                <input id="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
 
-	<p>
-		@Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-		@Html.ActionLink("Back to List", "Index")
-	</p>
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+                @Html.ActionLink("Back to List", "Index")
+            </p>
+        </div>
 </div>
 
 <script src="~/Scripts/Views/Recipe/View.js"></script>
