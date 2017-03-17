@@ -9,60 +9,22 @@ using System.Threading.Tasks;
 
 namespace Recipes.Services
 {
-    public class IngredientGroupItemService : IServiceBase<IngredientGroupItem>
+    public class IngredientGroupItemService : ServiceBase<IngredientGroupItem>, IServiceBase<IngredientGroupItem>
     {
         IRepositoryBase<IngredientGroupItem> Repository { get; set; }
 
-        public IngredientGroupItemService(IRepositoryBase<IngredientGroupItem> repository)
+        public IngredientGroupItemService(IRepositoryBase<IngredientGroupItem> repository) 
+            : base(repository)
         {
             this.Repository = repository;
 
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(IngredientGroupItem entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IngredientGroupItem> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IngredientGroupItem> GetAll(object filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IngredientGroupItem GetById(int id)
+        override public IngredientGroupItem GetById(int id)
         {
             var result = this.Repository.GetById(id);
             return result;
         }
 
-        public IngredientGroupItem GetFullObject(object id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<IngredientGroupItem> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IngredientGroupItem Insert(IngredientGroupItem entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IngredientGroupItem Update(IngredientGroupItem entity)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
+    }//class
+}//ns

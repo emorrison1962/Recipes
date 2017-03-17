@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Recipes.Domain
 {
@@ -8,6 +9,7 @@ namespace Recipes.Domain
         public int? ProcedureGroupRefId { get; set; }
 
         [ForeignKey("ProcedureGroupRefId")]
+        [JsonIgnore]
         public virtual ProcedureGroup ProcedureGroup { get; set; }
 
 

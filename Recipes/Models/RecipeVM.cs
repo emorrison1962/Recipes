@@ -48,9 +48,19 @@ namespace Recipes.Models
                 var t = this.TagService.GetAll();
 
                 this.Recipe = r;
-                Debug.Assert(r.RecipeId > 0);
-                this.TagCatalog = t;
                 this.ShoppingList = new ShoppingListVM();
+                this.ShoppingList.Load();
+                this.TagCatalog = t;
+
+                //Set the IsChecked flag on appropriate recipe ingredients.
+                var seq = (
+                    from ig in this.Recipe.IngredientGroups
+                    from igi in ig.Items
+                    from sli in this.ShoppingList.Items
+                    where igi.IngredientGroupItemId == sli.IngredientGroupItemId
+                    select (igi)).ToList();
+                seq.ForEach(x => x.IsChecked = true);
+
             }
             catch (Exception ex)
             {

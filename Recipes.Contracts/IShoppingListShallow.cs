@@ -2,7 +2,7 @@
 
 namespace Recipes.Contracts
 {
-    public interface IShoppingListShallow
+    interface IShoppingListShallow
     {
         List<int> Items { get; set; }
     }

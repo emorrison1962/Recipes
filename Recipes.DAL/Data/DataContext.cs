@@ -27,14 +27,24 @@ namespace Recipes.DAL.Data
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Recipe>()
-						.HasMany<Tag>(s => s.Tags)
-						.WithMany(c => c.Recipes)
-						.Map(cs =>
+						.HasMany<Tag>(r => r.Tags)
+						.WithMany(t => t.Recipes)
+						.Map(rt =>
 						{
-							cs.MapLeftKey("RecipeRefId");
-							cs.MapRightKey("TagRefId");
-							cs.ToTable("RecipeTag");
+							rt.MapLeftKey("RecipeRefId");
+							rt.MapRightKey("TagRefId");
+							rt.ToTable("RecipeTag");
 						});
+
+            modelBuilder.Entity<ShoppingList>()
+                        .HasMany<IngredientGroupItem>(sl => sl.Items)
+                        .WithMany(igi => igi.ShoppingLists)
+                        .Map(cs =>
+                        {
+                            cs.MapLeftKey("ShoppingListRefId");
+                            cs.MapRightKey("IngredientGroupItemRefId");
+                            cs.ToTable("ShoppingListIngredientGroupItem");
+                        });
 
             modelBuilder.Entity<IngredientGroupItem>()
                                 .HasOptional<IngredientGroup>(s => s.IngredientGroup)

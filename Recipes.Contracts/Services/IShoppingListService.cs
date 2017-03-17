@@ -5,6 +5,6 @@ namespace Recipes.Contracts.Services
 {
     public interface IShoppingListService : IServiceBase<ShoppingList>
     {
-        bool Update(int id, List<int> items);
+        bool Update(int id, List<IngredientGroupItem> items);
     }
 }

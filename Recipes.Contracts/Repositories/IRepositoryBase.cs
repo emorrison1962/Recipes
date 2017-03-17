@@ -16,5 +16,6 @@ namespace Recipes.Contracts.Repositories
         IEnumerable<T> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null);
 		void Insert(T entity);
 		void Update(T entity);
+        T Detach(T entity);
 	}
 }

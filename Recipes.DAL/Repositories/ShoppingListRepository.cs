@@ -15,5 +15,16 @@ namespace Recipes.DAL.Repositories
         {
 
         }
-    }
-}
+
+        public override ShoppingList GetFullObject(object id)
+        {
+            var result = this._dbSet
+                .Where(sl => sl.ShoppingListId == (int)id)
+                .IncludeMultiple(sl => sl.Items)
+                .FirstOrDefault(); 
+
+            return result;
+        }
+
+    }//class
+}//ns

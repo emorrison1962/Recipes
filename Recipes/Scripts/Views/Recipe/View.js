@@ -9,17 +9,10 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 	    $scope.recipe = model.Recipe;
 	    $log.debug($scope.model);
 
-
-	    var count = $scope.model.ShoppingList.Items.count;
-	    for (i = 0; i < count; i++) {
-	        var item = $scope.model.ShoppingList.Items[i];
-	        item.IsChecked = true;
-	    }
-
-
-	    $scope.model.ShoppingList.Items.Remove = function (itemID) {
+        
+	    $scope.model.ShoppingList.Items.Remove = function (item) {
 	        for (i = 0; i < this.length; i++) {
-	            if (this[i] == itemID) {
+	            if (this[i].IngredientGroupItemId === item.IngredientGroupItemId) {
 	                this.splice(i, 1);
 	                break;
 	            }
@@ -29,10 +22,10 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 
 	$scope.ingredientItemChecked = function (item) {
 	    if (item.IsChecked) {
-	        $scope.model.ShoppingList.Items.push(item.IngredientGroupItemId);
+	        $scope.model.ShoppingList.Items.push(item);
 	    }
 	    else {
-	        $scope.model.ShoppingList.Items.Remove(item.IngredientGroupItemId);
+	        $scope.model.ShoppingList.Items.Remove(item);
 	    }
 	};
 

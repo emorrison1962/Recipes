@@ -77,7 +77,14 @@ namespace Recipes.Dal.Repositories
 			_dataContext.SaveChanges();
 		}
 
-		public virtual void Dispose()
+        public virtual T Detach(T entity)
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity);
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+            return result;
+        }
+
+        public virtual void Dispose()
 		{
 			_dataContext.Dispose();
 		}

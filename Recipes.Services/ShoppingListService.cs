@@ -70,34 +70,31 @@ namespace Recipes.Services
             return entity;
         }
 
-        public bool Update(int id, List<int> items)
+        public bool Update(int id, List<IngredientGroupItem> incomingItems)
         {
             var result = false;
 
-            var existing = this.GetById(id);
+            var sl = this.GetFullObject(id);
 
-            var inserts = (
-                from itemId in items
-                where !(from existingItem in existing.Items select existingItem.IngredientGroupItemId)
-                  .Contains(itemId)
-                select itemId).ToList();
-            foreach (var insert in inserts)
+            var existingIds = sl.Items.Select(x => x.IngredientGroupItemId).ToList();
+            var incomingIds = incomingItems.Select(x => x.IngredientGroupItemId).ToList();
+
+            var insertIds = incomingIds.Except(existingIds);
+            foreach (var insert in insertIds)
             {
                 var existingIgi = this.IngredientGroupItemService.GetById(insert);
-                existing.Items.Add(existingIgi);
+                existingIgi = this.IngredientGroupItemService.Detach(existingIgi);
+                sl.Items.Add(existingIgi);
             }
 
 
-            var deletes = (
-                from existingItem in existing.Items
-                where !(from itemId in items select itemId)
-                  .Contains(existingItem.IngredientGroupItemId)
-                select existingItem).ToList();
-            deletes.ForEach(x => existing.Items.Remove(x));
+            var deleteIds = existingIds.Except(incomingIds).ToList();
+            var deletes = sl.Items.Where(x => deleteIds.Contains(x.IngredientGroupItemId)).Select(x => x).ToList();
+            deletes.ForEach(x => sl.Items.Remove(x));
 
             try
             {
-                this.Repository.Update(existing);
+                this.Repository.Update(sl);
                 this.Repository.Commit();
                 result = true;
             }

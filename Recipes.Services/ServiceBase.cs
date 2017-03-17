@@ -77,7 +77,18 @@ namespace Recipes.Services
 
         virtual public T GetFullObject(object id)
         {
-            throw new NotImplementedException();
+            T result = null;
+            try
+            {
+                result = this.Repository.GetFullObject(id);
+            }
+#pragma warning disable 168
+            catch (Exception ex)
+            {
+                throw;
+            }
+#pragma warning restore 168
+            return result;
         }
 
         virtual public IEnumerable<T> GetPaged(int top = 20, int skip = 0, object orderBy = null, object filter = null)
@@ -120,6 +131,24 @@ namespace Recipes.Services
 #pragma warning restore 168
 
             return entity;
+        }
+
+        public T Detach(T entity)
+        {
+            T result = null;
+            try
+            {
+                result = this.Repository.Detach(entity);
+
+            }
+#pragma warning disable 168
+            catch (Exception ex)
+            {
+                throw;
+            }
+#pragma warning restore 168
+
+            return result;
         }
     }//class
 

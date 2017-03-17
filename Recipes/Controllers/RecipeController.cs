@@ -3,6 +3,7 @@ using Recipes.Contracts.Services;
 using Recipes.Domain;
 using Recipes.Models;
 using Recipes.Services;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Recipes.Controllers

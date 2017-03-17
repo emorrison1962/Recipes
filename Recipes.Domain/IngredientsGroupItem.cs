@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Recipes.Domain
 {
@@ -12,8 +14,13 @@ namespace Recipes.Domain
         public int? IngredientGroupRefId { get; set; }
 
         [ForeignKey("IngredientGroupRefId")]
+        [JsonIgnore]
         public virtual IngredientGroup IngredientGroup { get; set; }
+        [JsonIgnore]
+        public HashSet<ShoppingList> ShoppingLists { get; set; }
 
+        [NotMapped]
+        public bool IsChecked { get; set; }
 
         [NotMapped]
         public Product Product { get; set; }
