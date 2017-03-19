@@ -32,7 +32,7 @@ namespace Recipes.Services.Tests
             Assert.Fail();
         }
 
-        [Ignore]
+        //[Ignore]
         [TestMethod()]
         public void GetAllTest()
         {

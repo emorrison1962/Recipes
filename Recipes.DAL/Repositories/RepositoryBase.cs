@@ -16,9 +16,9 @@ namespace Recipes.Dal.Repositories
 
 		public RepositoryBase(DataContext dataContext)
 		{
-			this._dataContext = dataContext;
-			this._dbSet = dataContext.Set<T>();
-		}
+            this._dataContext = dataContext;
+            this._dbSet = dataContext.Set<T>();
+        }
 
 
 		public virtual T GetById(int id)
@@ -28,7 +28,7 @@ namespace Recipes.Dal.Repositories
 
 		public virtual IEnumerable<T> GetAll()
 		{
-			return _dbSet;
+            return _dbSet;
 		}
 
 		public virtual IEnumerable<T> GetAll(object filter)

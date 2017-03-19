@@ -30,7 +30,7 @@ namespace Recipes.Models
             this.Items = new List<IngredientGroupItem>();
         }
 
-        public void Load()
+        public void Load(bool isChecked = true)
         {
             var slim = this.ShoppingListService.GetAll().FirstOrDefault();
             if (null != slim)
@@ -39,7 +39,7 @@ namespace Recipes.Models
 
                 var list = sl.Items.ToList();
                 this.ShoppingListId = sl.ShoppingListId;
-                list.ForEach(x => x.IsChecked = true);
+                list.ForEach(x => x.IsChecked = isChecked);
                 list.ForEach(x => this.Items.Add(x));
             }
         }

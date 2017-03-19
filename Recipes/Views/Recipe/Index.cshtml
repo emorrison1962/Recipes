@@ -16,17 +16,11 @@
 <div class="row-fluid" ng-controller='indexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
 
 
-	<div class="sidebar col-md-2">
-		<!--Sidebar content-->
-		<h2>Sidebar content</h2>
-	</div>
-
 	<div class="main col-md-offset-2 col-md-10">
 		<form ng-submit="insert()" class="form-horizontal" role="form">
 			<div class="form-group ">
 				<div class="controls">
 					<div class="input-group">
-
 						<span class="input-group-addon">Add</span>
 						<input type="text" class="form-control" placeholder="http://..." ng-model=newRecipe>
 					</div>

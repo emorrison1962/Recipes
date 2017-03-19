@@ -1,85 +1,74 @@
-﻿using Recipes.Contracts.Repositories;
-using Recipes.Contracts.Services;
+﻿using Recipes.Contracts.Services;
 using Recipes.Domain;
 using Recipes.Models;
-using Recipes.Services;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Recipes.Controllers
 {
-	public class RecipeController : Controller
-	{
+    public class RecipeController : Controller
+    {
 
         IServiceBase<Recipe> RecipeService { get; set; }
         IServiceBase<Tag> TagService { get; set; }
         IShoppingListService ShoppingListService { get; set; }
 
-		public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService, IShoppingListService shoppingListService)
-		{
+        public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService, IShoppingListService shoppingListService)
+        {
             this.RecipeService = recipeService;
             this.TagService = tagService;
             this.ShoppingListService = shoppingListService;
 
         }
-		// GET: Recipe
-		public ActionResult Index()
-		{
-			var recipes = this.RecipeService.GetAll();
+        // GET: Recipe
+        public ActionResult Index()
+        {
+            var recipes = this.RecipeService.GetAll();
 
-			return View(recipes);
-		}
+            return View(recipes);
+        }
 
-		public JsonResult Insert(string url)
-		{
-			var recipe = this.RecipeService.Insert(new Recipe() { Uri = url });
+        public JsonResult Insert(string url)
+        {
+            var recipe = this.RecipeService.Insert(new Recipe() { Uri = url });
 
-			var result = Json(recipe, JsonRequestBehavior.AllowGet);
-			return result;
-		}
+            var result = Json(recipe, JsonRequestBehavior.AllowGet);
+            return result;
+        }
 
-		[HttpGet]
-		public ActionResult View(int recipeId)
-		{
-			var vm = new RecipeVM(recipeId);
+        [HttpGet]
+        public ActionResult View(int recipeId)
+        {
+            var vm = new RecipeVM(recipeId);
 
-			var result = View(vm);
-			return result;
-		}
+            var result = View(vm);
+            return result;
+        }
 
-		[HttpGet]
-		public ActionResult Update(int recipeId)
-		{
-			var vm = new RecipeVM(recipeId);
+        [HttpGet]
+        public ActionResult Update(int recipeId)
+        {
+            var vm = new RecipeVM(recipeId);
 
-			var result = View(vm);
-			return result;
-		}
+            var result = View(vm);
+            return result;
+        }
 
-		[HttpGet]
-		public ActionResult Delete(int recipeId)
-		{
-			var recipe = this.RecipeService.GetById(recipeId);
-			this.RecipeService.Delete(recipeId);
-			return this.RedirectToAction("Index");
-		}
-
-		[HttpPost]
-		public ActionResult UpdateRecipe(Recipe recipe)
-		{
-			this.RecipeService.Update(recipe);
-
-			//var result = Json(recipe, JsonRequestBehavior.AllowGet);
-			//return result;
-			return this.RedirectToAction("Index");
-		}
+        [HttpGet]
+        public ActionResult Delete(int recipeId)
+        {
+            var recipe = this.RecipeService.GetById(recipeId);
+            this.RecipeService.Delete(recipeId);
+            return this.RedirectToAction("Index");
+        }
 
         [HttpPost]
-        public ActionResult UpdateShoppingList(ShoppingListVM vm)
+        public ActionResult UpdateRecipe(Recipe recipe)
         {
-            this.ShoppingListService.Update(vm.ShoppingListId, vm.Items);
+            this.RecipeService.Update(recipe);
 
-            return null;
+            //var result = Json(recipe, JsonRequestBehavior.AllowGet);
+            //return result;
+            return this.RedirectToAction("Index");
         }
 
     }

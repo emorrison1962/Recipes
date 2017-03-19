@@ -1,0 +1,79 @@
+﻿@model Recipes.Models.ShoppingListVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+.checkbox.disabled.active {
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.275);
+}
+
+.checked-label {
+    text-decoration: line-through;
+}
+</style>
+
+
+<div class="row-fluid" ng-controller='shoppingListIndexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+    <div class="col-md-offset-2 col-md-6">
+        <div class="page-header">
+            <h2>Shopping List</h2>
+        </div>
+
+
+        <form ng-submit="insert()" class="form-horizontal" role="form">
+            <div class="form-group ">
+                <div class="controls">
+                    <div class="input-group">
+                        <span class="input-group-addon">Add</span>
+                        <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
+                        <datalist id="data_list">
+                            <option ng-repeat="ingredientItem in model.checkedItems" value="{{ingredientItem.Text}}"></option>
+                        </datalist>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+        <div id="unchecked_ingredients" class="panel panel-default">
+            <ul class="list-unstyled">
+                <li ng-repeat="ingredientItem in model.Items">
+                    <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
+                        <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                    </label>
+                </li>
+            </ul>
+        </div>
+            
+        <div id="checked_ingredients_panel" class="panel panel-default">
+            <div class="panel panel-body">
+                <p class="panel panel-heading">
+                    {{model.checkedItems.length}}&nbsp;Checked Items&nbsp;
+                    <button id="btn_toggle_checked" type="button" class="btn btn-sm" aria-label="Left Align"
+                            data-toggle="collapse" data-target="#checked_ingredients"
+                            ng-click="collapseClicked(this)">
+                        <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                    </button>
+                </p>
+                <div id="checked_ingredients" class="collapse in">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="ingredientItem in model.checkedItems">
+                            <label class="checked-label checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
+                                <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div>
+            <br />
+            <button class="btn btn-default" ng-click="saveShoppingList()">Save Shopping List</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/Views/ShoppingList/Index.js"></script>

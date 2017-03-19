@@ -32,7 +32,7 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 	$scope.saveShoppingList = function () {
 	    $http({
 	        method: 'POST',
-	        url: '/Recipe/UpdateShoppingList',
+	        url: '/ShoppingList/UpdateShoppingList',
 	        data: { vm: $scope.model.ShoppingList},
 	    }).success(function (data, status, headers, config) {
 	        $scope.message = '';
