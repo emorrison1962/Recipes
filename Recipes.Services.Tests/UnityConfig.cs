@@ -6,7 +6,7 @@ using Recipes.Domain;
 using Recipes.Services;
 using System;
 
-namespace Recipes.App_Start
+namespace Recipes.Services.Tests
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.

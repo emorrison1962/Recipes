@@ -22,14 +22,14 @@
         </div>
 
 
-        <form ng-submit="insert()" class="form-horizontal" role="form">
+        <form ng-submit="addItem()" class="form-horizontal" role="form">
             <div class="form-group ">
                 <div class="controls">
                     <div class="input-group">
                         <span class="input-group-addon">Add</span>
                         <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
                         <datalist id="data_list">
-                            <option ng-repeat="ingredientItem in model.checkedItems" value="{{ingredientItem.Text}}"></option>
+                            <option ng-repeat="ingredientItem in checkedItems" value="{{ingredientItem.Text}}"></option>
                         </datalist>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
         <div id="checked_ingredients_panel" class="panel panel-default">
             <div class="panel panel-body">
                 <p class="panel panel-heading">
-                    {{model.checkedItems.length}}&nbsp;Checked Items&nbsp;
+                    {{checkedItems.length}}&nbsp;Checked Items&nbsp;
                     <button id="btn_toggle_checked" type="button" class="btn btn-sm" aria-label="Left Align"
                             data-toggle="collapse" data-target="#checked_ingredients"
                             ng-click="collapseClicked(this)">
@@ -60,7 +60,7 @@
                 </p>
                 <div id="checked_ingredients" class="collapse in">
                     <ul class="list-unstyled">
-                        <li ng-repeat="ingredientItem in model.checkedItems">
+                        <li ng-repeat="ingredientItem in checkedItems">
                             <label class="checked-label checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
                                 <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                             </label>

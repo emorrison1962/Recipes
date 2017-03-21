@@ -6,9 +6,42 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
 
     $scope.init = function (model) {
         $scope.model = model;
-        $scope.model.checkedItems = [];
+        $scope.checkedItems = [];
         $log.debug($scope.model);
 
+        /////////////////////////////////////////////////////////////////////////////
+        Array.prototype.where = function (filter) {
+
+            var collection = this;
+
+            switch (typeof filter) {
+
+                case 'function':
+                    return $.grep(collection, filter);
+
+                case 'object':
+                    for (var property in filter) {
+                        if (!filter.hasOwnProperty(property))
+                            continue; // ignore inherited properties
+
+                        collection = $.grep(collection, function (item) {
+                            return item[property] === filter[property];
+                        });
+                    }
+                    return collection.slice(0); // copy the array 
+                    // (in case of empty object filter)
+
+                default:
+                    throw new TypeError('func must be either a' +
+                        'function or an object of properties and values to filter by');
+            }
+        };
+
+
+        Array.prototype.firstOrDefault = function (func) {
+            return this.where(func)[0] || null;
+        };
+        /////////////////////////////////////////////////////////////////////////////
 
         $scope.model.Items.Remove = function (item) {
             for (i = 0; i < this.length; i++) {
@@ -19,7 +52,7 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
             }
         }
 
-        $scope.model.checkedItems.Remove = function (item) {
+        $scope.checkedItems.Remove = function (item) {
             for (i = 0; i < this.length; i++) {
                 if (this[i].IngredientGroupItemId == item.IngredientGroupItemId) {
                     this.splice(i, 1);
@@ -40,14 +73,15 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
     }
 
     $scope.ingredientItemChecked = function (item) {
-        if (item.IsChecked) {
-            $scope.model.Items.Remove(item);
-            $scope.model.checkedItems.push(item);
-        }
-        else {
-            $scope.model.Items.push(item);
-            $scope.model.checkedItems.Remove(item);
-        }
+        $scope.setChecked(item);
+        //if (item.IsChecked) {
+        //    $scope.model.Items.Remove(item);
+        //    $scope.checkedItems.push(item);
+        //}
+        //else {
+        //    $scope.model.Items.push(item);
+        //    $scope.checkedItems.Remove(item);
+        //}
     };
 
     $scope.collapseClicked = function (btn) {
@@ -57,18 +91,31 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
             .toggleClass('glyphicon glyphicon-menu-down');
     };
 
-    $scope.insert = function () {
-        //find an existing checked item.
-        var existing = $.grep($scope.model.checkedItems, function (item) { return item.Text == $scope.newItem; })
-            .map(function (item) { return item; });
-        if (undefined !== existing) {
-            existing.IsChecked = false;
-            $scope.model.Items.push(existing);
-            $scope.model.checkedItems.Remove(existing);
+    $scope.setChecked = function (item) {
+        if (item.IsChecked) {
+            $scope.model.Items.Remove(item);
+            $scope.checkedItems.push(item);
         }
         else {
-            var item = { IngredientGroupItemId: 0, Text: $scope.newItem };
             $scope.model.Items.push(item);
+            $scope.checkedItems.Remove(item);
+        }
+    };
+
+
+    $scope.addItem = function () {
+        var item = $scope.model.Items.firstOrDefault({ Text: $scope.newItem });
+        if (null === item) {//prevent dupes
+            //find an existing checked item.
+            var item = $scope.checkedItems.firstOrDefault({ Text: $scope.newItem });
+            if (null !== item) {
+                item.IsChecked = false;
+                $scope.setChecked(item);
+            }
+            else {
+                var item = { IngredientGroupItemId: 0, Text: $scope.newItem, IsChecked: false };
+                $scope.setChecked(item);
+            }
         }
         $scope.newItem = "";
     }
@@ -77,7 +124,7 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
         $http({
             method: 'POST',
             url: '/ShoppingList/UpdateShoppingList',
-            data: { vm: $scope.model.ShoppingList },
+            data: { vm: $scope.model },
         }).success(function (data, status, headers, config) {
             $scope.message = '';
             if (data.success == false) {

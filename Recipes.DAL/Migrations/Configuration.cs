@@ -28,7 +28,20 @@ namespace Recipes.DAL.Migrations
             //    );
             //
 
+            this.InsertDefaultIngredientGroup(context);
             this.InsertTags(context);
+        }
+
+        void InsertDefaultIngredientGroup(Recipes.DAL.Data.DataContext context)
+        {
+            const string sql =
+                @"set identity_insert IngredientGroups on
+insert IngredientGroups (IngredientGroupId ,Text)
+	values (-1, 'ShoppingList')
+set identity_insert IngredientGroups off
+";
+
+            context.Database.ExecuteSqlCommand(sql);
         }
 
         void InsertTags(Recipes.DAL.Data.DataContext context)
