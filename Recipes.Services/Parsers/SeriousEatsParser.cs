@@ -65,7 +65,7 @@ namespace Recipes.Services.Parsers
                                 group = new IngredientGroup();
                                 result.Add(group);
                             }
-                            group.Add(li.InnerText.FromHtml());
+                            group.Add(new IngredientItem(li.InnerText.FromHtml()));
                         }
                     }
                 }
@@ -154,7 +154,7 @@ namespace Recipes.Services.Parsers
                                 group = new ProcedureGroup();
                                 result.Add(group);
                             }
-                            group.Add(ingredientText);
+                            group.Add(new ProcedureItem(ingredientText));
                         }
                     }
                 }

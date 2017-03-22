@@ -4,9 +4,9 @@ using Recipes.Domain;
 
 namespace Recipes.DAL.Repositories
 {
-    public class ProcedureGroupItemRepository : RepositoryBase<ProcedureGroupItem>
+    public class ProcedureItemRepository : RepositoryBase<ProcedureItem>
     {
-        public ProcedureGroupItemRepository(DataContext dc) : base(dc)
+        public ProcedureItemRepository(DataContext dc) : base(dc)
         {
         }
     }

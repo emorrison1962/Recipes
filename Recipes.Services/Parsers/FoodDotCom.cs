@@ -59,7 +59,7 @@ namespace Recipes.Services.Parsers
 				if (0 == divs.Count())
 				{
 					var procedure = li.InnerText.FromHtml();
-					this.Add(new ProcedureGroupItem(procedure));
+					this.Add(new ProcedureItem(procedure));
 				}
 			}
 

@@ -23,50 +23,56 @@ li {
 <div class="row-fluid" ng-controller='recipeViewController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
     <div class="col-md-offset-2 col-md-6">
         <div class="page-header">
-            <h2>{{recipe.Name}}</h2>
+            <h2>{{model.Recipe.Name}}</h2>
         </div>
-        <img class="plate img-rounded" src="{{recipe.ImageUri}}" />
+        <img class="plate img-rounded" src="{{model.Recipe.ImageUri}}" />
         <br/>
+        
+        
         <div id="ingredients" class="panel panel-default">
             <div class="panel-heading">
                 <h3 class="panel-title">Ingredients</h3>
             </div>
-            <div class="panel-body" ng-repeat="ingredientGroup in recipe.IngredientGroups">
+            
+            
+            <div class="panel-body" ng-repeat="ingredientGroup in model.Recipe.IngredientGroups">
                 <h4 class="h4">{{ingredientGroup.Text}}</h4>
                 <ul class="list-unstyled">
                     <li ng-repeat="ingredientItem in ingredientGroup.Items">
-                        <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
-                            <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                        <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientItemId}}">
+                            <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                         </label>
                     </li>
                 </ul>
             </div>
+            
+            
             <div class="panel-footer">
                 <button class="btn btn-default" ng-click="saveShoppingList()">Save Shopping List</button>
             </div>
         </div>
 
-            <div id="procedures" class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Procedure</h3>
-                </div>
-                <div class="panel-body" ng-repeat="procedureGroup in recipe.ProcedureGroups">
-                    <h4 class="h4">{{procedureGroup.Text}}</h4>
-                    <ul class="list-unstyled">
-                        <li ng-repeat="procedureItem in procedureGroup.Items">
-                            <label class="checkbox-inline" for="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}">
-                                <input id="cbProcedureItem-{{procedureItem.ProcedureGroupItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <p>
-                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-                @Html.ActionLink("Back to List", "Index")
-            </p>
+        <div id="procedures" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Procedure</h3>
+            </div>
+            <div class="panel-body" ng-repeat="procedureGroup in model.Recipe.ProcedureGroups">
+                <h4 class="h4">{{procedureGroup.Text}}</h4>
+                <ul class="list-unstyled">
+                    <li ng-repeat="procedureItem in procedureGroup.Items">
+                        <label class="checkbox-inline" for="cbProcedureItem-{{procedureItem.ProcedureItemId}}">
+                            <input id="cbProcedureItem-{{procedureItem.ProcedureItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
+                        </label>
+                    </li>
+                </ul>
+            </div>
         </div>
+
+        <p>
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    </div>
 </div>
 
 <script src="~/Scripts/Views/Recipe/View.js"></script>

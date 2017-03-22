@@ -114,7 +114,7 @@ namespace Recipes.Domain
 			return result;
 		}
 
-		List<string> GetText<T>(List<GroupBase<T>> groups) where T : GroupItemBase
+		List<string> GetText<T>(List<GroupBase<T>> groups) where T : GroupItemBase, new()
 		{
 			var result = new List<string>();
 			foreach (var g in groups)
@@ -134,14 +134,14 @@ namespace Recipes.Domain
 		public List<string> GetIngredientStrings()
 		{
 			var result = new List<string>();
-			result = this.GetText<IngredientGroupItem>((dynamic)this.IngredientGroups);
+			result = this.GetText<IngredientItem>((dynamic)this.IngredientGroups);
 			return result;
 		}
 
 		public List<string> GetProcedureStrings()
 		{
 			var result = new List<string>();
-			result = this.GetText<ProcedureGroupItem>((dynamic)this.ProcedureGroups);
+			result = this.GetText<ProcedureItem>((dynamic)this.ProcedureGroups);
 			return result;
 		}
 

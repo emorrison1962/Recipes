@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IngredientGroupService.cs" />
-    <Compile Include="IngredientGroupItemService.cs" />
+    <Compile Include="IngredientItemService.cs" />
     <Compile Include="Parsers\AllRecipesParser.cs.cs" />
     <Compile Include="Parsers\AltonBrownParser.cs" />
     <Compile Include="Parsers\DavidLebowitzParser.cs" />

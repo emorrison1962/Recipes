@@ -1,23 +1,24 @@
 ﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Serialization;
 
 namespace Recipes.Domain
 {
-    public class IngredientGroupItem : GroupItemBase
+    [Serializable]
+    public class IngredientItem : GroupItemBase
     {
 
         #region Properties
 
-        public int IngredientGroupItemId { get; set; }
+        public int IngredientItemId { get; set; }
 
-        public int? IngredientGroupRefId { get; set; }
-
-        [ForeignKey("IngredientGroupRefId")]
         [JsonIgnore]
+        [XmlIgnore]
         public virtual IngredientGroup IngredientGroup { get; set; }
         [JsonIgnore]
-        public HashSet<ShoppingList> ShoppingLists { get; set; }
+        [XmlIgnore]
+        public virtual ShoppingListItem ShoppingListItem { get; set; }
 
         [NotMapped]
         public bool IsChecked { get; set; }
@@ -29,18 +30,14 @@ namespace Recipes.Domain
 
         #endregion
 
-        public IngredientGroupItem()
+        public IngredientItem()
         {
 
         }
-        public IngredientGroupItem(string text)
+        public IngredientItem(string text)
         {
             this.Text = text;
             //this.Product = new Domain.Product(text);
-        }
-        public override string ToString()
-        {
-            return base.ToString() + string.Format(", Text={0}", this.Text);
         }
 
     }//class

@@ -45,13 +45,13 @@ namespace Recipes.Services.Tests
             container.RegisterType<IRepositoryBase<Tag>, TagRepository>();
             container.RegisterType<IRepositoryBase<ShoppingList>, ShoppingListRepository>();
             container.RegisterType<IRepositoryBase<IngredientGroup>, IngredientGroupRepository>();
-            container.RegisterType<IRepositoryBase<IngredientGroupItem>, IngredientGroupItemRepository>();
+            container.RegisterType<IRepositoryBase<IngredientItem>, IngredientItemRepository>();
 
 
             container.RegisterType<IServiceBase<Recipe>, RecipeService>();
             container.RegisterType<IServiceBase<Tag>, TagService>();
             container.RegisterType<IServiceBase<IngredientGroup>, IngredientGroupService>();
-            container.RegisterType<IServiceBase<IngredientGroupItem>, IngredientGroupItemService>();
+            container.RegisterType<IServiceBase<IngredientItem>, IngredientItemService>();
             container.RegisterType<IShoppingListService, ShoppingListService>();
 
         }

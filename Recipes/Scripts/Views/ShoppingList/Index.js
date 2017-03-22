@@ -45,7 +45,7 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
 
         $scope.model.Items.Remove = function (item) {
             for (i = 0; i < this.length; i++) {
-                if (this[i].IngredientGroupItemId == item.IngredientGroupItemId) {
+                if (this[i].IngredientItemId == item.IngredientItemId) {
                     this.splice(i, 1);
                     break;
                 }
@@ -54,7 +54,7 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
 
         $scope.checkedItems.Remove = function (item) {
             for (i = 0; i < this.length; i++) {
-                if (this[i].IngredientGroupItemId == item.IngredientGroupItemId) {
+                if (this[i].IngredientItemId == item.IngredientItemId) {
                     this.splice(i, 1);
                     break;
                 }
@@ -113,7 +113,7 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
                 $scope.setChecked(item);
             }
             else {
-                var item = { IngredientGroupItemId: 0, Text: $scope.newItem, IsChecked: false };
+                var item = { IngredientItemId: 0, Text: $scope.newItem, IsChecked: false };
                 $scope.setChecked(item);
             }
         }

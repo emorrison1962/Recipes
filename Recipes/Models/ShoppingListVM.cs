@@ -8,7 +8,8 @@ using System.Linq;
 namespace Recipes.Models
 {
     [Serializable]
-    public class ShoppingListVM //: IShoppingListShallow
+    [Obsolete("Obsolete", true)]
+    class ShoppingListVM 
     {
         IShoppingListService _shoppingListService;
 
@@ -23,11 +24,11 @@ namespace Recipes.Models
             set { _shoppingListService = value; }
         }
         public int ShoppingListId { get; set; }
-        public List<IngredientGroupItem> Items { get; set; }
+        public List<IngredientItem> Items { get; set; }
 
         public ShoppingListVM()
         {
-            this.Items = new List<IngredientGroupItem>();
+            this.Items = new List<IngredientItem>();
         }
 
         public void Load(bool isChecked = true)
@@ -36,11 +37,12 @@ namespace Recipes.Models
             if (null != slim)
             {
                 var sl = this.ShoppingListService.GetFullObject(slim.ShoppingListId);
+                throw new NotImplementedException();
 
-                var list = sl.Items.ToList();
-                this.ShoppingListId = sl.ShoppingListId;
-                list.ForEach(x => x.IsChecked = isChecked);
-                list.ForEach(x => this.Items.Add(x));
+                //var list = sl.Items.ToList();
+                //this.ShoppingListId = sl.ShoppingListId;
+                //list.ForEach(x => x.IsChecked = isChecked);
+                //list.ForEach(x => this.Items.Add(x));
             }
         }
 

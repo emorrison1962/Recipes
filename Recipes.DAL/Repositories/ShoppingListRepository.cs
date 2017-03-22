@@ -18,10 +18,23 @@ namespace Recipes.DAL.Repositories
 
         public override ShoppingList GetFullObject(object id)
         {
+
+#if false
+            var query = this._dbSet
+                .Where(r => r.RecipeId == id)
+                .IncludeMultiple(
+                    r => r.IngredientGroups
+                    , r => r.IngredientGroups.Select<IngredientGroup, List<IngredientItem>>(pg => pg.Items)
+                    , r => r.ProcedureGroups
+                    , r => r.ProcedureGroups.Select<ProcedureGroup, List<ProcedureItem>>(pg => pg.Items));
+                        
+            var result = query.FirstOrDefault();
+#endif
             var result = this._dbSet
-                .Where(sl => sl.ShoppingListId == (int)id)
-                .IncludeMultiple(sl => sl.Items)
-                .FirstOrDefault(); 
+                .Where(l => l.ShoppingListId == (int)id)
+                .IncludeMultiple(l => l.Groups,
+                    l => l.Groups.Select(slg => slg.Items))
+                .FirstOrDefault();
 
             return result;
         }

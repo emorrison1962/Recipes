@@ -31,8 +31,21 @@ namespace Recipes.Services
 
         override public Recipe Insert(Recipe recipe)
 		{
-			var result = this.Create(recipe.Uri);
-			if (null != result)
+            Recipe result = null;
+            if (recipe.IsValid)
+            {
+                Func<Recipe, bool> where = x => x.Uri == recipe.Uri;
+                var existing = Repository.GetAll(where).FirstOrDefault();
+                if (null == existing)
+                {
+                    result = recipe;
+                }
+            }
+            else
+            {
+                result = this.Create(recipe.Uri);
+            }
+            if (null != result)
 			{
 				this.Repository.Insert(result);
 				this.Repository.Commit();

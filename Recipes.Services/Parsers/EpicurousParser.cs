@@ -60,7 +60,7 @@ namespace Recipes.Services.Parsers
 					if (li.NodeType == HtmlNodeType.Element)
 					{
                         var itemText = li.InnerText.FromHtml();
-                        result.Add(itemText);
+                        result.Add(new IngredientItem(itemText));
 					}
 				}
 			}
@@ -115,7 +115,7 @@ namespace Recipes.Services.Parsers
 					if (li.NodeType == HtmlNodeType.Element)
 					{
                         var itemText = li.InnerText.FromHtml();
-                        result.Add(itemText);
+                        result.Add(new ProcedureItem(itemText));
 					}
 				}
 			}

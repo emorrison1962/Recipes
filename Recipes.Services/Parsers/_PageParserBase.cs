@@ -118,7 +118,7 @@ namespace Recipes.Services
                 using (var cli = new HttpClient(handler))
                 {
                     cli.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/json");
-                    cli.Timeout = TimeSpan.FromSeconds(60);
+                    //cli.Timeout = TimeSpan.FromSeconds(60);
                     using (var response = cli.GetAsync(url).Result)
                     {
                         if (response.IsSuccessStatusCode)
@@ -131,6 +131,12 @@ namespace Recipes.Services
                         }
                     }
                 }
+            }
+            catch (AggregateException ex)
+            {
+                var root = ex.GetBaseException();
+                Debug.Assert(false, root.Message);
+                throw;
             }
             catch (Exception ex)
             {
@@ -326,13 +332,13 @@ namespace Recipes.Services
         {
             if (string.IsNullOrEmpty(igiText))
                 throw new ArgumentException("parameter igiText is null or Empty.");
-            var i = new IngredientGroupItem(igiText);
+            var i = new IngredientItem(igiText);
             this.Add(i);
         }
-        protected void Add(IngredientGroupItem i)
+        protected void Add(IngredientItem i)
         {
             if (null == i)
-                throw new ArgumentNullException("IngredientGroupItem i");
+                throw new ArgumentNullException("IngredientItem i");
 
             var g = this.IngredientGroups.LastOrDefault();
             if (null == g)
@@ -343,10 +349,10 @@ namespace Recipes.Services
             g.Add(i);
         }
 
-        protected void Add(ProcedureGroupItem i)
+        protected void Add(ProcedureItem i)
         {
             if (null == i)
-                throw new ArgumentNullException("ProcedureGroupItem i");
+                throw new ArgumentNullException("ProcedureItem i");
 
             var g = this.ProcedureGroups.LastOrDefault();
             if (null == g)

@@ -667,7 +667,7 @@ namespace Recipes.Services.Parsers
 						var preparation = this.GetProcedures(preparationGroup);
 						foreach (var procedure in preparation)
 						{
-							var pgi = new ProcedureGroupItem(procedure);
+							var pgi = new ProcedureItem(procedure);
 							this.Add(pgi);
 						}
 					}

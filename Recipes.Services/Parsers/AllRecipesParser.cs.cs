@@ -31,7 +31,7 @@ namespace Recipes.Services.Parsers
 				{
 					var ingredient = span.InnerText.FromHtml().Trim();
 					if (!string.IsNullOrEmpty(ingredient))
-						this.Add(new IngredientGroupItem(ingredient));
+						this.Add(new IngredientItem(ingredient));
 				}
 			}
 		}
@@ -55,7 +55,7 @@ namespace Recipes.Services.Parsers
 				{
 					var procedure = span.InnerText.FromHtml().Trim();
 					if (!string.IsNullOrEmpty(procedure))
-						this.Add(new ProcedureGroupItem(procedure));
+						this.Add(new ProcedureItem(procedure));
 				}
 			}
 		}

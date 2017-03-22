@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Recipes.Domain
 {
@@ -7,18 +8,18 @@ namespace Recipes.Domain
     public class ShoppingList
     {
         public int ShoppingListId { get; set; }
-        public HashSet<IngredientGroupItem> Items { get; set; }
+        public List<ShoppingListGroup> Groups { get; set; }
         public ShoppingList()
         {
-            this.Items = new HashSet<IngredientGroupItem>();
+            this.Groups = new List<ShoppingListGroup>();
         }
 
-        public void Add(IngredientGroupItem item)
+        public void Add(ShoppingListItem item)
         {
             if (null == item)
-                throw new ArgumentNullException("IngredientGroupItem item is null.");
+                throw new ArgumentNullException("IngredientItem item is null.");
 
-            this.Items.Add(item);
+            this.Groups.First().Add(item);
         }
     }//class
 }//ns

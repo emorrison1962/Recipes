@@ -40,7 +40,7 @@ namespace Recipes.Services
 			foreach (var node in nodes)
 			{
 				var procedure = node.InnerText.FromHtml();
-				this.Add(new ProcedureGroupItem(procedure));
+				this.Add(new ProcedureItem(procedure));
 			}
 		}
 	}

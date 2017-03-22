@@ -10,38 +10,33 @@ namespace Recipes.DAL.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(Recipes.DAL.Data.DataContext context)
         {
-            //  This method will be called after migrating to the latest version.
-
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
-
-            this.InsertDefaultIngredientGroup(context);
+            this.SeedShoppingList(context);
             this.InsertTags(context);
         }
 
-        void InsertDefaultIngredientGroup(Recipes.DAL.Data.DataContext context)
+        void SeedShoppingList(Recipes.DAL.Data.DataContext context)
         {
-            const string sql =
-                @"set identity_insert IngredientGroups on
-insert IngredientGroups (IngredientGroupId ,Text)
-	values (-1, 'ShoppingList')
-set identity_insert IngredientGroups off
-";
+            var groups = new ShoppingListGroup[] {
+                new ShoppingListGroup { Text = "<Unknown>" },
+                new ShoppingListGroup { Text = "Produce" },
+                new ShoppingListGroup { Text = "Meat" },
+                new ShoppingListGroup { Text = "Dairy" },
+                new ShoppingListGroup { Text = "Deli" },
+                new ShoppingListGroup { Text = "Soap" },
+                new ShoppingListGroup { Text = "Paper" },
+                new ShoppingListGroup { Text = "Sam's" },
+                new ShoppingListGroup { Text = "Other" }};
+            context.ShoppingListGroups.AddOrUpdate(t => t.Text,groups);
 
-            context.Database.ExecuteSqlCommand(sql);
+            var sl = new ShoppingList();
+            context.ShoppingLists.AddOrUpdate(sl);
+            sl.Groups.AddRange(groups);
+            context.SaveChanges();
         }
 
         void InsertTags(Recipes.DAL.Data.DataContext context)
@@ -55,6 +50,5 @@ set identity_insert IngredientGroups off
                 new Tag { Name = "Dessert" },
                 new Tag { Name = "Ice Cream" });
         }
-
     }
 }

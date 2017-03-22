@@ -1,4 +1,4 @@
-﻿@model Recipes.Models.ShoppingListVM
+﻿@model Recipes.Domain.ShoppingList
 
 @{
     ViewBag.Title = "Index";
@@ -41,8 +41,8 @@
         <div id="unchecked_ingredients" class="panel panel-default">
             <ul class="list-unstyled">
                 <li ng-repeat="ingredientItem in model.Items">
-                    <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
-                        <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                    <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientItemId}}">
+                        <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                     </label>
                 </li>
             </ul>
@@ -61,8 +61,8 @@
                 <div id="checked_ingredients" class="collapse in">
                     <ul class="list-unstyled">
                         <li ng-repeat="ingredientItem in checkedItems">
-                            <label class="checked-label checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}">
-                                <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientGroupItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
+                            <label class="checked-label checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientItemId}}">
+                                <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                             </label>
                         </li>
                     </ul>

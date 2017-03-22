@@ -28,7 +28,7 @@ namespace Recipes.Services
 			foreach (var p in ps)
 			{
 				var procedure = p.InnerText.FromHtml();
-				this.Add(new ProcedureGroupItem(procedure));
+				this.Add(new ProcedureItem(procedure));
 			}
 		}
 	}

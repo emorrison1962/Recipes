@@ -43,7 +43,7 @@ namespace Recipes.Services.Tests
         }
 
         [TestMethod()]
-        public void InsertTest()
+        public void SeedDatabase()
         {
             #region list
             var list = new List<string>()
@@ -83,16 +83,30 @@ namespace Recipes.Services.Tests
             {
 				try
 				{
-					var recipe = new Recipe() { Uri = url };
-					svc.Insert(recipe);
-					new object();
-				}
+                    var parser = PageParserFactory.Create(url);
+                    var host = new UriBuilder(url).Host;
+                    var recipe = parser.TryParse(url);
+                    if (recipe.IsValid)
+                    {
+                        svc.Insert(recipe);
+                        new object();
+                        Debug.WriteLine(string.Format("ADDED: {0}", url));
+                    }
+                    else
+                    {
+                        Debug.WriteLine(string.Format("*** IsValid failed: {0} ***", url));
+                    }
+                }
+
 #pragma warning disable 168
                 catch (Exception ex)
 				{
 					Debug.WriteLine(url);
 					new object();
-				}
+
+                    Debug.WriteLine(string.Format("*** Exception: {0} ***", url));
+
+                }
 #pragma warning restore 168
             }
 

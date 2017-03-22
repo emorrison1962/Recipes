@@ -57,7 +57,7 @@ namespace Recipes.Services
 			{
 				var procedure = span.InnerText.FromHtml().Trim();
 				if (!string.IsNullOrEmpty(procedure))
-					this.Add(new ProcedureGroupItem(procedure));
+					this.Add(new ProcedureItem(procedure));
 			}
 		}
 	}

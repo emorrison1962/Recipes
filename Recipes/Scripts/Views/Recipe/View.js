@@ -6,26 +6,28 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 
 	$scope.init = function (model) {
 	    $scope.model = model;
-	    $scope.recipe = model.Recipe;
 	    $log.debug($scope.model);
 
-        
-	    $scope.model.ShoppingList.Items.Remove = function (item) {
+	    //$scope.model.ShoppingList.Items.Remove = function (item) {
+	    
+	    Array.prototype.Remove = function (item) {
 	        for (i = 0; i < this.length; i++) {
-	            if (this[i].IngredientGroupItemId === item.IngredientGroupItemId) {
+	            if (this[i].IngredientItemId === item.IngredientItemId) {
 	                this.splice(i, 1);
 	                break;
 	            }
 	        }
-	    }
+	    };
+
+
 	};
 
 	$scope.ingredientItemChecked = function (item) {
 	    if (item.IsChecked) {
-	        $scope.model.ShoppingList.Items.push(item);
+	        $scope.model.ShoppingList.Groups[0].Items.push(item);
 	    }
 	    else {
-	        $scope.model.ShoppingList.Items.Remove(item);
+	        $scope.model.ShoppingList.Groups[0].Items.Remove(item);
 	    }
 	};
 
@@ -52,6 +54,45 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 	        $scope.message = 'Unexpected Error';
 	    });
 	};
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Utilities
+    /////////////////////////////////////////////////////////////////////////////
+	Array.prototype.where = function (filter) {
+
+	    var collection = this;
+
+	    switch (typeof filter) {
+
+	        case 'function':
+	            return $.grep(collection, filter);
+
+	        case 'object':
+	            for (var property in filter) {
+	                if (!filter.hasOwnProperty(property))
+	                    continue; // ignore inherited properties
+
+	                collection = $.grep(collection, function (item) {
+	                    return item[property] === filter[property];
+	                });
+	            }
+	            return collection.slice(0); // copy the array 
+	            // (in case of empty object filter)
+
+	        default:
+	            throw new TypeError('func must be either a' +
+                    'function or an object of properties and values to filter by');
+	    }
+	};
+
+
+	Array.prototype.firstOrDefault = function (func) {
+	    return this.where(func)[0] || null;
+	};
+
+    /////////////////////////////////////////////////////////////////////////////
+
+
 
 
 }]);

@@ -72,7 +72,7 @@ namespace Recipes.Services.Parsers
 					foreach (var li in lis)
 					{
 						var procedure = li.InnerText.FromHtml();
-						this.Add(new ProcedureGroupItem(procedure));
+						this.Add(new ProcedureItem(procedure));
 					}
 				}
 			}

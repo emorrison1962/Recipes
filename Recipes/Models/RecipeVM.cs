@@ -12,6 +12,7 @@ namespace Recipes.Models
     {
         IServiceBase<Recipe> _recipeService;
         IServiceBase<Tag> _tagService;
+        IShoppingListService _shoppingListService;
 
         public IServiceBase<Recipe> RecipeService
         {
@@ -35,9 +36,19 @@ namespace Recipes.Models
             set { _tagService = value; }
         }
 
+        public IShoppingListService ShoppingListService
+        {
+            get
+            {
+                if (null == _shoppingListService)
+                    _shoppingListService = Unity.Resolve<IShoppingListService>();
+                return _shoppingListService;
+            }
+            set { _shoppingListService = value; }
+        }
         public Recipe Recipe { get; set; }
         public IEnumerable<Tag> TagCatalog { get; set; }
-        public ShoppingListVM ShoppingList { get; set; }
+        public ShoppingList ShoppingList { get; set; }
 
 
         public RecipeVM(int recipeId)
@@ -48,25 +59,33 @@ namespace Recipes.Models
                 var t = this.TagService.GetAll();
 
                 this.Recipe = r;
-                this.ShoppingList = new ShoppingListVM();
-                this.ShoppingList.Load();
                 this.TagCatalog = t;
-
-                //Set the IsChecked flag on appropriate recipe ingredients.
-                var seq = (
-                    from ig in this.Recipe.IngredientGroups
-                    from igi in ig.Items
-                    from sli in this.ShoppingList.Items
-                    where igi.IngredientGroupItemId == sli.IngredientGroupItemId
-                    select (igi)).ToList();
-                seq.ForEach(x => x.IsChecked = true);
-
+                this.ShoppingList = this.GetShoppingList();
             }
             catch (Exception ex)
             {
                 Debug.Assert(false, ex.ToString());
                 throw;
             }
+
+        }
+
+        ShoppingList GetShoppingList()
+        {
+            ShoppingList result = null;
+            try
+            {
+                var slim = this.ShoppingListService.GetAll().LastOrDefault();
+                if (null != slim)
+                {
+                    result = this.ShoppingListService.GetFullObject(slim.ShoppingListId);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return result;
         }
 
     }//class

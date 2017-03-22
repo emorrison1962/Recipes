@@ -1,5 +1,7 @@
 ﻿using Recipes.Contracts.Services;
+using Recipes.Domain;
 using Recipes.Models;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Recipes.Controllers
@@ -15,16 +17,14 @@ namespace Recipes.Controllers
         // GET: ShoppingList
         public ActionResult Index()
         {
-            var shoppingList = new ShoppingListVM();
-            shoppingList.Load(false);
-
+            var shoppingList = this.ShoppingListService.GetAll().LastOrDefault();
             return View(shoppingList);
         }
 
         [HttpPost]
-        public ActionResult UpdateShoppingList(ShoppingListVM vm)
+        public ActionResult UpdateShoppingList(ShoppingList sl)
         {
-            this.ShoppingListService.Update(vm.ShoppingListId, vm.Items);
+            this.ShoppingListService.Update(sl);
 
             return null;
         }

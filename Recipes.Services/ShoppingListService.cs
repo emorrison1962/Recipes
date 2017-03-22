@@ -12,28 +12,15 @@ namespace Recipes.Services
     {
         #region Fields
 
-        IngredientGroup _defaultIngredientGroup;
 
         #endregion
 
         #region Properties
-        IngredientGroup DefaultIngredientGroup
-        {
-            get
-            {
-                if (null == _defaultIngredientGroup)
-                {
-                    _defaultIngredientGroup = this.IngredientGroupService.GetById(IngredientGroup.DefaultIngredientGroupId);
-                }
-                return _defaultIngredientGroup;
-            }
-        }
-
         IRepositoryBase<ShoppingList> Repository { get; set; }
 
         IServiceBase<IngredientGroup> IngredientGroupService { get; set; }
 
-        IServiceBase<IngredientGroupItem> IngredientGroupItemService { get; set; }
+        IServiceBase<IngredientItem> IngredientItemService { get; set; }
 
         #endregion
 
@@ -41,12 +28,12 @@ namespace Recipes.Services
 
         public ShoppingListService(IRepositoryBase<ShoppingList> repository,
             IServiceBase<IngredientGroup> ingredientGroupService,
-            IServiceBase<IngredientGroupItem> ingredientGroupItemService)
+            IServiceBase<IngredientItem> IngredientItemService)
             : base(repository)
         {
             this.Repository = repository;
             this.IngredientGroupService = ingredientGroupService;
-            this.IngredientGroupItemService = ingredientGroupItemService;
+            this.IngredientItemService = IngredientItemService;
         }
 
         #endregion
@@ -56,9 +43,7 @@ namespace Recipes.Services
             List<ShoppingList> result;
             try
             {
-#warning We're only supporting one global list right now.
                 result = this.Repository.GetAll().ToList();
-                result.Sort();
             }
             catch (Exception ex)
             {
@@ -101,14 +86,16 @@ namespace Recipes.Services
             return entity;
         }
 
-        public bool Update(int id, List<IngredientGroupItem> incomingItems)
+        public bool Update(int id, List<IngredientItem> incomingItems)
         {
             var result = false;
+
+            /*
             var existing = this.GetFullObject(id);
 
-            var newManualEntries = incomingItems.Where(x => x.IngredientGroupItemId == 0).ToList();
+            var newManualEntries = incomingItems.Where(x => x.IngredientItemId == 0).ToList();
             if (newManualEntries.Count > 0)
-            {//manually entered IngredientGroupItems.
+            {//manually entered IngredientItems.
                 foreach (var me in newManualEntries)
                 {
                     me.IngredientGroup = this.DefaultIngredientGroup;
@@ -119,20 +106,20 @@ namespace Recipes.Services
                 }
             }
 
-            var existingIds = existing.Items.Select(x => x.IngredientGroupItemId).ToList();
-            var incomingIds = incomingItems.Select(x => x.IngredientGroupItemId).ToList();
+            var existingIds = existing.Items.Select(x => x.IngredientItemId).ToList();
+            var incomingIds = incomingItems.Select(x => x.IngredientItemId).ToList();
 
             var insertIds = incomingIds.Except(existingIds);
             foreach (var insert in insertIds)
             {
-                var existingIgi = this.IngredientGroupItemService.GetById(insert);
-                existingIgi = this.IngredientGroupItemService.Detach(existingIgi);
+                var existingIgi = this.IngredientItemService.GetById(insert);
+                existingIgi = this.IngredientItemService.Detach(existingIgi);
                 existing.Items.Add(existingIgi);
             }
 
 
             var deleteIds = existingIds.Except(incomingIds).ToList();
-            var deletes = existing.Items.Where(x => deleteIds.Contains(x.IngredientGroupItemId)).Select(x => x).ToList();
+            var deletes = existing.Items.Where(x => deleteIds.Contains(x.IngredientItemId)).Select(x => x).ToList();
             deletes.ForEach(x => existing.Items.Remove(x));
 
             try
@@ -147,7 +134,7 @@ namespace Recipes.Services
                 throw;
             }
 #pragma warning restore 168
-
+*/
             return result;
         }
 

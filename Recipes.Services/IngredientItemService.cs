@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace Recipes.Services
 {
-    public class IngredientGroupItemService : ServiceBase<IngredientGroupItem>, IServiceBase<IngredientGroupItem>
+    public class IngredientItemService : ServiceBase<IngredientItem>, IServiceBase<IngredientItem>
     {
-        IRepositoryBase<IngredientGroupItem> Repository { get; set; }
+        IRepositoryBase<IngredientItem> Repository { get; set; }
 
-        public IngredientGroupItemService(IRepositoryBase<IngredientGroupItem> repository) 
+        public IngredientItemService(IRepositoryBase<IngredientItem> repository) 
             : base(repository)
         {
             this.Repository = repository;
 
         }
 
-        override public IngredientGroupItem GetById(int id)
+        override public IngredientItem GetById(int id)
         {
             var result = this.Repository.GetById(id);
             return result;

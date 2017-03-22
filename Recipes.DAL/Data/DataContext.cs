@@ -1,56 +1,55 @@
 ﻿using Recipes.Domain;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.DAL.Data
 {
-	public class DataContext : DbContext
-	{
-		public DataContext() : base("DefaultConnection")
-		{
+    public class DataContext : DbContext
+    {
+        public DataContext() : base("DefaultConnection")
+        {
 
-		}
-		public DbSet<Recipe> Recipes { get; set; }
-		public DbSet<Tag> Tags { get; set; }
-        public DbSet<Ethnicity> Ethnicities { get; set; }
+        }
+        public DbSet<Recipe> Recipes { get; set; }
         public DbSet<ShoppingList> ShoppingLists { get; set; }
+
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Ethnicity> Ethnicities { get; set; }
+
         public DbSet<IngredientGroup> IngredientGroups { get; set; }
-        public DbSet<IngredientGroupItem> IngredientGroupItems { get; set; }
+        public DbSet<IngredientItem> IngredientItems { get; set; }
+
         public DbSet<ProcedureGroup> ProcedureGroups { get; set; }
-        public DbSet<ProcedureGroupItem> ProcedureGroupItems { get; set; }
+        public DbSet<ProcedureItem> ProcedureItems { get; set; }
+
+        public DbSet<ShoppingListGroup> ShoppingListGroups { get; set; }
+        //public DbSet<IngredientItem> ShoppingListItems { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<Recipe>()
-						.HasMany<Tag>(r => r.Tags)
-						.WithMany(t => t.Recipes)
-						.Map(rt =>
-						{
-							rt.MapLeftKey("RecipeRefId");
-							rt.MapRightKey("TagRefId");
-							rt.ToTable("RecipeTag");
-						});
-
-            modelBuilder.Entity<ShoppingList>()
-                        .HasMany<IngredientGroupItem>(sl => sl.Items)
-                        .WithMany(igi => igi.ShoppingLists)
-                        .Map(cs =>
+        {
+            modelBuilder.Entity<Recipe>()
+                        .HasMany<Tag>(r => r.Tags)
+                        .WithMany(t => t.Recipes)
+                        .Map(rt =>
                         {
-                            cs.MapLeftKey("ShoppingListRefId");
-                            cs.MapRightKey("IngredientGroupItemRefId");
-                            cs.ToTable("ShoppingListIngredientGroupItem");
+                            rt.MapLeftKey("RecipeId");
+                            rt.MapRightKey("TagId");
+                            rt.ToTable("RecipeTag");
                         });
 
-            modelBuilder.Entity<IngredientGroupItem>()
+            modelBuilder.Entity<ShoppingList>()
+                        .HasMany<ShoppingListGroup>(x => x.Groups);
+
+
+            modelBuilder.Entity<ShoppingListItem>()
+                                .HasOptional<ShoppingListGroup>(s => s.ShoppingListGroup)
+                                .WithMany(s => s.Items);
+
+            modelBuilder.Entity<IngredientItem>()
                                 .HasOptional<IngredientGroup>(s => s.IngredientGroup)
                                 .WithMany(s => s.Items);
 
-            modelBuilder.Entity<ProcedureGroupItem>()
+            modelBuilder.Entity<ProcedureItem>()
                                 .HasOptional<ProcedureGroup>(s => s.ProcedureGroup)
                                 .WithMany(s => s.Items);
 

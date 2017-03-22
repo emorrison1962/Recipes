@@ -47,17 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amount.cs" />
-    <Compile Include="GroupBase.cs" />
-    <Compile Include="GroupItemBase.cs" />
-    <Compile Include="Ingredients.cs" />
-    <Compile Include="IngredientsGroup.cs" />
-    <Compile Include="IngredientsGroupItem.cs" />
-    <Compile Include="Procedure.cs" />
-    <Compile Include="ProcedureGroup.cs" />
-    <Compile Include="ProcedureGroupItem.cs" />
+    <Compile Include="Groups\_GroupBase.cs" />
+    <Compile Include="Items\ShoppingListItem.cs" />
+    <Compile Include="Items\_GroupItemBase.cs" />
+    <Compile Include="Groups\IngredientsGroup.cs" />
+    <Compile Include="Items\IngredientItem.cs" />
+    <Compile Include="Groups\ProcedureGroup.cs" />
+    <Compile Include="Items\ProcedureItem.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ShoppingList.cs" />
-    <Compile Include="ShoppingListGroup.cs" />
+    <Compile Include="Groups\ShoppingListGroup.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Ethnicity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +66,7 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
