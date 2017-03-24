@@ -9,7 +9,7 @@ namespace Recipes.Services
 {
     abstract public class ServiceBase<T> : IServiceBase<T> where T : class
     {
-        IRepositoryBase<T> Repository { get; set; }
+        protected IRepositoryBase<T> Repository { get; set; }
 
         public ServiceBase(IRepositoryBase<T> repository)
         {

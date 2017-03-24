@@ -44,7 +44,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositoryBase.cs" />
     <Compile Include="Services\IServiceBase.cs" />
-    <Compile Include="Services\IShoppingListService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Recipes.Domain\Recipes.Domain.csproj">

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShoppingListGroupService.cs" />
     <Compile Include="IngredientGroupService.cs" />
     <Compile Include="IngredientItemService.cs" />
     <Compile Include="Parsers\AllRecipesParser.cs.cs" />

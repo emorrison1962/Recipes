@@ -52,7 +52,7 @@ namespace Recipes.Services.Tests
             container.RegisterType<IServiceBase<Tag>, TagService>();
             container.RegisterType<IServiceBase<IngredientGroup>, IngredientGroupService>();
             container.RegisterType<IServiceBase<IngredientItem>, IngredientItemService>();
-            container.RegisterType<IShoppingListService, ShoppingListService>();
+            container.RegisterType<IServiceBase<ShoppingList>, ShoppingListService>();
 
         }
     }//class

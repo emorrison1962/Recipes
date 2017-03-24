@@ -11,12 +11,9 @@ namespace Recipes.Services
 {
     public class IngredientGroupService : ServiceBase<IngredientGroup>, IServiceBase<IngredientGroup>
     {
-        IRepositoryBase<IngredientGroup> Repository { get; set; }
-
         public IngredientGroupService(IRepositoryBase<IngredientGroup> repository) 
             : base(repository)
         {
-            this.Repository = repository;
         }
 
     }//class

@@ -1,6 +1,7 @@
 ﻿using Eric.Morrison;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Recipes.Contracts.Services;
 using Recipes.Domain;
 using Recipes.Models;
 using Recipes.Services;
@@ -26,24 +27,26 @@ namespace Recipes.Services.Tests
         }
 
         [TestMethod()]
-        public void UpdateTest()
+        public void Update_AddIngredient_Test()
         {
-            //var svc = UnityContainer.Resolve<ShoppingListService>();
+            var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
+            var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
 
-            //var sl1 = new ShoppingListVM();
-            //sl1.Load(false);
+            var ingredientItem = this.GetRandomIngredient();
+            var shoppingItem = new ShoppingListItem();
+            shoppingItem.Text = ingredientItem.Text;    
 
-            
-            //var igi = new IngredientItem(RandomString.GetAlphaOnly(RandomValue.Next<uint>(12, 24)));
-            //sl1.Items.Add(igi);
-
-            //svc.Update(sl1.ShoppingListId, sl1.Items);
-
-            //var sl2 = new ShoppingListVM();
-            //sl2.Load(false);
-
-            //Assert.AreEqual(sl1.Items.Count, sl2.Items.Count);
-
+            shoppingSvc.Update(shoppingList);
+            new object();
         }
-    }
-}
+
+        IngredientItem GetRandomIngredient()
+        {
+            var ingredientItemSvc = UnityContainer.Resolve<IngredientItemService>();
+            var ingredients = ingredientItemSvc.GetAll().ToList();
+            var randomList = new RandomList<IngredientItem>(ingredients);
+            var result = randomList.Next();
+            return result;
+        }
+    }//class
+}//ns

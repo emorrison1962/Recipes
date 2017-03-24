@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Recipes.Services
 {
-    public class ShoppingListService : ServiceBase<ShoppingList>, IShoppingListService
+    public class ShoppingListService : ServiceBase<ShoppingList>, IServiceBase<ShoppingList>
     {
         #region Fields
 
@@ -16,24 +16,18 @@ namespace Recipes.Services
         #endregion
 
         #region Properties
-        IRepositoryBase<ShoppingList> Repository { get; set; }
 
-        IServiceBase<IngredientGroup> IngredientGroupService { get; set; }
-
-        IServiceBase<IngredientItem> IngredientItemService { get; set; }
+        IServiceBase<ShoppingListGroup> ShoppingListGroupService { get; set; }
 
         #endregion
 
         #region Construction
 
         public ShoppingListService(IRepositoryBase<ShoppingList> repository,
-            IServiceBase<IngredientGroup> ingredientGroupService,
-            IServiceBase<IngredientItem> IngredientItemService)
+            IServiceBase<ShoppingListGroup> shoppingListGroupService)
             : base(repository)
         {
-            this.Repository = repository;
-            this.IngredientGroupService = ingredientGroupService;
-            this.IngredientItemService = IngredientItemService;
+            this.ShoppingListGroupService = shoppingListGroupService;
         }
 
         #endregion
@@ -86,21 +80,45 @@ namespace Recipes.Services
             return entity;
         }
 
-        public bool Update(int id, List<IngredientItem> incomingItems)
+        class ShoppingListItemIdComparer : IEqualityComparer<ShoppingListItem>
+        {
+            public bool Equals(ShoppingListItem x, ShoppingListItem y)
+            {
+                return x.ShoppingListItemId == y.ShoppingListItemId;
+            }
+
+            public int GetHashCode(ShoppingListItem obj)
+            {
+                return obj.ShoppingListItemId.GetHashCode();
+            }
+        }
+
+        public bool Update(int id, List<ShoppingListItem> incomingItems)
         {
             var result = false;
+            var existing = this.GetFullObject(id);
+            var defaultGroup = existing.Groups[0];
+
+            var existingItems = (
+                from g in existing.Groups
+                from i in g.Items
+                select (i)).ToList();
+
+            var pendingInserts = incomingItems.Except(existingItems, new ShoppingListItemIdComparer()).ToList();
+            var pendingDeletes = existingItems.Except(incomingItems, new ShoppingListItemIdComparer()).ToList();
+            
+
 
             /*
-            var existing = this.GetFullObject(id);
-
-            var newManualEntries = incomingItems.Where(x => x.IngredientItemId == 0).ToList();
+            var newManualEntries = incomingItems.Where(x => x.ShoppingListItemId == 0).ToList();
             if (newManualEntries.Count > 0)
             {//manually entered IngredientItems.
                 foreach (var me in newManualEntries)
                 {
-                    me.IngredientGroup = this.DefaultIngredientGroup;
-                    this.DefaultIngredientGroup.Items.Add(me);
-                    IngredientGroupService.Update(this.DefaultIngredientGroup);
+                    me.ShoppingListGroup = defaultGroup;
+                    defaultGroup.Items.Add(me);
+
+                    ShoppingListGroupService.Update(defaultGroup);
                     existing.Add(me);
                     incomingItems.Remove(me);
                 }

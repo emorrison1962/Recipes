@@ -22,20 +22,26 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 
 	};
 
-	$scope.ingredientItemChecked = function (item) {
-	    if (item.IsChecked) {
-	        $scope.model.ShoppingList.Groups[0].Items.push(item);
+	$scope.ingredientItemChecked = function (ingredientItem) {
+	    var shoppingListItem = createShoppingListItem(ingredientItem);
+	    if (ingredientItem.IsChecked) {
+	        $scope.model.ShoppingList.Groups[0].Items.push(shoppingListItem);
 	    }
 	    else {
-	        $scope.model.ShoppingList.Groups[0].Items.Remove(item);
+	        $scope.model.ShoppingList.Groups[0].Items.Remove(shoppingListItem);
 	    }
 	};
+
+	createShoppingListItem = function (ingredientItem) {
+	    return { ShoppingListItemId: 0, Text: ingredientItem.Text, IngredientItem: ingredientItem }
+	};
+
 
 	$scope.saveShoppingList = function () {
 	    $http({
 	        method: 'POST',
 	        url: '/ShoppingList/UpdateShoppingList',
-	        data: { vm: $scope.model.ShoppingList},
+	        data: { shoppingList: $scope.model.ShoppingList },
 	    }).success(function (data, status, headers, config) {
 	        $scope.message = '';
 	        if (data.success == false) {

@@ -22,7 +22,7 @@ namespace Recipes.DAL.Data
         public DbSet<ProcedureItem> ProcedureItems { get; set; }
 
         public DbSet<ShoppingListGroup> ShoppingListGroups { get; set; }
-        //public DbSet<IngredientItem> ShoppingListItems { get; set; }
+        public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -37,20 +37,25 @@ namespace Recipes.DAL.Data
                             rt.ToTable("RecipeTag");
                         });
 
+            modelBuilder.Entity<ShoppingListItem>()
+                        .HasRequired<ShoppingListGroup>(s => s.ShoppingListGroup)
+                        .WithMany(s => s.Items);
+
+            modelBuilder.Entity<ShoppingListGroup>()
+                        .HasMany<ShoppingListItem>(x => x.Items);
+            modelBuilder.Entity<ShoppingListGroup>()
+                        .HasRequired<ShoppingList>(x => x.ShoppingList);
+
             modelBuilder.Entity<ShoppingList>()
                         .HasMany<ShoppingListGroup>(x => x.Groups);
-
-
-            modelBuilder.Entity<ShoppingListItem>()
-                                .HasOptional<ShoppingListGroup>(s => s.ShoppingListGroup)
-                                .WithMany(s => s.Items);
+///////////////////////////////////////////////////////////////////////////////////
 
             modelBuilder.Entity<IngredientItem>()
-                                .HasOptional<IngredientGroup>(s => s.IngredientGroup)
+                                .HasRequired<IngredientGroup>(s => s.IngredientGroup)
                                 .WithMany(s => s.Items);
 
             modelBuilder.Entity<ProcedureItem>()
-                                .HasOptional<ProcedureGroup>(s => s.ProcedureGroup)
+                                .HasRequired<ProcedureGroup>(s => s.ProcedureGroup)
                                 .WithMany(s => s.Items);
 
 

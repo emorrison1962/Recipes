@@ -16,10 +16,6 @@ namespace Recipes.Domain
         [JsonIgnore]
         [XmlIgnore]
         public virtual IngredientGroup IngredientGroup { get; set; }
-        [JsonIgnore]
-        [XmlIgnore]
-        public virtual ShoppingListItem ShoppingListItem { get; set; }
-
         [NotMapped]
         public bool IsChecked { get; set; }
 

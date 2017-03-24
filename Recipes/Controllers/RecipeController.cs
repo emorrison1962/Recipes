@@ -10,9 +10,9 @@ namespace Recipes.Controllers
 
         IServiceBase<Recipe> RecipeService { get; set; }
         IServiceBase<Tag> TagService { get; set; }
-        IShoppingListService ShoppingListService { get; set; }
+        IServiceBase<ShoppingList> ShoppingListService { get; set; }
 
-        public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService, IShoppingListService shoppingListService)
+        public RecipeController(IServiceBase<Recipe> recipeService, IServiceBase<Tag> tagService, IServiceBase<ShoppingList> shoppingListService)
         {
             this.RecipeService = recipeService;
             this.TagService = tagService;

@@ -9,12 +9,9 @@ namespace Recipes.Services
 {
 	public class RecipeService : ServiceBase<Recipe> 
 	{
-		IRepositoryBase<Recipe> Repository { get; set; }
-
 		public RecipeService(IRepositoryBase<Recipe> repository)
             : base(repository)
 		{
-			this.Repository = repository;
 		}
 
 		override public IEnumerable<Recipe> GetAll()

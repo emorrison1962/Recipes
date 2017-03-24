@@ -8,9 +8,9 @@ namespace Recipes.Controllers
 {
     public class ShoppingListController : Controller
     {
-        IShoppingListService ShoppingListService { get; set; }
+        IServiceBase<ShoppingList> ShoppingListService { get; set; }
 
-        public ShoppingListController(IShoppingListService shoppingListService)
+        public ShoppingListController(IServiceBase<ShoppingList> shoppingListService)
         {
             this.ShoppingListService = shoppingListService;
         }
@@ -22,9 +22,9 @@ namespace Recipes.Controllers
         }
 
         [HttpPost]
-        public ActionResult UpdateShoppingList(ShoppingList sl)
+        public ActionResult UpdateShoppingList(ShoppingList shoppingList)
         {
-            this.ShoppingListService.Update(sl);
+            this.ShoppingListService.Update(shoppingList);
 
             return null;
         }

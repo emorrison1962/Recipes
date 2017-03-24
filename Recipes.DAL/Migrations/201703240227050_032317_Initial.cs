@@ -3,7 +3,7 @@ namespace Recipes.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _032117_01 : DbMigration
+    public partial class _032317_Initial : DbMigration
     {
         public override void Up()
         {
@@ -34,38 +34,11 @@ namespace Recipes.DAL.Migrations
                     {
                         IngredientItemId = c.Int(nullable: false, identity: true),
                         Text = c.String(),
-                        IngredientGroup_IngredientGroupId = c.Int(),
+                        IngredientGroup_IngredientGroupId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.IngredientItemId)
-                .ForeignKey("dbo.IngredientGroups", t => t.IngredientGroup_IngredientGroupId)
+                .ForeignKey("dbo.IngredientGroups", t => t.IngredientGroup_IngredientGroupId, cascadeDelete: true)
                 .Index(t => t.IngredientGroup_IngredientGroupId);
-            
-            CreateTable(
-                "dbo.ShoppingListItems",
-                c => new
-                    {
-                        ShoppingListItemId = c.Int(nullable: false),
-                        IsChecked = c.Boolean(nullable: false),
-                        Text = c.String(),
-                        ShoppingListGroup_ShoppingListGroupId = c.Int(),
-                    })
-                .PrimaryKey(t => t.ShoppingListItemId)
-                .ForeignKey("dbo.IngredientItems", t => t.ShoppingListItemId)
-                .ForeignKey("dbo.ShoppingListGroups", t => t.ShoppingListGroup_ShoppingListGroupId)
-                .Index(t => t.ShoppingListItemId)
-                .Index(t => t.ShoppingListGroup_ShoppingListGroupId);
-            
-            CreateTable(
-                "dbo.ShoppingListGroups",
-                c => new
-                    {
-                        ShoppingListGroupId = c.Int(nullable: false, identity: true),
-                        Text = c.String(),
-                        ShoppingList_ShoppingListId = c.Int(),
-                    })
-                .PrimaryKey(t => t.ShoppingListGroupId)
-                .ForeignKey("dbo.ShoppingLists", t => t.ShoppingList_ShoppingListId)
-                .Index(t => t.ShoppingList_ShoppingListId);
             
             CreateTable(
                 "dbo.ProcedureGroups",
@@ -85,10 +58,10 @@ namespace Recipes.DAL.Migrations
                     {
                         ProcedureItemId = c.Int(nullable: false, identity: true),
                         Text = c.String(),
-                        ProcedureGroup_ProcedureGroupId = c.Int(),
+                        ProcedureGroup_ProcedureGroupId = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ProcedureItemId)
-                .ForeignKey("dbo.ProcedureGroups", t => t.ProcedureGroup_ProcedureGroupId)
+                .ForeignKey("dbo.ProcedureGroups", t => t.ProcedureGroup_ProcedureGroupId, cascadeDelete: true)
                 .Index(t => t.ProcedureGroup_ProcedureGroupId);
             
             CreateTable(
@@ -116,6 +89,31 @@ namespace Recipes.DAL.Migrations
                 .PrimaryKey(t => t.TagId);
             
             CreateTable(
+                "dbo.ShoppingListGroups",
+                c => new
+                    {
+                        ShoppingListGroupId = c.Int(nullable: false, identity: true),
+                        Text = c.String(),
+                        ShoppingList_ShoppingListId = c.Int(),
+                    })
+                .PrimaryKey(t => t.ShoppingListGroupId)
+                .ForeignKey("dbo.ShoppingLists", t => t.ShoppingList_ShoppingListId)
+                .Index(t => t.ShoppingList_ShoppingListId);
+            
+            CreateTable(
+                "dbo.ShoppingListItems",
+                c => new
+                    {
+                        ShoppingListItemId = c.Int(nullable: false, identity: true),
+                        IsChecked = c.Boolean(nullable: false),
+                        Text = c.String(),
+                        ShoppingListGroup_ShoppingListGroupId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.ShoppingListItemId)
+                .ForeignKey("dbo.ShoppingListGroups", t => t.ShoppingListGroup_ShoppingListGroupId, cascadeDelete: true)
+                .Index(t => t.ShoppingListGroup_ShoppingListGroupId);
+            
+            CreateTable(
                 "dbo.ShoppingLists",
                 c => new
                     {
@@ -141,31 +139,29 @@ namespace Recipes.DAL.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.ShoppingListGroups", "ShoppingList_ShoppingListId", "dbo.ShoppingLists");
+            DropForeignKey("dbo.ShoppingListItems", "ShoppingListGroup_ShoppingListGroupId", "dbo.ShoppingListGroups");
             DropForeignKey("dbo.RecipeTag", "TagId", "dbo.Tags");
             DropForeignKey("dbo.RecipeTag", "RecipeId", "dbo.Recipes");
             DropForeignKey("dbo.ProcedureGroups", "Recipe_RecipeId", "dbo.Recipes");
             DropForeignKey("dbo.IngredientGroups", "Recipe_RecipeId", "dbo.Recipes");
             DropForeignKey("dbo.ProcedureItems", "ProcedureGroup_ProcedureGroupId", "dbo.ProcedureGroups");
-            DropForeignKey("dbo.ShoppingListItems", "ShoppingListGroup_ShoppingListGroupId", "dbo.ShoppingListGroups");
-            DropForeignKey("dbo.ShoppingListItems", "ShoppingListItemId", "dbo.IngredientItems");
             DropForeignKey("dbo.IngredientItems", "IngredientGroup_IngredientGroupId", "dbo.IngredientGroups");
             DropIndex("dbo.RecipeTag", new[] { "TagId" });
             DropIndex("dbo.RecipeTag", new[] { "RecipeId" });
+            DropIndex("dbo.ShoppingListItems", new[] { "ShoppingListGroup_ShoppingListGroupId" });
+            DropIndex("dbo.ShoppingListGroups", new[] { "ShoppingList_ShoppingListId" });
             DropIndex("dbo.ProcedureItems", new[] { "ProcedureGroup_ProcedureGroupId" });
             DropIndex("dbo.ProcedureGroups", new[] { "Recipe_RecipeId" });
-            DropIndex("dbo.ShoppingListGroups", new[] { "ShoppingList_ShoppingListId" });
-            DropIndex("dbo.ShoppingListItems", new[] { "ShoppingListGroup_ShoppingListGroupId" });
-            DropIndex("dbo.ShoppingListItems", new[] { "ShoppingListItemId" });
             DropIndex("dbo.IngredientItems", new[] { "IngredientGroup_IngredientGroupId" });
             DropIndex("dbo.IngredientGroups", new[] { "Recipe_RecipeId" });
             DropTable("dbo.RecipeTag");
             DropTable("dbo.ShoppingLists");
+            DropTable("dbo.ShoppingListItems");
+            DropTable("dbo.ShoppingListGroups");
             DropTable("dbo.Tags");
             DropTable("dbo.Recipes");
             DropTable("dbo.ProcedureItems");
             DropTable("dbo.ProcedureGroups");
-            DropTable("dbo.ShoppingListGroups");
-            DropTable("dbo.ShoppingListItems");
             DropTable("dbo.IngredientItems");
             DropTable("dbo.IngredientGroups");
             DropTable("dbo.Ethnicities");

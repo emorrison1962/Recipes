@@ -11,6 +11,9 @@ namespace Recipes.Domain
         public int ShoppingListGroupId { get; set; }
         public List<int> CheckedItems { get; set; }
 
+        //Navigation property
+        public virtual ShoppingList ShoppingList { get; set; }
+
         public ShoppingListGroup() : base()
         {   }
     }

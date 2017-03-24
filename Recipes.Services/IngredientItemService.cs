@@ -11,13 +11,9 @@ namespace Recipes.Services
 {
     public class IngredientItemService : ServiceBase<IngredientItem>, IServiceBase<IngredientItem>
     {
-        IRepositoryBase<IngredientItem> Repository { get; set; }
-
         public IngredientItemService(IRepositoryBase<IngredientItem> repository) 
             : base(repository)
         {
-            this.Repository = repository;
-
         }
 
         override public IngredientItem GetById(int id)

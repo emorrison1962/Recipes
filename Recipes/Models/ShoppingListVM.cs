@@ -11,14 +11,14 @@ namespace Recipes.Models
     [Obsolete("Obsolete", true)]
     class ShoppingListVM 
     {
-        IShoppingListService _shoppingListService;
+        IServiceBase<ShoppingList> _shoppingListService;
 
-        public IShoppingListService ShoppingListService
+        public IServiceBase<ShoppingList> ShoppingListService
         {
             get
             {
                 if (null == _shoppingListService)
-                    _shoppingListService = Unity.Resolve<IShoppingListService>();
+                    _shoppingListService = Unity.Resolve<IServiceBase<ShoppingList>>();
                 return _shoppingListService;
             }
             set { _shoppingListService = value; }

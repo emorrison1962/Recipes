@@ -1,42 +1,50 @@
 namespace Recipes.DAL.Migrations
 {
+    using Data;
     using Domain;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Recipes.DAL.Data.DataContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DataContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
+            Database.SetInitializer<DataContext>(new CreateDatabaseIfNotExists<DataContext>());
+            //Database.SetInitializer<DataContext>(new DropCreateDatabaseIfModelChanges<DataContext>());
+            //Database.SetInitializer<DataContext>(new DropCreateDatabaseAlways<DataContext>());
+            //Database.SetInitializer<DataContext>(new SchoolDBInitializer());
         }
+    
 
         protected override void Seed(Recipes.DAL.Data.DataContext context)
         {
             this.SeedShoppingList(context);
-            this.InsertTags(context);
+            //this.InsertTags(context);
         }
 
         void SeedShoppingList(Recipes.DAL.Data.DataContext context)
         {
-            var groups = new ShoppingListGroup[] {
-                new ShoppingListGroup { Text = "<Unknown>" },
-                new ShoppingListGroup { Text = "Produce" },
-                new ShoppingListGroup { Text = "Meat" },
-                new ShoppingListGroup { Text = "Dairy" },
-                new ShoppingListGroup { Text = "Deli" },
-                new ShoppingListGroup { Text = "Soap" },
-                new ShoppingListGroup { Text = "Paper" },
-                new ShoppingListGroup { Text = "Sam's" },
-                new ShoppingListGroup { Text = "Other" }};
-            context.ShoppingListGroups.AddOrUpdate(t => t.Text,groups);
+            var shoppingList = new ShoppingList() { Text = "<Default>" };
+            context.ShoppingLists.AddOrUpdate(x => x.ShoppingListId);
 
-            var sl = new ShoppingList();
-            context.ShoppingLists.AddOrUpdate(sl);
-            sl.Groups.AddRange(groups);
-            context.SaveChanges();
+            var groups = new ShoppingListGroup[] {
+                new ShoppingListGroup { Text = "<Unknown>", ShoppingList = shoppingList },
+                new ShoppingListGroup { Text = "Produce", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Meat", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Dairy", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Deli", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Soap", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Paper", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Sam's", ShoppingList = shoppingList  },
+                new ShoppingListGroup { Text = "Other", ShoppingList = shoppingList  }};
+            shoppingList.Groups.AddRange(groups);
+
+            context.ShoppingListGroups.AddOrUpdate(t => t.Text, groups);
+
+
+            //context.SaveChanges();
         }
 
         void InsertTags(Recipes.DAL.Data.DataContext context)

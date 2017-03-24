@@ -54,9 +54,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
-    <Compile Include="Migrations\201703220035272_032117_01.cs" />
-    <Compile Include="Migrations\201703220035272_032117_01.Designer.cs">
-      <DependentUpon>201703220035272_032117_01.cs</DependentUpon>
+    <Compile Include="Migrations\201703240227050_032317_Initial.cs" />
+    <Compile Include="Migrations\201703240227050_032317_Initial.Designer.cs">
+      <DependentUpon>201703240227050_032317_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703240452096_032317_01.cs" />
+    <Compile Include="Migrations\201703240452096_032317_01.Designer.cs">
+      <DependentUpon>201703240452096_032317_01.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703240519151_032317_02.cs" />
+    <Compile Include="Migrations\201703240519151_032317_02.Designer.cs">
+      <DependentUpon>201703240519151_032317_02.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,11 +73,13 @@
     <Compile Include="Repositories\IngredientGroupRepository.cs" />
     <Compile Include="Repositories\ProcedureItemRepository.cs" />
     <Compile Include="Repositories\ProcedureGroupRepository.cs" />
+    <Compile Include="Repositories\ShoppingListGroupRepostory.cs" />
+    <Compile Include="Repositories\ShoppingListItemRepository.cs" />
     <Compile Include="Repositories\ShoppingListRepository.cs" />
     <Compile Include="Repositories\TagRepository.cs" />
     <Compile Include="Repositories\EthnicityRepository.cs" />
     <Compile Include="Repositories\RecipeRepository.cs" />
-    <Compile Include="Repositories\RepositoryBase.cs" />
+    <Compile Include="Repositories\_RepositoryBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -87,8 +97,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201703220035272_032117_01.resx">
-      <DependentUpon>201703220035272_032117_01.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201703240227050_032317_Initial.resx">
+      <DependentUpon>201703240227050_032317_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703240452096_032317_01.resx">
+      <DependentUpon>201703240452096_032317_01.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703240519151_032317_02.resx">
+      <DependentUpon>201703240519151_032317_02.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
