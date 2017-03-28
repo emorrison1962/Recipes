@@ -6,26 +6,7 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
 
     $scope.init = function (model) {
         $scope.model = model;
-        $scope.checkedItems = [];
         $log.debug($scope.model);
-
-        //$scope.model.Items.Remove = function (item) {
-        //    for (i = 0; i < this.length; i++) {
-        //        if (this[i].ShoppingListItemId == item.ShoppingListItemId) {
-        //            this.splice(i, 1);
-        //            break;
-        //        }
-        //    }
-        //}
-
-        //$scope.checkedItems.Remove = function (item) {
-        //    for (i = 0; i < this.length; i++) {
-        //        if (this[i].ShoppingListItemId == item.ShoppingListItemId) {
-        //            this.splice(i, 1);
-        //            break;
-        //        }
-        //    }
-        //}
     };
 
     $scope.insert = function () {
@@ -38,25 +19,6 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
         });
     }
 
-    $scope.shoppingListItemChecked = function (group, item) {
-        //var group = $scope.model.Groups.firstOrDefault(group, function (item) {
-        //    if (group.ShoppingListGroupId === item.ShoppingListGroupId)
-        //        return group;
-        //});
-        //$scope.setChecked(item);
-    };
-
-    $scope.setChecked = function (item) {
-        if (item.IsChecked) {
-            $scope.model.Items.Remove(item);
-            $scope.checkedItems.push(item);
-        }
-        else {
-            $scope.model.Items.push(item);
-            $scope.checkedItems.Remove(item);
-        }
-    };
-
     $scope.collapseClicked = function (btn) {
         $("#btn_toggle_checked")
             .find('span')
@@ -64,19 +26,23 @@ var shoppingListIndexController = myApp.controller("shoppingListIndexController"
             .toggleClass('glyphicon glyphicon-menu-down');
     };
 
+    $scope.getAllItems = function () {
+        var result = [];
+        $scope.model.Groups.forEach(function (group) {
+            Array.prototype.push.apply(result, group.Items);
+        });
+        return result;
+    };
+
     $scope.addItem = function () {
-        var item = $scope.model.Items.firstOrDefault({ Text: $scope.newItem });
-        if (null === item) {//prevent dupes
-            //find an existing checked item.
-            var item = $scope.checkedItems.firstOrDefault({ Text: $scope.newItem });
-            if (null !== item) {
-                item.IsChecked = false;
-                $scope.setChecked(item);
-            }
-            else {
-                var item = { ShoppingListItemId: 0, Text: $scope.newItem, IsChecked: false };
-                $scope.setChecked(item);
-            }
+        var items = $scope.getAllItems();
+        var item = items.firstOrDefault({ Text: $scope.newItem });
+        if (null !== item) {//prevent dupes
+            item.IsChecked = false;
+        }
+        else {
+            var item = { ShoppingListItemId: 0, Text: $scope.newItem, IsChecked: false };
+            $scope.model.Groups[0].Items.push(item);
         }
         $scope.newItem = "";
     }
