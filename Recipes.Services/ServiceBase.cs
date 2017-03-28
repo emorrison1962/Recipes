@@ -42,7 +42,7 @@ namespace Recipes.Services
             try
             {
                 result = this.Repository.GetAll().ToList();
-                result.Sort();
+                //result.Sort();
 
             }
 #pragma warning disable 168

@@ -29,7 +29,7 @@
                         <span class="input-group-addon">Add</span>
                         <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
                         <datalist id="data_list">
-                            <option ng-repeat="ingredientItem in checkedItems" value="{{ingredientItem.Text}}"></option>
+                            <option ng-repeat="slItem in checkedItems" value="{{slItem.Text}}"></option>
                         </datalist>
                     </div>
                 </div>
@@ -38,34 +38,40 @@
 
 
 
-        <div id="unchecked_ingredients" class="panel panel-default">
-            <ul class="list-unstyled">
-                <li ng-repeat="ingredientItem in model.Items">
-                    <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientItemId}}">
-                        <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
-                    </label>
-                </li>
-            </ul>
+        <div id="unchecked_items" class="panel panel-default">
+            <div ng-repeat="group in model.Groups">
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in group.Items | filter: { IsChecked: 'false' }">
+                        <label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}">
+                            <input ng-model="item.IsChecked" ng-change="shoppingListItemChecked(item)" id="cbShoppingListItem-{{item.ShoppingListItemId}}" type="checkbox" name="choice" value="" />{{item.Text}}
+                        </label>
+                    </li>
+                </ul>
+            </div>
         </div>
+
+
             
-        <div id="checked_ingredients_panel" class="panel panel-default">
+        <div id="checked_items_panel" class="panel panel-default">
             <div class="panel panel-body">
                 <p class="panel panel-heading">
                     {{checkedItems.length}}&nbsp;Checked Items&nbsp;
                     <button id="btn_toggle_checked" type="button" class="btn btn-sm" aria-label="Left Align"
-                            data-toggle="collapse" data-target="#checked_ingredients"
+                            data-toggle="collapse" data-target="#checked_items"
                             ng-click="collapseClicked(this)">
                         <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
                     </button>
                 </p>
-                <div id="checked_ingredients" class="collapse in">
-                    <ul class="list-unstyled">
-                        <li ng-repeat="ingredientItem in checkedItems">
-                            <label class="checked-label checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientItemId}}">
-                                <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
-                            </label>
-                        </li>
-                    </ul>
+                <div id="checked_items" class="collapse in">
+                    <div ng-repeat="group in model.Groups">
+                        <ul class="list-unstyled">
+                            <li ng-repeat="item in group.Items | filter: { IsChecked: 'true' }">
+                                <label class="checked-label checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}">
+                                    <input ng-model="item.IsChecked" ng-change="shoppingListItemChecked(item)" id="cbShoppingListItem-{{item.ShoppingListItemId}}" type="checkbox" name="choice" value="" />{{item.Text}}
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

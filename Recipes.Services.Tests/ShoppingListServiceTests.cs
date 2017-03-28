@@ -19,11 +19,15 @@ namespace Recipes.Services.Tests
 
         static IUnityContainer UnityContainer { get; set; }
 
+
+
         [ClassInitialize]
         static public void ClassInitialize(TestContext testCtx)
         {
-            var unity =  new UnityConfig();
-            UnityContainer = UnityConfig.GetConfiguredContainer();
+            UnityContainer = Recipes.Unity.GetConfiguredContainer();
+            //var unity =  new UnityConfig();
+            //UnityContainer = UnityConfig.GetConfiguredContainer();
+            //var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
         }
 
         [TestMethod()]
@@ -31,14 +35,57 @@ namespace Recipes.Services.Tests
         {
             var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
             var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
+            shoppingList = Detach(shoppingList);
 
             var ingredientItem = this.GetRandomIngredient();
             var shoppingItem = new ShoppingListItem();
-            shoppingItem.Text = ingredientItem.Text;    
+            shoppingItem.Text = ingredientItem.Text;
+            shoppingList.DefaultGroup.Add(shoppingItem);
 
             shoppingSvc.Update(shoppingList);
             new object();
         }
+
+
+        [TestMethod()]
+        public void Update_ManuallyEnteredIngredient_Test()
+        {
+            var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
+            var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
+            shoppingList = Detach(shoppingList);
+
+            var shoppingItem = new ShoppingListItem();
+            shoppingItem.Text = RandomString.GetAlphaOnly(RandomValue.Next<uint>(12, 24));
+            shoppingList.DefaultGroup.Add(shoppingItem);
+
+            shoppingSvc.Update(shoppingList);
+            new object();
+        }
+
+
+
+
+        [TestMethod()]
+        public void Update_UpdateIngredient_Test()
+        {
+            var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
+            var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
+            shoppingList = Detach(shoppingList);
+
+            shoppingList.Groups.ForEach(g => g.Items.ForEach(i => i.IsChecked = !i.IsChecked));
+
+            shoppingSvc.Update(shoppingList);
+            new object();
+        }
+
+        public virtual T Detach<T>(T entity)
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity);
+            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+            return result;
+        }
+
+
 
         IngredientItem GetRandomIngredient()
         {

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -8,9 +10,21 @@ namespace Recipes.Domain
     [Serializable]
     public class ShoppingList
     {
+        const string DEFAULT_GROUP_TEXT = "<Unknown>";
         public string Text { get; set; }
         public int ShoppingListId { get; set; }
         public List<ShoppingListGroup> Groups { get; set; }
+
+        [NotMapped]
+        [JsonIgnore]
+        public ShoppingListGroup DefaultGroup
+        {
+            get
+            {
+                var result = Groups.FirstOrDefault(x => x.Text == DEFAULT_GROUP_TEXT);
+                return result;
+            }
+        }
         public ShoppingList()
         {
             this.Groups = new List<ShoppingListGroup>();
@@ -24,17 +38,26 @@ namespace Recipes.Domain
             this.Groups.First().Add(item);
         }
 
-        [OnDeserialized]
-        public void OnDeserialized(StreamingContext ctx)
+        [OnSerializing]
+        void OnSerializing(StreamingContext ctx)
         {
-            new Object();
+        }
+
+        [OnSerialized]
+        void OnSerialized(StreamingContext ctx)
+        {
         }
 
         [OnDeserializing]
-        public void OnDeserializing(StreamingContext ctx)
+        void OnDeserializing(StreamingContext ctx)
         {
-            new Object();
         }
+
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext ctx)
+        {
+        }
+
 
     }//class
 }//ns

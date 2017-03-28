@@ -17,7 +17,7 @@ namespace Recipes.Controllers
         // GET: ShoppingList
         public ActionResult Index()
         {
-            var shoppingList = this.ShoppingListService.GetAll().LastOrDefault();
+            var shoppingList = this.ShoppingListService.GetFullObject(int.MinValue);
             return View(shoppingList);
         }
 

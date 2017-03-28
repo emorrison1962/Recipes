@@ -18,8 +18,6 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 	            }
 	        }
 	    };
-
-
 	};
 
 	$scope.ingredientItemChecked = function (ingredientItem) {
@@ -33,7 +31,7 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 	};
 
 	createShoppingListItem = function (ingredientItem) {
-	    return { ShoppingListItemId: 0, Text: ingredientItem.Text, IngredientItem: ingredientItem }
+	    return { ShoppingListItemId: 0, Text: ingredientItem.Text }
 	};
 
 

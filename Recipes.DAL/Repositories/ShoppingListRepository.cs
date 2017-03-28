@@ -7,8 +7,6 @@ using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.DAL.Repositories
 {
@@ -51,9 +49,9 @@ namespace Recipes.DAL.Repositories
 
             public int GetHashCode(ShoppingListItem obj)
             {
-                int result = 
-                obj.ShoppingListItemId.GetHashCode() 
-                    ^obj.Text.GetHashCode();
+                int result =
+                obj.ShoppingListItemId.GetHashCode()
+                    ^ obj.Text.GetHashCode();
                 return result;
             }
         }
@@ -76,6 +74,8 @@ namespace Recipes.DAL.Repositories
 
                 var itemRepository = new ShoppingListItemRepository(this._dataContext);
 
+                #region Inserts
+
                 var modifiedGroups = new HashSet<ShoppingListGroup>();
                 var pendingInserts = incomingItems.Except(existingItems, new ShoppingListItemIdComparer()).ToList();
                 pendingInserts.ForEach(x => _dataContext.ShoppingListItems.Add(x));
@@ -83,17 +83,27 @@ namespace Recipes.DAL.Repositories
                 if (pendingInserts.Count > 0)
                     modifiedGroups.Add(defaultGroup);
 
-                var pendingDeletes = existingItems.Except(incomingItems, new ShoppingListItemIdComparer()).ToList();
 
-                pendingDeletes.OrderBy(x => x.ShoppingListGroup.ShoppingListGroupId);
-                foreach (var item in pendingDeletes)
+                #endregion                
+                
+                #region Updates
+
+                var updates = (
+                    from e in existingItems
+                    from i in incomingItems
+                    where e.ShoppingListItemId == i.ShoppingListItemId
+                    select new { Existing = e, Incoming = i }
+                    );
+                foreach (var update in updates)
                 {
-                    modifiedGroups.Add(item.ShoppingListGroup);
-                    item.ShoppingListGroup.Items.Remove(item);
+                    update.Existing.IsChecked = update.Incoming.IsChecked;
                 }
+
+                #endregion
 
                 var groupRepository = new ShoppingListGroupRepository(this._dataContext);
                 modifiedGroups.ToList().ForEach(x => _dataContext.Entry(x).State = EntityState.Modified);
+
                 _dataContext.SaveChanges();
             }
             catch (DbEntityValidationException e)

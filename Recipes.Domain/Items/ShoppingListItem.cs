@@ -12,6 +12,7 @@ namespace Recipes.Domain
         public bool IsChecked { get; set; }
 
         //Navigation property
+        [JsonIgnore]
         public virtual ShoppingListGroup ShoppingListGroup { get; set; }
     }
 }

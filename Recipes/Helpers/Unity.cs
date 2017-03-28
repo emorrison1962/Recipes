@@ -7,8 +7,13 @@ using System.Web;
 
 namespace Recipes
 {
-    static class Unity 
+    public static class Unity 
     {
+        static public IUnityContainer GetConfiguredContainer()
+        {
+            var result = UnityConfig.GetConfiguredContainer();
+            return result;
+        }
         static public T Resolve<T>()
         {
             var container = UnityConfig.GetConfiguredContainer();
