@@ -1,5 +1,4 @@
-﻿using KitchenPC.NLP;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Recipes.Services.Parsers;
 using System;
 using System.Collections.Generic;
@@ -162,13 +161,14 @@ namespace Recipes.Services.Tests
 			return uri.Host.ToLower();
 		}
 
-		[Ignore]
-		[TestMethod()]
-		public void AmountParserTest()
-		{
+#if false
+        [Ignore]
+        [TestMethod()]
+        public void AmountParserTest()
+        {
 
-			#region Ingredients
-			var ingredients = new List<string>() {
+            #region Ingredients
+            var ingredients = new List<string>() {
 "3 cups all-purpose flour, divided",
 "1 teaspoon baking powder",
 "1 1/2 teaspoons salt, divided",
@@ -370,41 +370,42 @@ namespace Recipes.Services.Tests
 "1 (1.25 oz.) package taco seasoning",
 "kosher salt and freshly ground pepper, to taste",
 
-			};
-			#endregion
+            };
+            #endregion
 
-			var parser = new Parser();
-			parser.LoadTemplates(
-			   "[ING]: [AMT] [UNIT]", //cheddar cheese: 5 cups
-			   "[AMT] [UNIT] [FORM] [ING]", //5 cups melted cheddar cheese
-			   "[AMT] [UNIT] [ING]", //5 cups cheddar cheese
-			   "[AMT] [UNIT] of [ING]", //5 cups of cheddar cheese
-			   "[AMT] [UNIT] of [FORM] [ING]", //two cups of shredded cheddar cheese
-			   "[AMT] [ING]", //5 eggs
-			   "[ING]: [AMT]", //eggs: 5
-			   "[FORM] [ING]: [AMT]", //shredded cheddar cheese: 1 cup
-			   "[FORM] [ING]: [AMT] [UNIT]", //shredded cheddar cheese: 1 cup
+            var parser = new Parser();
+            parser.LoadTemplates(
+               "[ING]: [AMT] [UNIT]", //cheddar cheese: 5 cups
+               "[AMT] [UNIT] [FORM] [ING]", //5 cups melted cheddar cheese
+               "[AMT] [UNIT] [ING]", //5 cups cheddar cheese
+               "[AMT] [UNIT] of [ING]", //5 cups of cheddar cheese
+               "[AMT] [UNIT] of [FORM] [ING]", //two cups of shredded cheddar cheese
+               "[AMT] [ING]", //5 eggs
+               "[ING]: [AMT]", //eggs: 5
+               "[FORM] [ING]: [AMT]", //shredded cheddar cheese: 1 cup
+               "[FORM] [ING]: [AMT] [UNIT]", //shredded cheddar cheese: 1 cup
 
-			   "[ING]: [AMT] [UNIT], [PREP]", //cheddar cheese: 5 cups
-			   "[AMT] [UNIT] [FORM] [ING], [PREP]", //5 cups melted cheddar cheese
-			   "[AMT] [UNIT] [ING], [PREP]", //5 cups cheddar cheese
-			   "[AMT] [UNIT] of [ING], [PREP]", //5 cups of cheddar cheese
-			   "[AMT] [UNIT] of [FORM] [ING], [PREP]", //two cups of shredded cheddar cheese
-			   "[AMT] [ING], [PREP]", //5 eggs
-			   "[ING]: [AMT], [PREP]", //eggs: 5
-			   "[FORM] [ING]: [AMT], [PREP]", //shredded cheddar cheese: 1 cup
-			   "[FORM] [ING]: [AMT] [UNIT], [PREP]" //shredded cheddar cheese: 1 cup
-			   );
+               "[ING]: [AMT] [UNIT], [PREP]", //cheddar cheese: 5 cups
+               "[AMT] [UNIT] [FORM] [ING], [PREP]", //5 cups melted cheddar cheese
+               "[AMT] [UNIT] [ING], [PREP]", //5 cups cheddar cheese
+               "[AMT] [UNIT] of [ING], [PREP]", //5 cups of cheddar cheese
+               "[AMT] [UNIT] of [FORM] [ING], [PREP]", //two cups of shredded cheddar cheese
+               "[AMT] [ING], [PREP]", //5 eggs
+               "[ING]: [AMT], [PREP]", //eggs: 5
+               "[FORM] [ING]: [AMT], [PREP]", //shredded cheddar cheese: 1 cup
+               "[FORM] [ING]: [AMT] [UNIT], [PREP]" //shredded cheddar cheese: 1 cup
+               );
 
-			foreach (var ingredient in ingredients)
-			{
-				var result = parser.Parse(ingredient);
+            foreach (var ingredient in ingredients)
+            {
+                var result = parser.Parse(ingredient);
 
-				new object();
-				//AmountParser.TryParse(ingredient);
-			}
+                new object();
+                //AmountParser.TryParse(ingredient);
+            }
 
-		}
+        }
 
-	}//class
+#endif
+    }//class
 }//ns

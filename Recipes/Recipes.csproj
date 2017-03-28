@@ -256,6 +256,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Views\Recipe\EditRecipe.js" />
     <Content Include="Scripts\Views\Recipe\View.js" />
+    <Content Include="Scripts\Views\ShoppingList\EditItems.js" />
     <Content Include="Scripts\Views\ShoppingList\Index.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Scripts\Views\Recipe\Index.js" />
@@ -279,6 +280,7 @@
     <Content Include="Scripts\jquery-3.1.0.min.map" />
     <Content Include="Views\Recipe\View.cshtml" />
     <Content Include="Views\ShoppingList\Index.cshtml" />
+    <Content Include="Views\ShoppingList\EditItems.cshtml" />
     <!--    <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />

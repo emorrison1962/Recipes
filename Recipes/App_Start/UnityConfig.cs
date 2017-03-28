@@ -47,12 +47,16 @@ namespace Recipes.App_Start
             container.RegisterType<IRepositoryBase<IngredientGroup>, IngredientGroupRepository>();
             container.RegisterType<IRepositoryBase<IngredientItem>, IngredientItemRepository>();
             container.RegisterType<IRepositoryBase<ShoppingListGroup>, ShoppingListGroupRepository>();
+            container.RegisterType<IRepositoryBase<ShoppingListItem>, ShoppingListItemRepository>();
 
 
             container.RegisterType<IServiceBase<Recipe>, RecipeService>();
             container.RegisterType<IServiceBase<Tag>, TagService>();
+
+            container.RegisterType<IServiceBase<ShoppingListItem>, ShoppingListItemService>();
             container.RegisterType<IServiceBase<ShoppingListGroup>, ShoppingListGroupService>();
             container.RegisterType<IServiceBase<ShoppingList>, ShoppingListService>();
+
             container.RegisterType<IServiceBase<IngredientGroup>, IngredientGroupService>();
             container.RegisterType<IServiceBase<IngredientItem>, IngredientItemService>();
 

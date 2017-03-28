@@ -1,7 +1,5 @@
 ﻿using Recipes.Contracts.Services;
 using Recipes.Domain;
-using Recipes.Models;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Recipes.Controllers
@@ -9,10 +7,12 @@ namespace Recipes.Controllers
     public class ShoppingListController : Controller
     {
         IServiceBase<ShoppingList> ShoppingListService { get; set; }
+        IServiceBase<ShoppingListGroup> ShoppingListGroupService { get; set; }
 
-        public ShoppingListController(IServiceBase<ShoppingList> shoppingListService)
+        public ShoppingListController(IServiceBase<ShoppingList> shoppingListService, IServiceBase<ShoppingListGroup> shoppingListGroupService)
         {
             this.ShoppingListService = shoppingListService;
+            this.ShoppingListGroupService = shoppingListGroupService;
         }
         // GET: ShoppingList
         public ActionResult Index()
@@ -29,6 +29,11 @@ namespace Recipes.Controllers
             return null;
         }
 
+        public ActionResult EditItems()
+        {
+            var groups = this.ShoppingListGroupService.GetAll();
+            return View(groups);
+        }
 
     }//class
 }//ns
