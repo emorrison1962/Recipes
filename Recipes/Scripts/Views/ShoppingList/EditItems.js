@@ -3,27 +3,27 @@
 var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsController", ['$scope', '$window', '$log', '$http', '$location', function ($scope, $window, $log, $http, $location) {
 
     var vm = this;
-    $scope.isBusy = true;
+    vm.isBusy = true;
 
-    $scope.styles = [];
-    $scope.styles["<Unknown>"] = "{ 'background-color': 'rgba(0,0,0,0.1)' }";
-    $scope.styles["Produce"] = "{ 'background-color': 'rgba(0,255,0,0.3)' }";
-    $scope.styles["Meat"] = "{ 'background-color': 'rgba(255,0,0,0.3)' }";
-    $scope.styles["Dairy"] = "{ 'background-color': 'rgba(255,255,0,0.50)' }";
-    $scope.styles["Deli"] = "{ 'background-color': 'rgba(252,158,0,0.50)' }";
-    $scope.styles["Soap"] = "{ 'background-color': 'rgba(25,182,255,0.39)' }";
-    $scope.styles["Paper"] = "{ 'background-color': 'rgba(255,0,0,0.1)' }";
-    $scope.styles["Sam's"] = "{ 'background': 'linear-gradient(to right, #3b6799 0%,#fcfcfc 20%,#fff2f2 80%,#ff5e5e 100%);' }";
-    $scope.styles["Other"] = "{ 'background-color': 'rgba(255,0,0,0.1)' }";
+    vm.styles = [];
+    vm.styles["<Unknown>"] = "{ 'background-color': 'rgba(0,0,0,0.1)' }";
+    vm.styles["Produce"] = "{ 'background-color': 'rgba(0,255,0,0.3)' }";
+    vm.styles["Meat"] = "{ 'background-color': 'rgba(255,0,0,0.3)' }";
+    vm.styles["Dairy"] = "{ 'background-color': 'rgba(255,255,0,0.50)' }";
+    vm.styles["Deli"] = "{ 'background-color': 'rgba(252,158,0,0.50)' }";
+    vm.styles["Soap"] = "{ 'background-color': 'rgba(25,182,255,0.39)' }";
+    vm.styles["Paper"] = "{ 'background-color': 'rgba(255,0,0,0.1)' }";
+    vm.styles["Sam's"] = "{ 'background': 'linear-gradient(to right, #3b6799 0%,#fcfcfc 20%,#fff2f2 80%,#ff5e5e 100%);' }";
+    vm.styles["Other"] = "{ 'background-color': 'rgba(255,0,0,0.1)' }";
 
 
     $scope.init = function (model) {
-        $scope.model = model;
-        $scope.selectedItems = [];
-        $log.debug($scope.model);
+        vm.model = model;
+        vm.selectedItems = [];
+        $log.debug(vm.model);
         $scope.setGroupStyles();
 
-        $scope.model.forEach(function (group) {
+        vm.model.forEach(function (group) {
             group.Items.forEach(function(item) {
                 item.Group = group;
             });
@@ -34,7 +34,7 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.getAllItems = function () {
         var result = [];
-        $scope.model.forEach(function (group) {
+        vm.model.forEach(function (group) {
             Array.prototype.push.apply(result, group.Items);
         });
         return result;
@@ -42,8 +42,8 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.setGroupStyles = function ()
     {
-        $scope.model.forEach(function (group) {
-            var style = $scope.styles[group.Text];
+        vm.model.forEach(function (group) {
+            var style = vm.styles[group.Text];
             group.Style = style;
             group.Items.forEach(function (item) {
                 item.Style = style;
@@ -52,20 +52,19 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
     };
 
     $scope.groupChecked = function (group) {
-        vm.selectedGroup = group;
-        //$scope.setGroup();
+        this.setGroup();
     };
 
     $scope.setGroup = function () {
-        if (undefined !== $scope.selectedGroup) {
-            if ($scope.selectedItems.length > 0) {
-                $scope.selectedItems.forEach(function (item) {
-                    item.Group.Items.RemoveGroupItem(item);
-                    $scope.selectedGroup.Items.push(item);
-                    item.Style = $scope.selectedGroup.Style;
-                    item.Group = $scope.selectedGroup;
-                });
-            }
+        if (vm.selectedGroup !== undefined && vm.selectedItems.length > 0) {
+            vm.selectedItems.forEach(function (item) {
+                item.Group.Items.RemoveGroupItem(item);
+                vm.selectedGroup.Items.push(item);
+                item.Style = vm.selectedGroup.Style;
+                item.Group = vm.selectedGroup;
+                item.IsSelected = false;
+            });
+            vm.selectedItems = [];
         }
     };
 
@@ -82,9 +81,9 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.itemChecked = function (item) {
         if (item.IsSelected)
-            $scope.selectedItems.push(item);
+            vm.selectedItems.push(item);
         else
-            $scope.selectedItems.RemoveSelectedItem(item);
+            vm.selectedItems.RemoveSelectedItem(item);
         $scope.setGroup();
     };
 

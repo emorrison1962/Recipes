@@ -11,16 +11,16 @@
 		</div>
 
 		<div id="groups" class="module panel panel-default">
-				<div ng-repeat="group in model">
-					<label class="radio radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
-						<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" name="choice" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
-					</label>
-				</div>
+			<div ng-repeat="group in vm.model">
+				<label class="radio radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
+					<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" name="choice" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
+				</label>
+			</div>
 		</div>
 
 
 		<div id="items" class="module panel panel-default">
-			<div ng-repeat="group in model">
+			<div ng-repeat="group in vm.model">
 				<ul class="list-unstyled">
 					<li ng-repeat="item in group.Items">
 						<label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}" ng-style={{item.Style}} >
