@@ -4,6 +4,14 @@
     ViewBag.Title = "EditItems";
 }
 
+
+<style>
+    label.checkbox-inline {
+        display: block;
+    }
+</style>
+
+
 <div class="row-fluid" ng-controller='shoppingListEditItemsController as vm' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
 	<div class="col-md-offset-2 col-md-6">
 		<div class="page-header">
@@ -11,16 +19,17 @@
 		</div>
 
 		<div id="groups" class="module panel panel-default">
-			<div ng-repeat="group in vm.model">
-				<label class="radio radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
-					<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" name="choice" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
+			@*<div ng-repeat="group in vm.groups">*@
+				<label ng-repeat="group in vm.groups" class="radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
+					<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
 				</label>
-			</div>
+			@*</div>*@
 		</div>
 
 
 		<div id="items" class="module panel panel-default">
-			<div ng-repeat="group in vm.model">
+			<div ng-repeat="group in vm.groups" ng-style="{{group.Style}}">
+                <h4>{{group.Text}}</h4>
 				<ul class="list-unstyled">
 					<li ng-repeat="item in group.Items">
 						<label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}" ng-style={{item.Style}} >

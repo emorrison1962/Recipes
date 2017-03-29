@@ -6,24 +6,24 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
     vm.isBusy = true;
 
     vm.styles = [];
-    vm.styles["<Unknown>"] = "{ 'background-color': 'rgba(0,0,0,0.1)' }";
-    vm.styles["Produce"] = "{ 'background-color': 'rgba(0,255,0,0.3)' }";
-    vm.styles["Meat"] = "{ 'background-color': 'rgba(255,0,0,0.3)' }";
+    vm.styles["<Unknown>"] = "{ 'background-color': 'rgba(0,0,0,0.05)' }";
+    vm.styles["Produce"] = "{ 'background-color': 'rgba(0,255,0,0.2)' }";
+    vm.styles["Meat"] = "{ 'background-color': 'rgba(255,0,0,0.2)' }";
     vm.styles["Dairy"] = "{ 'background-color': 'rgba(255,255,0,0.50)' }";
-    vm.styles["Deli"] = "{ 'background-color': 'rgba(252,158,0,0.50)' }";
-    vm.styles["Soap"] = "{ 'background-color': 'rgba(25,182,255,0.39)' }";
+    vm.styles["Deli"] = "{ 'background-color': 'rgba(252,158,0,0.40)' }";
+    vm.styles["Soap"] = "{ 'background-color': 'rgba(25,182,255,0.30)' }";
     vm.styles["Paper"] = "{ 'background-color': 'rgba(255,0,0,0.1)' }";
-    vm.styles["Sam's"] = "{ 'background': 'linear-gradient(to right, #3b6799 0%,#fcfcfc 20%,#fff2f2 80%,#ff5e5e 100%);' }";
+    vm.styles["Sam's"] = "{ 'background': 'linear-gradient(to right, #2989d8 0%,#ffffff 15%,#ffffff 85%,#a2b320 100%,#01549e 100%);' }";
     vm.styles["Other"] = "{ 'background-color': 'rgba(255,0,0,0.1)' }";
 
 
     $scope.init = function (model) {
-        vm.model = model;
+        vm.groups = model;
         vm.selectedItems = [];
-        $log.debug(vm.model);
+        $log.debug(vm.groups);
         $scope.setGroupStyles();
 
-        vm.model.forEach(function (group) {
+        vm.groups.forEach(function (group) {
             group.Items.forEach(function(item) {
                 item.Group = group;
             });
@@ -34,7 +34,7 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.getAllItems = function () {
         var result = [];
-        vm.model.forEach(function (group) {
+        vm.groups.forEach(function (group) {
             Array.prototype.push.apply(result, group.Items);
         });
         return result;
@@ -42,7 +42,7 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.setGroupStyles = function ()
     {
-        vm.model.forEach(function (group) {
+        vm.groups.forEach(function (group) {
             var style = vm.styles[group.Text];
             group.Style = style;
             group.Items.forEach(function (item) {
