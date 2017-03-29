@@ -4,7 +4,7 @@
     ViewBag.Title = "EditItems";
 }
 
-<div class="row-fluid" ng-controller='shoppingListEditItemsController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+<div class="row-fluid" ng-controller='shoppingListEditItemsController as vm' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
 	<div class="col-md-offset-2 col-md-6">
 		<div class="page-header">
 			<h2>Shopping List Items</h2>
@@ -13,7 +13,7 @@
 		<div id="groups" class="module panel panel-default">
 				<div ng-repeat="group in model">
 					<label class="radio radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
-						<input ng-model="group.IsChecked" ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" name="choice" value="" />{{group.Text}}&nbsp;
+						<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" name="choice" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
 					</label>
 				</div>
 		</div>
@@ -23,8 +23,8 @@
 			<div ng-repeat="group in model">
 				<ul class="list-unstyled">
 					<li ng-repeat="item in group.Items">
-						<label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}">
-							<input ng-model="item.IsChecked" ng-change="itemChecked(item)" id="cbShoppingListItem-{{item.ShoppingListItemId}}" type="checkbox" name="choice" value="" />{{item.Text}}&nbsp;
+						<label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}" ng-style={{item.Style}} >
+							<input ng-model="item.IsSelected" ng-change="itemChecked(item)" id="cbShoppingListItem-{{item.ShoppingListItemId}}" type="checkbox" name="choice" value="" />{{item.Text}}&nbsp;
 							<a style="cursor: pointer">
 								<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 							</a>
