@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Recipes.Domain.ShoppingListGroup>
+﻿@model Recipes.Domain.ShoppingList
 
 @{
     ViewBag.Title = "EditItems";
@@ -19,16 +19,14 @@
 		</div>
 
 		<div id="groups" class="module panel panel-default">
-			@*<div ng-repeat="group in vm.groups">*@
-				<label ng-repeat="group in vm.groups" class="radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
-					<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
-				</label>
-			@*</div>*@
+			<label ng-repeat="group in vm.model.Groups" class="radio radio-inline" ng-style={{group.Style}} for="radioShoppingListGroup-{{group.ShoppingListGroupId}}">
+				<input ng-change="groupChecked(group)" id="radioShoppingListGroup-{{group.ShoppingListGroupId}}" type="radio" ng-value="group" ng-model="vm.selectedGroup" />{{group.Text}}&nbsp;
+			</label>
 		</div>
 
 
 		<div id="items" class="module panel panel-default">
-			<div ng-repeat="group in vm.groups" ng-style="{{group.Style}}">
+			<div ng-repeat="group in vm.model.Groups" ng-style="{{group.Style}}">
                 <h4>{{group.Text}}</h4>
 				<ul class="list-unstyled">
 					<li ng-repeat="item in group.Items">
@@ -42,6 +40,10 @@
 				</ul>
 			</div>
 		</div>
+        <div>
+            <br />
+            <button class="btn btn-default" ng-click="saveShoppingList()">Save Shopping List</button>
+        </div>
 
 	</div>
 </div>

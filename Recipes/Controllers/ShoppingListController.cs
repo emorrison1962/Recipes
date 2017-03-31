@@ -31,8 +31,8 @@ namespace Recipes.Controllers
 
         public ActionResult EditItems()
         {
-            var groups = this.ShoppingListGroupService.GetAll();
-            return View(groups);
+            var shoppingList = this.ShoppingListService.GetFullObject(int.MinValue);
+            return View(shoppingList);
         }
 
     }//class

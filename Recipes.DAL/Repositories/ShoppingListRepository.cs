@@ -66,42 +66,69 @@ namespace Recipes.DAL.Repositories
                 var existingItems = (
                     from g in existing.Groups
                     from i in g.Items
-                    select (i)).ToList();
+                    select new { Item = i, GroupId = g.ShoppingListGroupId }).ToList();
                 var incomingItems = (
                     from g in incoming.Groups
                     from i in g.Items
-                    select (i)).ToList();
+                    select new { Item = i, GroupId = g.ShoppingListGroupId }).ToList();
 
                 var itemRepository = new ShoppingListItemRepository(this._dataContext);
 
                 #region Inserts
 
                 var modifiedGroups = new HashSet<ShoppingListGroup>();
-                var pendingInserts = incomingItems.Except(existingItems, new ShoppingListItemIdComparer()).ToList();
-                pendingInserts.ForEach(x => _dataContext.ShoppingListItems.Add(x));
-                pendingInserts.ForEach(x => defaultGroup.Add(x));
+
+                var excludes = existingItems.Select(x => x.Item.ShoppingListItemId);
+                var pendingInserts = incomingItems.Where(x => !excludes.Contains(x.Item.ShoppingListItemId)).ToList();
+                pendingInserts.ForEach(x => _dataContext.ShoppingListItems.Add(x.Item));
+                pendingInserts.ForEach(x => defaultGroup.Add(x.Item));
                 if (pendingInserts.Count > 0)
                     modifiedGroups.Add(defaultGroup);
 
 
-                #endregion                
-                
+                #endregion
+
                 #region Updates
+
+                var groupRepository = new ShoppingListGroupRepository(this._dataContext);
 
                 var updates = (
                     from e in existingItems
                     from i in incomingItems
-                    where e.ShoppingListItemId == i.ShoppingListItemId
+                    where e.Item.ShoppingListItemId == i.Item.ShoppingListItemId
+                        && (e.Item.IsChecked != i.Item.IsChecked 
+                            || e.GroupId != i.GroupId)
                     select new { Existing = e, Incoming = i }
                     );
+
+                IEnumerable<ShoppingListGroup> existingGroups = null;
+                if (updates.Count() > 0)
+                {
+                    existingGroups = groupRepository.GetAll();
+                }
+
                 foreach (var update in updates)
                 {
-                    update.Existing.IsChecked = update.Incoming.IsChecked;
+                    var incomingItem = update.Incoming.Item;
+                    var existingItem = update.Existing.Item;
+                    if (existingItem.IsChecked != incomingItem.IsChecked)
+                    {
+                        existingItem.IsChecked = incomingItem.IsChecked;
+                    }
+                    if (update.Existing.GroupId != update.Incoming.GroupId)
+                    {
+                        var group = existingGroups.Where(x => x.ShoppingListGroupId == update.Incoming.GroupId).First();
+                        modifiedGroups.Add(existingItem.ShoppingListGroup);
+                        modifiedGroups.Add(group);
+                        existingItem.ShoppingListGroup.Items.Remove(existingItem);
+
+                        existingItem.ShoppingListGroup = group;
+                        group.Items.Add(existingItem);
+                    }
                 }
 
                 #endregion
 
-                var groupRepository = new ShoppingListGroupRepository(this._dataContext);
                 modifiedGroups.ToList().ForEach(x => _dataContext.Entry(x).State = EntityState.Modified);
 
                 _dataContext.SaveChanges();

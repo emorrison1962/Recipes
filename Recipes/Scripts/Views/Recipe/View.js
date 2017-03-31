@@ -36,9 +36,10 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 
 
 	$scope.saveShoppingList = function () {
+	    //window.alert("hi!");
 	    $http({
 	        method: 'POST',
-	        url: '/ShoppingList/UpdateShoppingList',
+	        url: 'ShoppingList/UpdateShoppingList',
 	        data: { shoppingList: $scope.model.ShoppingList },
 	    }).success(function (data, status, headers, config) {
 	        $scope.message = '';
@@ -48,14 +49,17 @@ var recipeViewController = myApp.controller("recipeViewController", ['$scope', '
 	                str += data.errors[error] + '\n';
 	            }
 	            $scope.message = str;
-	        }
+	            window.alert($scope.message);
+            }
 	        else {
 	            $scope.message = 'Saved Successfully';
+	            //window.alert($scope.message);
 	            //$window.location.href("/Courses/Index");
 
 	        }
 	    }).error(function (data, status, headers, config) {
 	        $scope.message = 'Unexpected Error';
+	        window.alert($scope.message);
 	    });
 	};
 

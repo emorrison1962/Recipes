@@ -19,7 +19,7 @@ div.module {
 </style>
 
 
-<div class="row-fluid" ng-controller='shoppingListIndexController' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+<div class="row-fluid" ng-controller='shoppingListIndexController as vm' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
     <div class="col-md-offset-2 col-md-6">
         <div class="page-header">
             <h2>Shopping List</h2>
@@ -32,7 +32,7 @@ div.module {
                     <div class="input-group">
                         <span class="input-group-addon">Add</span>
                         <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
-                        <div ng-repeat="group in model.Groups">
+                        <div ng-repeat="group in vm.model.Groups">
                             <datalist id="data_list">
                                 <option ng-repeat="item in group.Items | filter: { IsChecked: 'true' }" value="{{item.Text}}"></option>
                             </datalist>
@@ -45,10 +45,10 @@ div.module {
 
 
         <div id="unchecked_items" class="module panel panel-default">
-            <div ng-repeat="group in model.Groups">
+            <div ng-repeat="group in vm.model.Groups" ng-style="{{group.Style}}">
                 <ul class="list-unstyled">
                     <li ng-repeat="item in group.Items | filter: { IsChecked: 'false' }">
-                        <label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}">
+                        <label class="checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}" ng-style={{item.Style}}>
                             <input ng-model="item.IsChecked" ng-change="shoppingListItemChecked(item)" id="cbShoppingListItem-{{item.ShoppingListItemId}}" type="checkbox" name="choice" value="" />{{item.Text}}&nbsp;
                             <a style="cursor: pointer">
                                 <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -72,7 +72,7 @@ div.module {
                     </button>
                 </p>
                 <div id="checked_items" class="collapse in">
-                    <div ng-repeat="group in model.Groups">
+                    <div ng-repeat="group in vm.model.Groups">
                         <ul class="list-unstyled">
                             <li ng-repeat="item in group.Items | filter: { IsChecked: 'true' }">
                                 <label class="checked-label checkbox checkbox-inline" for="cbShoppingListItem-{{item.ShoppingListItemId}}">

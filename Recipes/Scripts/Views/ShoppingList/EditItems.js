@@ -18,12 +18,12 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
 
     $scope.init = function (model) {
-        vm.groups = model;
+        vm.model = model;
         vm.selectedItems = [];
-        $log.debug(vm.groups);
+        $log.debug(vm.model);
         $scope.setGroupStyles();
 
-        vm.groups.forEach(function (group) {
+        vm.model.Groups.forEach(function (group) {
             group.Items.forEach(function(item) {
                 item.Group = group;
             });
@@ -34,7 +34,7 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.getAllItems = function () {
         var result = [];
-        vm.groups.forEach(function (group) {
+        vm.model.Groups.forEach(function (group) {
             Array.prototype.push.apply(result, group.Items);
         });
         return result;
@@ -42,7 +42,7 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
 
     $scope.setGroupStyles = function ()
     {
-        vm.groups.forEach(function (group) {
+        vm.model.Groups.forEach(function (group) {
             var style = vm.styles[group.Text];
             group.Style = style;
             group.Items.forEach(function (item) {
@@ -67,6 +67,52 @@ var shoppingListEditItemsController = myApp.controller("shoppingListEditItemsCon
             vm.selectedItems = [];
         }
     };
+
+    $scope.onSerializing = function () {
+        vm.model.Groups.forEach(function (group) {
+            group.Items.forEach(function (item) {
+                item.Group = null;
+            });
+        });
+    };
+
+    $scope.onSerialized = function () {
+        vm.model.Groups.forEach(function (group) {
+            group.Items.forEach(function (item) {
+                item.Group = group;
+            });
+        });
+    };
+
+
+    $scope.saveShoppingList = function () {
+        $scope.onSerializing();
+        $log.info(vm.model);
+        $http({
+            method: 'POST',
+            url: 'ShoppingList/UpdateShoppingList',
+            data: { shoppingList: vm.model },
+        }).success(function (data, status, headers, config) {
+            vm.message = '';
+            if (data.success == false) {
+                var str = '';
+                for (var error in data.errors) {
+                    str += data.errors[error] + '\n';
+                }
+                vm.message = str;
+                //$scope.onSerialized();
+            }
+            else {
+                vm.message = 'Saved Successfully';
+                $scope.onSerialized();
+
+            }
+        }).error(function (data, status, headers, config) {
+            vm.message = 'Unexpected Error';
+            //$scope.onSerialized();
+        });
+    };
+
 
     Array.prototype.RemoveGroupItem = function (item) {
         for (i = 0; i < this.length; i++) {
