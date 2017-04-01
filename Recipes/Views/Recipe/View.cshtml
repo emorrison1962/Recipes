@@ -14,9 +14,9 @@ img.plate {
     box-shadow: 10px 10px 5px #888888;
  }
 
-li {
+/*li {
     line-height: 1.0;
-}
+}*/
 
 </style>
 
@@ -25,7 +25,7 @@ li {
         <div class="page-header">
             <h2>{{model.Recipe.Name}}</h2>
         </div>
-        <img class="plate img-rounded" src="{{model.Recipe.ImageUri}}" />
+        <img class="img-responsive img-rounded" src="{{model.Recipe.ImageUri}}" />
         <br/>
         
         
@@ -38,7 +38,7 @@ li {
             <div class="panel-body" ng-repeat="ingredientGroup in model.Recipe.IngredientGroups">
                 <h4 class="h4">{{ingredientGroup.Text}}</h4>
                 <ul class="list-unstyled">
-                    <li ng-repeat="ingredientItem in ingredientGroup.Items">
+                    <li class="list-group-item" ng-repeat="ingredientItem in ingredientGroup.Items">
                         <label class="checkbox checkbox-inline" for="cbIngredientItem-{{ingredientItem.IngredientItemId}}">
                             <input ng-model="ingredientItem.IsChecked" ng-change="ingredientItemChecked(ingredientItem)" id="cbIngredientItem-{{ingredientItem.IngredientItemId}}" type="checkbox" name="choice" value="" />{{ingredientItem.Text}}
                         </label>
@@ -60,9 +60,9 @@ li {
             <div class="panel-body" ng-repeat="procedureGroup in model.Recipe.ProcedureGroups">
                 <h4 class="h4">{{procedureGroup.Text}}</h4>
                 <ul class="list-unstyled">
-                    <li ng-repeat="procedureItem in procedureGroup.Items">
+                    <li class="list-group-item" ng-repeat="procedureItem in procedureGroup.Items">
                         <label class="checkbox-inline" for="cbProcedureItem-{{procedureItem.ProcedureItemId}}">
-                            <input id="cbProcedureItem-{{procedureItem.ProcedureItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
+                            <input class="checkbox" id="cbProcedureItem-{{procedureItem.ProcedureItemId}}" type="checkbox" name="choice" value="" />{{procedureItem.Text}}
                         </label>
                     </li>
                 </ul>
