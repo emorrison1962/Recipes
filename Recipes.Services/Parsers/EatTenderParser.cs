@@ -77,7 +77,6 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
-			Debug.Assert(this.ProcedureGroups.Count > 0);
 		}
 	}//class
 }//ns

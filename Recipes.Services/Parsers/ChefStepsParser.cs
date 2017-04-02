@@ -16,7 +16,11 @@ namespace Recipes.Services.Parsers
 
 		override protected void GetIngredients()
 		{
-			var div = GetIngredientsDiv();
+
+            new object();
+            //Debug.WriteLine(this.HtmlDocument.DocumentNode.InnerHtml);
+
+            var div = GetIngredientsDiv();
 			if (null != div)
 			{
 				var ingredientGroups = this.GetIngredientGroups(div);
@@ -614,7 +618,6 @@ namespace Recipes.Services.Parsers
 		HtmlNode GetIngredientsDiv()
 		{
 			var result = base.GetNode(DIV, "ingredients-wrapper");
-			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -625,7 +628,6 @@ namespace Recipes.Services.Parsers
 			var lis = div.Descendants(LI);
 			result = lis.ByClass("ingredient-group").ToList();
 
-			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -647,7 +649,6 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
-			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -678,14 +679,12 @@ namespace Recipes.Services.Parsers
 		HtmlNode GetProceduresDiv()
 		{
 			var result = base.GetNode(DIV, "instructions");
-			Debug.Assert(null != result);
 			return result;
 		}
 
 		List<HtmlNode> GetPreparationGroups(HtmlNode div)
 		{
 			var result = div.Descendants(LI).ByClass("preparation-group").ToList();
-			Debug.Assert(null != result);
 			return result;
 		}
 
@@ -707,7 +706,6 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
-			Debug.Assert(null != result);
 			return result;
 		}
 

@@ -30,7 +30,6 @@ namespace Recipes.Services
 			foreach (var node in nodes)
 			{
 				var spans = node.Descendants(SPAN).ToArray();
-				Debug.Assert(2 == spans.Count());
 				if (2 != spans.Count())
 					throw new PageParsingException("Unexpectedhtml html schema");
 				var span0Txt = spans[0].InnerText.FromHtml();

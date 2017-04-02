@@ -58,7 +58,6 @@ namespace Recipes.Services
             var html = this.GetContent(url);
             this.HtmlDocument = new HtmlDocument();
             this.HtmlDocument.LoadHtml(html);
-            Debug.Assert(null != this.HtmlDocument);
 
             this.HtmlDocument.Save(string.Format(@"c:\temp\{0}.html", new UriBuilder(url).Host));
 
@@ -127,7 +126,7 @@ namespace Recipes.Services
                         }
                         else
                         {
-                            throw new Exception("Error Getting Url.");
+                            throw new Exception(string.Format("Error Getting Url: {0}\n{1}", response.StatusCode.ToString(), url));
                         }
                     }
                 }
@@ -135,14 +134,14 @@ namespace Recipes.Services
             catch (AggregateException ex)
             {
                 var root = ex.GetBaseException();
-                Debug.Assert(false, root.Message);
                 throw;
             }
+#pragma warning disable 0168
             catch (Exception ex)
             {
-                Debug.Assert(false, ex.Message);
                 throw;
             }
+#pragma warning restore 0168
 
             return result;
         }

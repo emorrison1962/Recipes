@@ -29,7 +29,6 @@ namespace Recipes.Services.Parsers
                 result = div.Descendants(UL).FirstOrDefault();
             }
 
-            Debug.Assert(null != result);
             return result;
         }
 
@@ -38,7 +37,6 @@ namespace Recipes.Services.Parsers
             var divs = this.HtmlDocument.DocumentNode.Descendants(DIV);
             var result = divs.ByClass("recipe-ingredients").FirstOrDefault();
 
-            Debug.Assert(null != result);
             return result;
         }
 
@@ -71,7 +69,6 @@ namespace Recipes.Services.Parsers
                 }
             }
 
-            Debug.Assert(result.Count > 0);
             return result;
         }
 
@@ -97,7 +94,6 @@ namespace Recipes.Services.Parsers
                 if (null == result)
                     result = div.Descendants(OL).FirstOrDefault();
             }
-            Debug.Assert(null != result);
             return result;
         }
 
@@ -108,7 +104,6 @@ namespace Recipes.Services.Parsers
                     && x.Attributes.Where(a => CLASS == a.Name && "recipe-procedures" == a.Value).Count() > 0
                     ).FirstOrDefault();
 
-            Debug.Assert(null != result);
             return result;
         }
 
@@ -160,7 +155,6 @@ namespace Recipes.Services.Parsers
                 }
             }
 
-            Debug.Assert(result.Count > 0);
             return result;
         }
 

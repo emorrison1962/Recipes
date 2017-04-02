@@ -87,6 +87,7 @@
     <Compile Include="PageParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RecipeServiceTests.cs" />
+    <Compile Include="RecipeUrls.cs" />
     <Compile Include="ShoppingListServiceTests.cs" />
     <Compile Include="TagServiceTests.cs" />
     <Compile Include="UnityConfig.cs" />

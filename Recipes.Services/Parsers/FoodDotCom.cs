@@ -14,7 +14,6 @@ namespace Recipes.Services.Parsers
 			var section = sections.ByClass("ingredients-instructions").First();
 			var result = section.Descendants(DIV).ByClass("ingredients").First();
 
-			Debug.Assert(null != result);
 			return result;
 		}
 		protected override void GetIngredients()
@@ -63,7 +62,6 @@ namespace Recipes.Services.Parsers
 				}
 			}
 
-			Debug.Assert(this.ProcedureGroups.Count > 0);
 		}
 	}
 }

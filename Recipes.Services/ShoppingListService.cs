@@ -39,11 +39,12 @@ namespace Recipes.Services
             {
                 result = this.Repository.GetAll().ToList();
             }
+#pragma warning disable 0168
             catch (Exception ex)
             {
-                Debug.Assert(false, ex.ToString());
                 throw;
             }
+#pragma warning restore 0168
             return result;
         }
 
@@ -54,11 +55,12 @@ namespace Recipes.Services
                 this.Repository.Insert(entity);
                 this.Repository.Commit();
             }
+#pragma warning disable 0168
             catch (Exception ex)
             {
-                Debug.Assert(false, ex.ToString());
                 throw;
             }
+#pragma warning restore 0168
 
             return entity;
         }
