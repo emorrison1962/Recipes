@@ -47,13 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amount.cs" />
+    <Compile Include="Groups\PlannerGroup.cs" />
     <Compile Include="Groups\_GroupBase.cs" />
+    <Compile Include="Items\PlannerItem.cs" />
     <Compile Include="Items\ShoppingListItem.cs" />
     <Compile Include="Items\_GroupItemBase.cs" />
     <Compile Include="Groups\IngredientsGroup.cs" />
     <Compile Include="Items\IngredientItem.cs" />
     <Compile Include="Groups\ProcedureGroup.cs" />
     <Compile Include="Items\ProcedureItem.cs" />
+    <Compile Include="Planner.cs" />
     <Compile Include="Product.cs" />
     <Compile Include="ShoppingList.cs" />
     <Compile Include="Groups\ShoppingListGroup.cs" />
@@ -61,6 +64,7 @@
     <Compile Include="Ethnicity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recipe.cs" />
+    <Compile Include="Weekday.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />

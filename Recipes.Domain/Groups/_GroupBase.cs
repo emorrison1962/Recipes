@@ -9,7 +9,7 @@ namespace Recipes.Domain
     [Serializable]
     public class GroupBase<T> where T: GroupItemBase, new()
 	{
-		public string Text { get; set; }
+		virtual public string Text { get; set; }
 		public List<T> Items { get; set; }
 
         public GroupBase()

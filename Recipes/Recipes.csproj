@@ -195,6 +195,8 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PlannerController.cs" />
+    <Compile Include="Models\PlannerVM.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Controllers\ShoppingListController.cs" />
     <Compile Include="Global.asax.cs">
@@ -254,6 +256,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\Views\Planner\Index.js" />
     <Content Include="Scripts\Views\Recipe\EditRecipe.js" />
     <Content Include="Scripts\Views\Recipe\View.js" />
     <Content Include="Scripts\Views\ShoppingList\EditItems.js" />
@@ -281,6 +284,7 @@
     <Content Include="Views\Recipe\View.cshtml" />
     <Content Include="Views\ShoppingList\Index.cshtml" />
     <Content Include="Views\ShoppingList\EditItems.cshtml" />
+    <Content Include="Views\Planner\Index.cshtml" />
     <!--    <Content Include="Views\Account\ConfirmEmail.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />

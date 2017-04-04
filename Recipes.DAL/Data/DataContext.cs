@@ -17,12 +17,16 @@ namespace Recipes.DAL.Data
 
         public DbSet<IngredientGroup> IngredientGroups { get; set; }
         public DbSet<IngredientItem> IngredientItems { get; set; }
-
         public DbSet<ProcedureGroup> ProcedureGroups { get; set; }
         public DbSet<ProcedureItem> ProcedureItems { get; set; }
 
         public DbSet<ShoppingListGroup> ShoppingListGroups { get; set; }
         public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
+
+        public DbSet<PlannerItem> PlannerItems { get; set; }
+        public DbSet<PlannerGroup> PlannerGroups { get; set; }
+        public DbSet<Planner> Planners { get; set; }
+        public DbSet<Weekday> Weekdays { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -48,7 +52,7 @@ namespace Recipes.DAL.Data
 
             modelBuilder.Entity<ShoppingList>()
                         .HasMany<ShoppingListGroup>(x => x.Groups);
-///////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////
 
             modelBuilder.Entity<IngredientItem>()
                                 .HasRequired<IngredientGroup>(s => s.IngredientGroup)

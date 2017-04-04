@@ -49,6 +49,10 @@ namespace Recipes.App_Start
             container.RegisterType<IRepositoryBase<ShoppingListGroup>, ShoppingListGroupRepository>();
             container.RegisterType<IRepositoryBase<ShoppingListItem>, ShoppingListItemRepository>();
 
+            container.RegisterType<IRepositoryBase<PlannerItem>, PlannerItemRepository>();
+            container.RegisterType<IRepositoryBase<PlannerGroup>, PlannerGroupRepository>();
+            container.RegisterType<IRepositoryBase<Planner>, PlannerRepository>();
+
 
             container.RegisterType<IServiceBase<Recipe>, RecipeService>();
             container.RegisterType<IServiceBase<Tag>, TagService>();
@@ -59,6 +63,10 @@ namespace Recipes.App_Start
 
             container.RegisterType<IServiceBase<IngredientGroup>, IngredientGroupService>();
             container.RegisterType<IServiceBase<IngredientItem>, IngredientItemService>();
+
+            container.RegisterType<IServiceBase<Planner>, PlannerService>();
+            container.RegisterType<IServiceBase<PlannerGroup>, PlannerGroupService>();
+            container.RegisterType<IServiceBase<PlannerItem>, PlannerItemService>();
 
         }
     }//class

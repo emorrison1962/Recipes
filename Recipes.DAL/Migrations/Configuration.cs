@@ -5,6 +5,7 @@ namespace Recipes.DAL.Migrations
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     internal sealed class Configuration : DbMigrationsConfiguration<DataContext>
     {
@@ -16,18 +17,19 @@ namespace Recipes.DAL.Migrations
             //Database.SetInitializer<DataContext>(new DropCreateDatabaseAlways<DataContext>());
             //Database.SetInitializer<DataContext>(new SchoolDBInitializer());
         }
-    
+
 
         protected override void Seed(Recipes.DAL.Data.DataContext context)
         {
             this.SeedShoppingList(context);
-            //this.InsertTags(context);
+            this.SeedWeekdays(context);
+            this.SeedPlanner(context);
         }
 
         void SeedShoppingList(Recipes.DAL.Data.DataContext context)
         {
             var shoppingList = new ShoppingList() { Text = "<Default>" };
-            context.ShoppingLists.AddOrUpdate(x => x.ShoppingListId);
+            context.ShoppingLists.AddOrUpdate(x => x.Text);
 
             var groups = new ShoppingListGroup[] {
                 new ShoppingListGroup { Text = "<Unknown>", ShoppingList = shoppingList },
@@ -47,6 +49,33 @@ namespace Recipes.DAL.Migrations
             //context.SaveChanges();
         }
 
+        void SeedPlanner(DataContext context)
+        {
+            var planner = new Planner() { Text = "<Default>" };
+            context.Planners.AddOrUpdate(x => x.Text);
+            context.SaveChanges();
+
+            var groups = new PlannerGroup[] {
+                new PlannerGroup { Weekday = WeekdayEnum.Sunday, Planner = planner },
+                new PlannerGroup { Weekday = WeekdayEnum.Monday, Planner = planner  },
+                new PlannerGroup { Weekday = WeekdayEnum.Tuesday, Planner = planner  },
+                new PlannerGroup { Weekday = WeekdayEnum.Wednesday, Planner = planner  },
+                new PlannerGroup { Weekday = WeekdayEnum.Thursday, Planner = planner  },
+                new PlannerGroup { Weekday = WeekdayEnum.Friday, Planner = planner  },
+                new PlannerGroup { Weekday = WeekdayEnum.Saturday, Planner = planner  },
+                new PlannerGroup { Weekday = WeekdayEnum.Unknown, Planner = planner  } };
+            planner.Groups.AddRange(groups);
+
+            context.PlannerGroups.AddOrUpdate(t => t.Text, groups);
+            context.SaveChanges();
+
+        }
+        void SeedWeekdays(DataContext context)
+        {
+            context.Weekdays.SeedEnumValues<Weekday, WeekdayEnum>(@enum => @enum);
+            context.SaveChanges();
+        }
+
         void InsertTags(Recipes.DAL.Data.DataContext context)
         {
             context.Tags.AddOrUpdate(t => t.Name,
@@ -58,5 +87,16 @@ namespace Recipes.DAL.Migrations
                 new Tag { Name = "Dessert" },
                 new Tag { Name = "Ice Cream" });
         }
-    }
-}
+    }//class
+
+    public static class Extensions
+    {
+        public static void SeedEnumValues<T, TEnum>(this IDbSet<T> dbSet, Func<TEnum, T> converter)
+        where T : class => Enum.GetValues(typeof(TEnum))
+                               .Cast<object>()
+                               .Select(value => converter((TEnum)value))
+                               .ToList()
+                               .ForEach(instance => dbSet.AddOrUpdate(instance));
+
+    }//class
+}//ns
