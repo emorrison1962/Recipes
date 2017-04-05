@@ -46,7 +46,7 @@ namespace Recipes.DAL.Migrations
             context.ShoppingListGroups.AddOrUpdate(t => t.Text, groups);
 
 
-            //context.SaveChanges();
+            context.SaveChanges();
         }
 
         void SeedPlanner(DataContext context)
@@ -68,7 +68,6 @@ namespace Recipes.DAL.Migrations
 
             context.PlannerGroups.AddOrUpdate(t => t.Text, groups);
             context.SaveChanges();
-
         }
         void SeedWeekdays(DataContext context)
         {

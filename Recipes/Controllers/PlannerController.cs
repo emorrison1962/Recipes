@@ -19,10 +19,18 @@ namespace Recipes.Controllers
         // GET: Planner
         public ActionResult Index()
         {
-            var planner = this.PlannerService.GetAll().First();
+            var planner = this.PlannerService.GetById(-1);
             var recipes = this.RecipeService.GetAll();
             var vm = new PlannerVM(planner, recipes);
             return View(vm);
         }
+
+        [HttpPost]
+        public ActionResult Update(Planner planner)
+        {
+            this.PlannerService.Update(planner);
+            return null;
+        }
+
     }
 }

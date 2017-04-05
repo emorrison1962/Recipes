@@ -26,7 +26,6 @@ namespace Recipes.DAL.Repositories
 
             var result = query.FirstOrDefault();
 
-            //var result = _dbSet.Find(id);
             return result;
         }
 

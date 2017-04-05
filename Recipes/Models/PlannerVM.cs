@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Recipes.Models
 {
-    internal class PlannerVM
+    public class PlannerVM
     {
         public Planner Planner { get; set; }
         public List<Recipe> RecipeCatalog { get; set; }

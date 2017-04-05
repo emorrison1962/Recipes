@@ -10,39 +10,31 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
         $log.debug(vm.model);
     };
 
-    $scope.collapseClicked = function (btn) {
-        $("#btn_toggle_checked")
-            .find('span')
-            .toggleClass('glyphicon glyphicon-menu-up')
-            .toggleClass('glyphicon glyphicon-menu-down');
-    };
-
-    $scope.getAllItems = function () {
-        var result = [];
-        vm.model.Groups.forEach(function (group) {
-            Array.prototype.push.apply(result, group.Items);
-        });
-        return result;
-    };
-
-    $scope.addItem = function () {
-        var items = $scope.getAllItems();
-        var item = items.firstOrDefault({ Text: vm.newItem });
-        if (null !== item) {//prevent dupes
-            item.IsChecked = false;
+    $scope.recipeChecked = function (recipe) {
+        if (recipe.IsChecked) {
+            vm.model.Planner.Groups[0].Items.push({ PlannerItemId: 0, RecipeId: recipe.RecipeId, Recipe: recipe, Text: recipe.Name })
         }
         else {
-            var item = { ShoppingListItemId: 0, Text: vm.newItem, IsChecked: false };
-            vm.model.Groups[0].Items.push(item);
+            vm.model.Planner.Groups.forEach(function (group) {
+                group.Items.RemoveItem(recipe);
+            })
         }
-        vm.newItem = "";
-    }
+    };
 
-    $scope.saveShoppingList = function () {
+    Array.prototype.RemoveItem = function (recipe) {
+        for (i = 0; i < this.length; i++) {
+            if (this[i].RecipeId === recipe.RecipeId) {
+                this.splice(i, 1);
+                break;
+            }
+        }
+    };
+
+    $scope.savePlanner = function () {
         $http({
             method: 'POST',
-            url: 'ShoppingList/UpdateShoppingList',
-            data: { shoppingList: vm.model },
+            url: 'Planner/Update',
+            data: { planner: vm.model.Planner },
         }).success(function (data, status, headers, config) {
             vm.message = '';
             if (data.success == false) {

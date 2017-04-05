@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Recipes.Domain
     {
         public int PlannerGroupId { get; set; }
         public WeekdayEnum Weekday { get; set; }
-        public object Planner { get; set; }
+        [JsonIgnore]
+        public Planner Planner { get; set; }
 
         override public string Text { get { return Weekday.ToString(); } set { } }
 

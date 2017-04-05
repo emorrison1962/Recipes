@@ -4,5 +4,88 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<style>
+    .checkbox.disabled.active {
+        box-shadow: inset 0 3px 5px rgba(0,0,0,.275);
+    }
+
+    .checked-label {
+        text-decoration: line-through;
+    }
+
+    div.module {
+        border-style: solid;
+        border-width: 6px 0px 0px 0px;
+    }
+</style>
+
+
+<div class="row-fluid" ng-controller='plannerIndexController as vm' ng-init="init(@Newtonsoft.Json.JsonConvert.SerializeObject(Model))">
+    <div class="col-md-offset-2 col-md-6">
+        <div class="page-header">
+            <h2>Planner</h2>
+        </div>
+
+
+        <form ng-submit="addItem()" class="form-horizontal" role="form">
+            <div class="form-group ">
+                <div class="controls">
+                    <div class="input-group">
+                        <span class="input-group-addon">Add</span>
+                        <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
+                        <div ng-repeat="group in vm.model.Planner.Groups">
+                            <datalist id="data_list">
+                                <option ng-repeat="item in group.Items | filter: { IsChecked: 'true' }" value="{{item.Text}}"></option>
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
+        <div id="planner_groups" class="module panel panel-default">
+            <div  ng-repeat="group in vm.model.Planner.Groups">
+                <h4 class="h4">{{group.Text}}</h4>
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in group.Items">
+                        <label class="checkbox checkbox-inline" for="cbRecipe-{{item.Recipe.RecipeId}}">
+                            <input ng-model="item.Recipe.IsChecked" ng-change="recipeChecked(item.Recipe)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox" name="choice" value="" />{{item.Recipe.Name}}
+                        </label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div id="recipe_catalog" class="module panel panel-default">
+            <div class="panel panel-body">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="recipe in vm.model.RecipeCatalog | filter: { IsChecked: '!true' }">
+                            <label class="checkbox checkbox-inline" for="cbRecipe-{{recipe.RecipeId}}">
+                                <input ng-model="recipe.IsChecked" ng-change="recipeChecked(recipe)" id="cbRecipe-{{recipe.RecipeId}}" type="checkbox" name="choice" value="" />{{recipe.Name}}
+                            </label>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+
+
+        </div>
+
+
+
+        <div>
+            <br />
+            <button class="btn btn-default" ng-click="savePlanner()">Save Planner</button>
+        </div>
+    </div>
+    @Html.ActionLink("Edit Shopping List Items", "EditItems")
+
+
+</div>
+
+<script src="~/Scripts/Views/Planner/Index.js"></script>
 
