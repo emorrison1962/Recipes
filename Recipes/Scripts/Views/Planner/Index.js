@@ -1,4 +1,4 @@
-﻿var myApp = angular.module("myApp", []);
+﻿var myApp = angular.module("myApp", ['as.sortable']);
 
 var plannerIndexController = myApp.controller("plannerIndexController", ['$scope', '$window', '$log', '$http', '$location', function ($scope, $window, $log, $http, $location) {
 
@@ -9,6 +9,28 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
         vm.model = model;
         $log.debug(vm.model);
     };
+
+    //$scope.dragControlListeners = {
+    //    accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
+    //    itemMoved: function (event) {//Do what you want},
+    //    orderChanged: function(event) {//Do what you want},
+    //            containment: '#board'//optional param.
+    //            clone: true //optional param for clone feature.
+    //            allowDuplicates: false //optional param allows duplicates to be dropped.
+    //    };
+
+    $scope.dragControlListeners = {
+        //containment: '#board'//optional param.
+        //allowDuplicates: true //optional param allows duplicates to be dropped.
+    };
+
+    $scope.mouseover = function () {
+        var x = 0;
+        //var ctx = canvas.getContext("2d");
+        //ctx.fillStyle = "#FF0000";
+        //ctx.fillRect(0, 0, 80, 80);
+    };
+
 
     $scope.recipeChecked = function (recipe) {
         if (recipe.IsChecked) {
