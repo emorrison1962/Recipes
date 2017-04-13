@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class IngredientGroup : GroupBase<IngredientItem>
+    public class IngredientGroup : GroupBase<IngredientGroup, IngredientItem>
     {
         public int IngredientGroupId { get; set; }
 

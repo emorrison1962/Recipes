@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class IngredientItem : GroupItemBase
+    public class IngredientItem : GroupItemBase<IngredientItem>
     {
 
         #region Properties

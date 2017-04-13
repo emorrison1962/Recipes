@@ -6,6 +6,15 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
     vm.isBusy = true;
 
     $scope.init = function (model) {
+        model.Planner.Groups.forEach(function (group) {
+            group.Items.forEach(function (item) {
+                var recipe = model.RecipeCatalog.firstOrDefault(function (recipe) {
+                    return recipe.RecipeId === item.Recipe.RecipeId;
+                });
+                recipe.IsChecked = true;
+                item.Recipe = recipe;
+            });
+        });
         vm.model = model;
         $log.debug(vm.model);
     };
@@ -20,9 +29,15 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
     //    };
 
     $scope.dragControlListeners = {
-        //containment: '#board'//optional param.
-        //allowDuplicates: true //optional param allows duplicates to be dropped.
-    };
+        itemMoved: function (event) {
+            $scope.setGroup(event.source.itemScope.item, event.dest.sortableScope.group);
+            $log.debug(vm.model);
+
+        },
+        orderChanged: function (event) {
+            var x = 0;
+        }
+        };
 
     $scope.mouseover = function () {
         var x = 0;
@@ -32,20 +47,41 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
     };
 
 
+    $scope.trackingFunction = function (group, plannerItem) {
+        return group.PlannerGroupId << 2 | plannerItem.PlannerItemId << 1 | plannerItem.Recipe.RecipeId;
+    };
+
+
     $scope.recipeChecked = function (recipe) {
         if (recipe.IsChecked) {
-            vm.model.Planner.Groups[0].Items.push({ PlannerItemId: 0, RecipeId: recipe.RecipeId, Recipe: recipe, Text: recipe.Name })
+            var groupId = vm.model.Planner.Groups[0].PlannerGroupId;
+            vm.model.Planner.Groups[0].Items.push({ PlannerItemId: 0, GroupId: groupId, Recipe: recipe, Text: recipe.Name })
         }
         else {
             vm.model.Planner.Groups.forEach(function (group) {
-                group.Items.RemoveItem(recipe);
+                group.Items.RemovePlannerItem(recipe);
             })
         }
     };
 
-    Array.prototype.RemoveItem = function (recipe) {
+    $scope.setGroup = function (plannerItem, dst) {
+        //var src = $scope.getGroup(plannerItem.GroupId);
+        //if (src)
+        //    src.Items.RemovePlannerItem(plannerItem);
+
+        plannerItem.GroupId = dst.PlannerGroupId;
+        //dst.Items.push(plannerItem);
+
+    };
+
+    $scope.getGroup = function (id) {
+        var group = vm.model.Planner.Groups.firstOrDefault(function (group) { return group.PlannerGroupId === id; });
+        return group;
+    };
+
+    Array.prototype.RemovePlannerItem = function (item) {
         for (i = 0; i < this.length; i++) {
-            if (this[i].RecipeId === recipe.RecipeId) {
+            if (this[i].PlannerItemId === item.PlannerItemId) {
                 this.splice(i, 1);
                 break;
             }

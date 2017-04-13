@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Recipes.Domain
 {
-    public class PlannerGroup : GroupBase<PlannerItem>
+    public class PlannerGroup : GroupBase<PlannerGroup, PlannerItem>
     {
         public int PlannerGroupId { get; set; }
         public WeekdayEnum Weekday { get; set; }

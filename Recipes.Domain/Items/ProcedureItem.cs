@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 namespace Recipes.Domain
 {
     [Serializable]
-	public class ProcedureItem : GroupItemBase
+	public class ProcedureItem : GroupItemBase<ProcedureItem>
     {
 		public int ProcedureItemId { get; set; }
 

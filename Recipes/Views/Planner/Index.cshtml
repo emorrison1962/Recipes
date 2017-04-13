@@ -18,56 +18,28 @@
         border-width: 6px 0px 0px 0px;
     }
 
-
     span.grippy {
-    content: "....";
-    width: 20px;
-    height: 30px;
-    display: inline-block;
-    overflow: hidden;
-    line-height: 5px;
-    padding: 3px 4px;
-    padding-top: 10px;
-    cursor: move;
-    vertical-align: middle;
-    margin-top: 0px;
-    margin-right: 0.3em;
-    font-size: 12px;
-    font-family: sans-serif;
-    letter-spacing: 1px;
-    color: gray;
+        content: "....";
+        width: 20px;
+        height: 30px;
+        display: inline-block;
+        overflow: hidden;
+        line-height: 5px;
+        padding: 3px 4px;
+        padding-top: 10px;
+        cursor: move;
+        vertical-align: middle;
+        margin-top: 0px;
+        margin-right: 0.3em;
+        font-size: 12px;
+        font-family: sans-serif;
+        letter-spacing: 1px;
+        color: gray;
     }
+
     span.grippy::after {
         content: "•• •• •• ••";
     }
-
-    .pre-grippy {
-    /*content: "....";*/
-    width: 20px;
-    height: 30px;
-    display: inline-block;
-    overflow: hidden;
-    line-height: 5px;
-    /*padding: 3px 4px;*/
-    padding-top: 10px;
-    cursor: move;
-    vertical-align: middle;
-    margin-top: 0px;
-    margin-right: 0.3em;
-    font-size: 12px;
-    font-family: sans-serif;
-    letter-spacing: 1px;
-    color: gray;
-    }
-    .pre-grippy::before {
-        content: "•• •• •• ••";
-    }
-
-
-
-
-    /*ul li span {display: none;}
-    ul li:hover span {display: inline;}*/
 
 </style>
 
@@ -98,14 +70,17 @@
 
 
         <div id="planner_groups" class="module panel panel-default">
-            <div  ng-repeat="group in vm.model.Planner.Groups">
+            <div ng-repeat="group in vm.model.Planner.Groups track by group.PlannerGroupId">
                 <h4 class="h4">{{group.Text}}</h4>
                 <ul class="list-unstyled" data-as-sortable="dragControlListeners" style="min-height:40px;" ng-model="group.Items">
-                    <li ng-repeat="item in group.Items" data-as-sortable-item>
+                    <li ng-repeat="item in group.Items track by $index" data-as-sortable-item>
                         <span class="fa fa-reorder" data-as-sortable-item-handle style="color:gray;"></span>
-                        <span>&nbsp;
-                        <label class="checkbox checkbox-inline" style="display:inline;" for="cbRecipe-{{item.Recipe.RecipeId}}">&nbsp;
-                            <input ng-model="item.Recipe.IsChecked" ng-change="recipeChecked(item.Recipe)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox"/>{{item.Recipe.Name}}</label>
+                        <span>
+                            &nbsp;
+                            <label class="checkbox checkbox-inline" style="display:inline;" for="cbRecipe-{{item.Recipe.RecipeId}}">
+                                &nbsp;
+                                <input ng-model="item.Recipe.IsChecked" ng-change="recipeChecked(item.Recipe)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox" />{{item.Recipe.Name}}
+                            </label>
                         </span>
                     </li>
                 </ul>
@@ -116,25 +91,25 @@
 
         <div id="recipe_catalog" class="module panel panel-default">
             <div class="panel panel-body">
-                    <ul class="list-unstyled">
-                        <li ng-repeat="recipe in vm.model.RecipeCatalog | filter: { IsChecked: '!true' }">
-                            <label class="checkbox checkbox-inline" for="cbRecipe-{{recipe.RecipeId}}">
-                                <input ng-model="recipe.IsChecked" ng-change="recipeChecked(recipe)" id="cbRecipe-{{recipe.RecipeId}}" type="checkbox" name="choice" value="" />{{recipe.Name}}
-                            </label>
-                        </li>
-                    </ul>
+                <ul class="list-unstyled">
+                    <li ng-repeat="recipe in vm.model.RecipeCatalog | filter: { IsChecked: '!true' }">
+                        <label class="checkbox checkbox-inline" for="cbRecipe-{{recipe.RecipeId}}">
+                            <input ng-model="recipe.IsChecked" ng-change="recipeChecked(recipe)" id="cbRecipe-{{recipe.RecipeId}}" type="checkbox" name="choice" value="" />{{recipe.Name}}
+                        </label>
+                    </li>
+                </ul>
             </div>
         </div>
 
 
-        </div>
+    </div>
 
 
 
-        <div>
-            <br />
-            <button class="btn btn-default" ng-click="savePlanner()">Save Planner</button>
-        </div>
+    <div>
+        <br />
+        <button class="btn btn-default" ng-click="savePlanner()">Save Planner</button>
+    </div>
     @Html.ActionLink("Edit Shopping List Items", "EditItems")
 </div>
 

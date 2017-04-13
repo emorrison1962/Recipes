@@ -84,6 +84,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Helpers.cs" />
     <Compile Include="PageParserTests.cs" />
     <Compile Include="PlannerServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

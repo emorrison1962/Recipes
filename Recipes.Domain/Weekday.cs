@@ -11,8 +11,8 @@ namespace Recipes.Domain
 {
     public enum WeekdayEnum
     {
-        Unknown = -1,
-        Sunday = 0,
+        Unknown = 0,
+        Sunday = 1,
         Monday,
         Tuesday,
         Wednesday,

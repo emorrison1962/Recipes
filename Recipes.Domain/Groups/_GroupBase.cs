@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class GroupBase<T> where T: GroupItemBase, new()
+    public class GroupBase<T, I> : EntityBase<T> where I: GroupItemBase<I>, new()
 	{
 		virtual public string Text { get; set; }
-		public List<T> Items { get; set; }
+		public List<I> Items { get; set; }
 
         public GroupBase()
         {
-            this.Items = new List<T>();
+            this.Items = new List<I>();
         }
         public GroupBase(string text)
             : this()
@@ -25,7 +25,7 @@ namespace Recipes.Domain
             this.Text = text;
         }
 
-        public void Add(T i)
+        public void Add(I i)
         {
             if (null == i)
                 throw new ArgumentNullException("parameter igiText is null or Empty.");

@@ -35,7 +35,7 @@ namespace Recipes.Services.Tests
         {
             var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
             var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
-            shoppingList = Detach(shoppingList);
+            shoppingList = Helpers.Detach(shoppingList);
 
             var ingredientItem = this.GetRandomIngredient();
             var shoppingItem = new ShoppingListItem();
@@ -52,7 +52,7 @@ namespace Recipes.Services.Tests
         {
             var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
             var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
-            shoppingList = Detach(shoppingList);
+            shoppingList = Helpers.Detach(shoppingList);
 
             var shoppingItem = new ShoppingListItem();
             shoppingItem.Text = RandomString.GetAlphaOnly(RandomValue.Next<uint>(12, 24));
@@ -70,22 +70,13 @@ namespace Recipes.Services.Tests
         {
             var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
             var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
-            shoppingList = Detach(shoppingList);
+            shoppingList = Helpers.Detach(shoppingList);
 
             shoppingList.Groups.ForEach(g => g.Items.ForEach(i => i.IsChecked = !i.IsChecked));
 
             shoppingSvc.Update(shoppingList);
             new object();
         }
-
-        public virtual T Detach<T>(T entity)
-        {
-            var json = Newtonsoft.Json.JsonConvert.SerializeObject(entity);
-            var result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
-            return result;
-        }
-
-
 
         IngredientItem GetRandomIngredient()
         {

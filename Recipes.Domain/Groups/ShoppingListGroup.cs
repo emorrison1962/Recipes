@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class ShoppingListGroup : GroupBase<ShoppingListItem>
+    public class ShoppingListGroup : GroupBase<ShoppingListGroup, ShoppingListItem>
     {
         public int ShoppingListGroupId { get; set; }
 

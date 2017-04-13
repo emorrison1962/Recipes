@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amount.cs" />
+    <Compile Include="_EntityBase.cs" />
     <Compile Include="Groups\PlannerGroup.cs" />
     <Compile Include="Groups\_GroupBase.cs" />
     <Compile Include="Items\PlannerItem.cs" />

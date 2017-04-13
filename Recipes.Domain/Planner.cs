@@ -2,7 +2,7 @@
 
 namespace Recipes.Domain
 {
-    public class Planner
+    public class Planner : EntityBase<Planner>
     {
         public int PlannerId { get; set; }
         public List<PlannerGroup> Groups { get; set; }

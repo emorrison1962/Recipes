@@ -56,14 +56,14 @@ namespace Recipes.DAL.Migrations
             context.SaveChanges();
 
             var groups = new PlannerGroup[] {
+                new PlannerGroup { Weekday = WeekdayEnum.Unknown, Planner = planner  }, 
                 new PlannerGroup { Weekday = WeekdayEnum.Sunday, Planner = planner },
                 new PlannerGroup { Weekday = WeekdayEnum.Monday, Planner = planner  },
                 new PlannerGroup { Weekday = WeekdayEnum.Tuesday, Planner = planner  },
                 new PlannerGroup { Weekday = WeekdayEnum.Wednesday, Planner = planner  },
                 new PlannerGroup { Weekday = WeekdayEnum.Thursday, Planner = planner  },
                 new PlannerGroup { Weekday = WeekdayEnum.Friday, Planner = planner  },
-                new PlannerGroup { Weekday = WeekdayEnum.Saturday, Planner = planner  },
-                new PlannerGroup { Weekday = WeekdayEnum.Unknown, Planner = planner  } };
+                new PlannerGroup { Weekday = WeekdayEnum.Saturday, Planner = planner  }};
             planner.Groups.AddRange(groups);
 
             context.PlannerGroups.AddOrUpdate(t => t.Text, groups);

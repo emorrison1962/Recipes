@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class ProcedureGroup : GroupBase<ProcedureItem>
+    public class ProcedureGroup : GroupBase<ProcedureGroup, ProcedureItem>
     {
         public int ProcedureGroupId { get; set; }
 
