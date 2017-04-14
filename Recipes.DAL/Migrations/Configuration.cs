@@ -12,8 +12,8 @@ namespace Recipes.DAL.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            Database.SetInitializer<DataContext>(new CreateDatabaseIfNotExists<DataContext>());
-            //Database.SetInitializer<DataContext>(new DropCreateDatabaseIfModelChanges<DataContext>());
+            //Database.SetInitializer<DataContext>(new CreateDatabaseIfNotExists<DataContext>());
+            Database.SetInitializer<DataContext>(new DropCreateDatabaseIfModelChanges<DataContext>());
             //Database.SetInitializer<DataContext>(new DropCreateDatabaseAlways<DataContext>());
             //Database.SetInitializer<DataContext>(new SchoolDBInitializer());
         }
@@ -56,7 +56,7 @@ namespace Recipes.DAL.Migrations
             context.SaveChanges();
 
             var groups = new PlannerGroup[] {
-                new PlannerGroup { Weekday = WeekdayEnum.Unknown, Planner = planner  }, 
+                new PlannerGroup { Weekday = WeekdayEnum.Unknown, Planner = planner  },
                 new PlannerGroup { Weekday = WeekdayEnum.Sunday, Planner = planner },
                 new PlannerGroup { Weekday = WeekdayEnum.Monday, Planner = planner  },
                 new PlannerGroup { Weekday = WeekdayEnum.Tuesday, Planner = planner  },
@@ -66,7 +66,7 @@ namespace Recipes.DAL.Migrations
                 new PlannerGroup { Weekday = WeekdayEnum.Saturday, Planner = planner  }};
             planner.Groups.AddRange(groups);
 
-            context.PlannerGroups.AddOrUpdate(t => t.Text, groups);
+            //context.PlannerGroups.AddOrUpdate(t => t.Text, groups);
             context.SaveChanges();
         }
         void SeedWeekdays(DataContext context)

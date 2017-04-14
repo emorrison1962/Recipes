@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Reflection;
 
@@ -91,7 +92,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool CompareFields<T>(this EntityBase<T> client, EntityBase<T> server)
+        public static bool CompareFields<T>(this EntityBase<T> client, EntityBase<T> server, AuditResult auditResult = null)
         {
             bool result = true;
             var fis = GetCommonFields(client.GetType(), server.GetType());
@@ -103,11 +104,22 @@ namespace Recipes.Domain
                 if (((object)cliVal) == null || ((object)srvVal) == null)
                 {
                     result = Object.Equals(cliVal, srvVal);
+                    if (null != auditResult && !result)
+                    {
+                        auditResult.Add(client.GetType().Name, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
+                    }
                 }
                 else if (!cliVal.Equals(srvVal))
                 {
                     result = false;
-                    break;
+                    if (null != auditResult)
+                    {
+                        auditResult.Add(client.GetType().Name, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
             return result;
@@ -121,38 +133,40 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool CompareProperties<T>(this EntityBase<T> client, EntityBase<T> server)
+        public static bool CompareProperties<T>(this EntityBase<T> client, EntityBase<T> server, , AuditResult auditResult = null)
         {
+            "this method is preliminarialy done."
             bool result = true;
-
-            var cliType = client.GetType();
-            var srvType = server.GetType();
-            var pis = GetCommonProperties(cliType, srvType);
+            var pis = GetCommonProperties(client.GetType(), server.GetType());
             foreach (var pi in pis)
             {
                 var cliVal = (dynamic)pi.GetValue(client);
                 var srvVal = (dynamic)pi.GetValue(server);
 
-                var success = true;
                 if (cliVal is EntityBase)
                 {
-                    if (success)
-                    {
-                        result = EntityExtensions.Equals(cliVal, srvVal);
-                    }
+                    result = EntityExtensions.Equals(cliVal, srvVal, auditResult);
                 }
                 else if (cliVal is IEnumerable && !(cliVal is String))
                 {
-                    result = EntityExtensions.Equals(cliVal, srvVal);
+                    result = EntityExtensions.Equals(cliVal, srvVal, auditResult);
                 }
                 else
                 {
                     result = (cliVal == srvVal);
-                }
+                    if (!result && null != auditResult)
+                    {
+                        auditResult.Add(client.GetType().Name,
+                            EntityState.Modified,
+                            pi.Name,
+                            (null == srvVal) ? null : srvVal.ToString(),
+                            (null == cliVal) ? null : cliVal.ToString());
+                    }
 
-                if (!result)
-                {
-                    break;
+                    if (!result && null == auditResult)
+                    {
+                        break;
+                    }
                 }
             }
             return result;
@@ -256,7 +270,7 @@ namespace Recipes.Domain
 
             public int GetHashCode(T obj)
             {
-                return obj.GetHashCode();
+                return 0;
             }
         }//class
 

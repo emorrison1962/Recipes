@@ -54,12 +54,26 @@ namespace Recipes.Services.Tests
             var planner = svc.GetById(-1);
             planner = Helpers.Detach(planner);
 
-            const int MAX = 10;
-            var recipes = this.GetRecipes(MAX);
-            foreach (var recipe in recipes)
-            {
-                var item = new PlannerItem(recipe);
-                planner.Groups[0].Items.Add(item);
+            var itemCount = planner.Groups.Sum(g => g.Items.Count());
+            if (itemCount > 0)
+            {// remove the recipes.
+                var items = planner.Groups.Select(g => g.Items).ToList();
+                foreach (var item in items)
+                {
+                    new object();
+                }
+            }
+
+            else
+            {// add the recipes.
+                const int MAX = 10;
+                var recipes = this.GetRecipes(MAX);
+
+                foreach (var recipe in recipes)
+                {
+                    var item = new PlannerItem(recipe);
+                    planner.Groups[0].Items.Add(item);
+                }
             }
 
             svc.Update(planner);

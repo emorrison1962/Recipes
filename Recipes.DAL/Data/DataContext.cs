@@ -1,5 +1,7 @@
 ﻿using Recipes.Domain;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 
 namespace Recipes.DAL.Data
 {
@@ -38,9 +40,14 @@ namespace Recipes.DAL.Data
                         {
                             rt.MapLeftKey("RecipeId");
                             rt.MapRightKey("TagId");
-                            rt.ToTable("RecipeTag");
+                            rt.ToTable("Recipe2Tag");
                         });
 
+            //modelBuilder.Entity<Recipe>().Property(x => x.Uri)
+            //    .HasColumnAnnotation("Constraint", new IndexAnnotation(new IndexAttribute() { IsUnique = true }));
+
+
+            ///////////////////////////////////////////////////////////////////////////////////
             modelBuilder.Entity<ShoppingListItem>()
                         .HasRequired<ShoppingListGroup>(s => s.ShoppingListGroup)
                         .WithMany(s => s.Items);
@@ -61,7 +68,26 @@ namespace Recipes.DAL.Data
             modelBuilder.Entity<ProcedureItem>()
                                 .HasRequired<ProcedureGroup>(s => s.ProcedureGroup)
                                 .WithMany(s => s.Items);
+            ///////////////////////////////////////////////////////////////////////////////////
 
+            modelBuilder.Entity<PlannerItem>()
+                                .HasRequired<Recipe>(x => x.Recipe);
+
+            modelBuilder.Entity<PlannerItem>()
+                                .HasRequired<PlannerGroup>(x => x.PlannerGroup)
+                                .WithMany(s => s.Items)
+                                .HasForeignKey(x => x.PlannerGroupId);
+
+            modelBuilder.Entity<PlannerGroup>()
+                                .HasMany<PlannerItem>(x => x.Items);
+
+            modelBuilder.Entity<PlannerGroup>()
+                                .HasRequired<Planner>(x => x.Planner);
+
+            modelBuilder.Entity<Planner>()
+                                .HasMany<PlannerGroup>(x => x.Groups);
+
+            ///////////////////////////////////////////////////////////////////////////////////
 
 #if false
             // Configure the primary Key for the OfficeAssignment 

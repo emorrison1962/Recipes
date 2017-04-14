@@ -7,14 +7,14 @@ namespace Recipes.Domain
     {
         public int PlannerItemId { get; set; }
 
-        public int RecipeId { get; set; }
+        public int? RecipeId { get; set; }
         [ForeignKey("RecipeId")]
         virtual public Recipe Recipe { get; set; }
 
-        public int PlannerGroupId { get; set; }
         [JsonIgnore]
         [ForeignKey("PlannerGroupId")]
         public virtual PlannerGroup PlannerGroup { get; set; }
+        public int? PlannerGroupId { get; set; }
 
 
         public PlannerItem()
@@ -23,7 +23,7 @@ namespace Recipes.Domain
 
         public PlannerItem(Recipe r)
         {
-            this.Recipe = r;
+            this.RecipeId = r.RecipeId;
         }
 
     }
