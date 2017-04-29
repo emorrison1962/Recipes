@@ -14,5 +14,22 @@ namespace Recipes.Domain
         //Navigation property
         [JsonIgnore]
         public virtual ShoppingListGroup ShoppingListGroup { get; set; }
+
+        public override int PrimaryKey
+        {
+            get
+            {
+                return ShoppingListItemId;
+            }
+        }
+
+        public ShoppingListItem()
+        {
+            this.Init();
+        }
+        void Init()
+        {
+        }
+
     }
 }

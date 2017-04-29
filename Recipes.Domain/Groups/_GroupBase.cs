@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class GroupBase<T, I> : EntityBase<T> where I: GroupItemBase<I>, new()
+    abstract public class GroupBase<T, I> : EntityBase<T> where I: GroupItemBase<I>, new()
 	{
 		virtual public string Text { get; set; }
 		public List<I> Items { get; set; }

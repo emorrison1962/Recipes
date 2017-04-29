@@ -7,6 +7,7 @@ using Recipes.Models;
 using Recipes.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,9 +63,6 @@ namespace Recipes.Services.Tests
             new object();
         }
 
-
-
-
         [TestMethod()]
         public void Update_UpdateIngredient_Test()
         {
@@ -86,5 +84,28 @@ namespace Recipes.Services.Tests
             var result = randomList.Next();
             return result;
         }
+
+        [TestMethod()]
+        public void Planner_AuditTest_01()
+        {// Change Name.
+            var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
+            var server = shoppingSvc.GetFullObject(int.MinValue);
+            var client = Helpers.Detach(server);
+
+            var shoppingItem = new ShoppingListItem();
+            shoppingItem.Text = RandomString.GetAlphaOnly(RandomValue.Next<uint>(12, 24));
+            client.DefaultGroup.Add(shoppingItem);
+
+            if (!server.Equals(client))
+            {
+                var ar = server.AuditChanges(client);
+                Assert.IsTrue(ar.Deltas.Count == 1);
+                var delta = ar.Deltas.First();
+                Assert.IsTrue(delta.EntityState == EntityState.Added);
+                new object();
+            }
+        }
+
+
     }//class
 }//ns

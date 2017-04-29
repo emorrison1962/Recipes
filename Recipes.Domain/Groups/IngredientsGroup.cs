@@ -9,13 +9,29 @@ namespace Recipes.Domain
     {
         public int IngredientGroupId { get; set; }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return this.IngredientGroupId;
+            }
+        }
+
         public IngredientGroup()
             : base()
-        {  }
+        {
+            this.Init();
+        }
 
         public IngredientGroup(string text)
             : base(text)
-        {  }
+        {
+            this.Init();
+        }
+
+        void Init()
+        {
+        }
 
     }//class
 }//ns

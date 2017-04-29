@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using System;
 
 namespace Recipes.Domain
 {
     public class PlannerItem : GroupItemBase<PlannerItem>
     {
+        [UniqueIdentifier]
         public int PlannerItemId { get; set; }
 
         public int? RecipeId { get; set; }
@@ -16,15 +18,27 @@ namespace Recipes.Domain
         public virtual PlannerGroup PlannerGroup { get; set; }
         public int? PlannerGroupId { get; set; }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return PlannerItemId;
+            }
+        }
 
         public PlannerItem()
         {
+            this.Init();
         }
 
-        public PlannerItem(Recipe r)
+        public PlannerItem(Recipe r) : this()
         {
             this.RecipeId = r.RecipeId;
         }
+        void Init()
+        {
+        }
+
 
     }
 }

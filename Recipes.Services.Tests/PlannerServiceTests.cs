@@ -6,6 +6,7 @@ using Recipes.Domain;
 using Recipes.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,35 +49,32 @@ namespace Recipes.Services.Tests
         }
 
         [TestMethod()]
-        public void PlannerService_UpdateTest02()
+        public void PlannerService_AuditTest_01()
         {
             var svc = CreateService();
-            var planner = svc.GetById(-1);
-            planner = Helpers.Detach(planner);
+            var source = svc.GetById(-1);
+            var pending = Helpers.Detach(source);
 
-            var itemCount = planner.Groups.Sum(g => g.Items.Count());
-            if (itemCount > 0)
-            {// remove the recipes.
-                var items = planner.Groups.Select(g => g.Items).ToList();
-                foreach (var item in items)
-                {
-                    new object();
-                }
+            // add the recipes.
+            const int MAX = 2;
+            var recipes = this.GetRecipes(MAX);
+            var group = pending.Groups[0];
+            foreach (var recipe in recipes)
+            {
+                var item = Helpers.Detach(new PlannerItem(recipe));
+                pending.Groups[0].Items.Add(item);
             }
 
-            else
-            {// add the recipes.
-                const int MAX = 10;
-                var recipes = this.GetRecipes(MAX);
-
-                foreach (var recipe in recipes)
+            if (!source.Equals(pending))
+            {
+                var ar = source.AuditChanges(pending);
+                Assert.IsTrue(ar.Deltas.Count == 2);
+                foreach (var delta in ar.Deltas)
                 {
-                    var item = new PlannerItem(recipe);
-                    planner.Groups[0].Items.Add(item);
+                    Assert.IsTrue(delta.EntityState == EntityState.Added);
                 }
+                new object();
             }
-
-            svc.Update(planner);
         }
 
         Recipe GetRecipe()

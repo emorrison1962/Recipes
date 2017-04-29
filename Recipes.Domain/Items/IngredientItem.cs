@@ -24,17 +24,30 @@ namespace Recipes.Domain
         [NotMapped]
         public Amount Amount { get; set; }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return IngredientItemId;
+            }
+        }
+
         #endregion
 
         public IngredientItem()
         {
-
+            this.Init();
         }
         public IngredientItem(string text)
         {
+            this.Init();
             this.Text = text;
             //this.Product = new Domain.Product(text);
         }
+        void Init()
+        {
+        }
+
 
     }//class
 }//ns

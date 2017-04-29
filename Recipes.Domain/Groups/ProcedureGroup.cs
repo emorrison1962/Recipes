@@ -8,11 +8,27 @@ namespace Recipes.Domain
     {
         public int ProcedureGroupId { get; set; }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return ProcedureGroupId;
+            }
+        }
+
         public ProcedureGroup() : base()
-        {  }
+        {
+            this.Init();
+        }
         public ProcedureGroup(string text)
             : base(text)
-        {  }
+        {
+            this.Init();
+        }
+
+        void Init()
+        {
+        }
 
 
     }//class

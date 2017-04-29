@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class ShoppingList
+    public class ShoppingList : EntityBase<ShoppingList>
     {
         const string DEFAULT_GROUP_TEXT = "<Unknown>";
         public string Text { get; set; }
@@ -25,6 +25,15 @@ namespace Recipes.Domain
                 return result;
             }
         }
+
+        public override int PrimaryKey
+        {
+            get
+            {
+                return ShoppingListId;
+            }
+        }
+
         public ShoppingList()
         {
             this.Groups = new List<ShoppingListGroup>();

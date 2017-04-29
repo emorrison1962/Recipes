@@ -13,16 +13,27 @@ namespace Recipes.Domain
         [JsonIgnore][XmlIgnore]
         public virtual ProcedureGroup ProcedureGroup { get; set; }
 
-		public ProcedureItem()
-		{
+        public override int PrimaryKey
+        {
+            get
+            {
+                return ProcedureItemId;
+            }
+        }
 
+        public ProcedureItem()
+		{
+            this.Init();
 		}
 
 		public ProcedureItem(string text)
 		{
 			this.Text = text;
-		}
-
+            this.Init();
+        }
+        void Init()
+        {
+        }
 
     }//class
 }//ns

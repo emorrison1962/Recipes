@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amount.cs" />
-    <Compile Include="_EntityBase.Partials.cs" />
+    <Compile Include="Items\UniqueIdentifierAttribute.cs" />
+    <Compile Include="_EntityBase.Extensions.cs" />
+    <Compile Include="AuditResult, Delta.cs" />
     <Compile Include="_EntityBase.cs" />
     <Compile Include="Groups\PlannerGroup.cs" />
     <Compile Include="Groups\_GroupBase.cs" />

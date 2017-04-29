@@ -8,20 +8,11 @@ using System.Runtime.Serialization;
 namespace Recipes.Domain
 {
     [Serializable]
-    public class Recipe : IComparable<Recipe>
+    public class Recipe : EntityBase<Recipe>, IComparable<Recipe>
     {
-        #region Fields
-
-        [NotMapped]
-        static int _nextInstanceID = 0;
-        [NotMapped]
-        int _instanceID;
-
-        #endregion
-
         #region Properties
 
-        public int RecipeId { get; private set; }
+        public int RecipeId { get; set; }
 
         public string Name { get; set; }
 
@@ -88,6 +79,14 @@ namespace Recipes.Domain
             }
         }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return RecipeId;
+            }
+        }
+
         #endregion
 
         #region Construction
@@ -98,7 +97,6 @@ namespace Recipes.Domain
         }
         void Init()
         {
-            this._instanceID = ++_nextInstanceID;
             if (null == this.Tags)
                 this.Tags = new List<Tag>();
         }

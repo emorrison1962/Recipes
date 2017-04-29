@@ -10,12 +10,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 namespace Recipes.Services.Tests
 {
     [TestClass()]
     public class RecipeServiceTests
     {
+        public EntityState Enti { get; private set; }
 
         public static RecipeService CreateService()
         {
@@ -101,6 +103,48 @@ namespace Recipes.Services.Tests
 
             var result = svc.Update(recipe);
             //Check for accurate update....
+        }
+
+        [TestMethod()]
+        public void RecipeService_AuditTest_01()
+        {// Change Name.
+            var svc = CreateService();
+            var id = svc.GetAll().Select(x => x.RecipeId).First();
+            var server = svc.GetById(id);
+            var client = Helpers.Detach(server);
+
+            client.Name = "XXX";
+
+            if (!server.Equals(client))
+            {
+                var ar = server.AuditChanges(client);
+                Assert.IsTrue(ar.Deltas.Count == 1);
+                var delta = ar.Deltas.First();
+                Assert.IsTrue(delta.EntityState == EntityState.Modified);
+                new object();
+            }
+        }
+
+        [TestMethod()]
+        public void RecipeService_AuditTest_02()
+        {// Add Ingredient Item.
+            var svc = CreateService();
+            var id = svc.GetAll().Select(x => x.RecipeId).First();
+            var server = svc.GetById(id);
+            var client = Helpers.Detach(server);
+
+            var group = client.IngredientGroups[0];
+            var item = new IngredientItem("XXXX");
+            group.Items.Add(item);
+
+            if (!server.Equals(client))
+            {
+                var ar = server.AuditChanges(client);
+                Assert.IsTrue(ar.Deltas.Count == 1);
+                var delta = ar.Deltas.First();
+                Assert.IsTrue(delta.EntityState == EntityState.Added);
+                new object();
+            }
         }
 
 

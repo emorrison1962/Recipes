@@ -1,0 +1,1 @@
+<Playlist Version="1.0"><Add Test="Recipes.Services.Tests.RecipeServiceTests.RecipeService_AuditTest_02" /><Add Test="Recipes.Services.Tests.RecipeServiceTests.RecipeService_AuditTest" /></Playlist>

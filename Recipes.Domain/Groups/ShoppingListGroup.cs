@@ -16,8 +16,22 @@ namespace Recipes.Domain
         [JsonIgnore]
         public virtual ShoppingList ShoppingList { get; set; }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return ShoppingListGroupId;
+            }
+        }
+
         public ShoppingListGroup() : base()
-        {   }
+        {
+            this.Init();
+        }
+
+        void Init()
+        {
+        }
 
         [OnSerializing]
         void OnSerializing(StreamingContext ctx)

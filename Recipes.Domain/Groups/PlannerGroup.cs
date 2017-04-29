@@ -6,6 +6,7 @@ namespace Recipes.Domain
 {
     public class PlannerGroup : GroupBase<PlannerGroup, PlannerItem>
     {
+        [UniqueIdentifier]
         public int PlannerGroupId { get; set; }
         public WeekdayEnum Weekday { get; set; }
 
@@ -17,6 +18,13 @@ namespace Recipes.Domain
 
         override public string Text { get { return Weekday.ToString(); } set { } }
 
+        public override int PrimaryKey
+        {
+            get
+            {
+                return this.PlannerGroupId;
+            }
+        }
 
         public PlannerGroup()
         {
@@ -27,8 +35,9 @@ namespace Recipes.Domain
             throw new NotSupportedException();
         }
 
-        public PlannerGroup(WeekdayEnum weekday) : base(weekday.ToString())
+        public PlannerGroup(WeekdayEnum weekday) : this() 
         {
+            this.Text = weekday.ToString();
             this.Weekday = weekday;
         }
 
