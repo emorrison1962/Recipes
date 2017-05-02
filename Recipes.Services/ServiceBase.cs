@@ -139,7 +139,6 @@ namespace Recipes.Services
             try
             {
                 result = this.Repository.Detach(entity);
-
             }
 #pragma warning disable 168
             catch (Exception ex)

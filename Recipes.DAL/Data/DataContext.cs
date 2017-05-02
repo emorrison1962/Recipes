@@ -1,4 +1,5 @@
 ﻿using Recipes.Domain;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;
@@ -11,6 +12,34 @@ namespace Recipes.DAL.Data
         {
 
         }
+
+        public void SetChanges(EntityDeltaResults ar)
+        {
+            foreach (var delta in ar.Deltas)
+            {
+                if (delta.EntityState == System.Data.EntityState.Added)
+                {
+                    var dbEntry = this.Entry(delta.Entity);
+                    dbEntry.State = EntityState.Added;
+                }
+                else if (delta.EntityState == System.Data.EntityState.Deleted)
+                {
+                    var dbEntry = this.Entry(delta.Entity);
+                    dbEntry.State = EntityState.Deleted;
+                }
+                else if (delta.EntityState == System.Data.EntityState.Modified)
+                {
+                    var dbEntry = this.Entry(delta.Entity);
+                    dbEntry.State = EntityState.Modified;
+                }
+                else
+                {
+                    new Object();
+                }
+            }
+        }
+
+
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<ShoppingList> ShoppingLists { get; set; }
 

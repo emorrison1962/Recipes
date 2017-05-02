@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Recipes.Domain
@@ -33,5 +34,32 @@ namespace Recipes.Domain
         {
         }
 
+        public override void Add(IngredientItem item)
+        {
+            this._items.Add(item);
+            item.IngredientGroup = this;
+        }
+
+        public override void Remove(IngredientItem item)
+        {
+            this._items.Remove(item);
+            item.IngredientGroup = null;
+        }
+
+        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count > 0)
+                foreach (var ob in e.NewItems)
+                {
+                    var item = ob as IngredientItem;
+                    item.IngredientGroup = this;
+                }
+            if (e.OldItems.Count > 0)
+                foreach (var ob in e.OldItems)
+                {
+                    var item = ob as IngredientItem;
+                    item.IngredientGroup = null;
+                }
+        }
     }//class
 }//ns

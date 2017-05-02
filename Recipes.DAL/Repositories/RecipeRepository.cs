@@ -20,9 +20,9 @@ namespace Recipes.DAL.Repositories
                 .Where(r => r.RecipeId == id)
                 .IncludeMultiple(
                     r => r.IngredientGroups
-                    , r => r.IngredientGroups.Select<IngredientGroup, List<IngredientItem>>(pg => pg.Items)
+                    , r => r.IngredientGroups.Select<IngredientGroup, List<IngredientItem>>(pg => pg.Items.ToList())
                     , r => r.ProcedureGroups
-                    , r => r.ProcedureGroups.Select<ProcedureGroup, List<ProcedureItem>>(pg => pg.Items));
+                    , r => r.ProcedureGroups.Select<ProcedureGroup, List<ProcedureItem>>(pg => pg.Items.ToList()));
 
             var result = query.FirstOrDefault();
 

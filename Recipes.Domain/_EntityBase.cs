@@ -1,13 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 using System.Runtime.Serialization;
 
 namespace Recipes.Domain
@@ -24,10 +17,6 @@ namespace Recipes.Domain
 
         #endregion
 
-        [NotMapped]
-        [JsonIgnore]
-        public bool IsDetached { get; set; }
-
         public EntityBase()
         {
             this.Init();
@@ -38,13 +27,6 @@ namespace Recipes.Domain
             this._instanceID = ++_nextInstanceID;
         }
 
-        [OnDeserialized]
-        public void OnDeserialized(StreamingContext ctx)
-        {
-            this.Init();
-            this.IsDetached = true;
-            Debug.WriteLine(this.GetType().Name);
-        }
     }
 
     abstract public partial class EntityBase<T> : EntityBase, IEquatable<EntityBase<T>>
@@ -53,10 +35,10 @@ namespace Recipes.Domain
         [JsonIgnore]
         abstract public int PrimaryKey { get; }
 
-        public AuditResult AuditChanges(EntityBase<T> client)
+        public EntityDeltaResults DetectChanges(EntityBase<T> client)
         {
             // there is an expectation that "other" is the client object.
-            var result = new AuditResult();
+            var result = new EntityDeltaResults();
             var hasChanged = EntityExtensions.Equals((dynamic)this, (dynamic)client, true, result);
             return result;
         }

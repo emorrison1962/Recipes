@@ -1,9 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Specialized;
+using System.Runtime.Serialization;
 
 namespace Recipes.Domain
 {
+    [Serializable]
     public class PlannerGroup : GroupBase<PlannerGroup, PlannerItem>
     {
         [UniqueIdentifier]
@@ -41,5 +44,44 @@ namespace Recipes.Domain
             this.Weekday = weekday;
         }
 
-    }
-}
+        public override void Add(PlannerItem item)
+        {
+            this._items.Add(item);
+            item.PlannerGroup = this;
+        }
+
+        public override void Remove(PlannerItem item)
+        {
+            this._items.Remove(item);
+            item.PlannerGroup = null;
+        }
+
+        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count > 0)
+                foreach (var ob in e.NewItems)
+                {
+                    var item = ob as PlannerItem;
+                    item.PlannerGroup = this;
+                }
+            if (e.OldItems.Count > 0)
+                foreach (var ob in e.OldItems)
+                {
+                    var item = ob as PlannerItem;
+                    item.PlannerGroup = null;
+                }
+        }
+
+        void Init() { }
+
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext ctx)
+        {
+            this.Init();
+            if (null != this.Items)
+                foreach (var item in this.Items)
+                    item.PlannerGroupId = this.PlannerGroupId;
+        }
+
+    }//class
+}//ns

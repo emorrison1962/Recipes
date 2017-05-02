@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,12 +11,34 @@ namespace Recipes.Domain
     [Serializable]
     abstract public class GroupBase<T, I> : EntityBase<T> where I: GroupItemBase<I>, new()
 	{
-		virtual public string Text { get; set; }
-		public List<I> Items { get; set; }
+        protected NotifyCollectionChangedEventHandler CollectionChanged;
+
+        virtual public string Text { get; set; }
+        protected ObservableCollection<I> _items { get; set; }
+        public ObservableCollection<I> Items
+        {
+            get
+            {
+                return _items;
+            }
+            set
+            {
+                if (null != _items)
+                    _items.CollectionChanged -= Items_CollectionChanged;
+                _items = value;
+                if (null != _items)
+                    _items.CollectionChanged += Items_CollectionChanged;
+            }
+        }
+
+        abstract protected void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e);
+
+        abstract public void Add(I item);
+        abstract public void Remove(I item);
 
         public GroupBase()
         {
-            this.Items = new List<I>();
+            this._items = new ObservableCollection<I>();
         }
         public GroupBase(string text)
             : this()
@@ -23,14 +47,6 @@ namespace Recipes.Domain
                 throw new ArgumentException("parameter text is null or Empty.");
 
             this.Text = text;
-        }
-
-        public void Add(I i)
-        {
-            if (null == i)
-                throw new ArgumentNullException("parameter igiText is null or Empty.");
-
-            this.Items.Add(i);
         }
 
         public override string ToString()

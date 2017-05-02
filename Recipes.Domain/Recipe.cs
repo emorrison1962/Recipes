@@ -121,7 +121,7 @@ namespace Recipes.Domain
         }
 
         [OnDeserialized]
-        void OnDeserialized(StreamingContext ctx)
+        new void OnDeserialized(StreamingContext ctx)
         {
             this.Init();
         }

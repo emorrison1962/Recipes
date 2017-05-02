@@ -10,20 +10,20 @@ using System.Reflection;
 
 namespace Recipes.Domain
 {
-    public class AuditResult
+    public class EntityDeltaResults
     {
         public HashSet<EntityBase> AuditedItems { get; set; }
-        public HashSet<Delta> Deltas { get; set; }
-        public AuditResult()
+        public HashSet<EntityDelta> Deltas { get; set; }
+        public EntityDeltaResults()
         {
-            this.Deltas = new HashSet<Delta>();
+            this.Deltas = new HashSet<EntityDelta>();
             this.AuditedItems = new HashSet<EntityBase>();
         }
         public void Add(EntityBase e, EntityState entityState, string property = null, string oldValue = null, string newValue = null)
         {
             if (e.GetType() == typeof(PlannerGroup))
                 new object();
-            var delta = new Delta(e, entityState, property, oldValue, newValue);
+            var delta = new EntityDelta(e, entityState, property, oldValue, newValue);
             this.Deltas.Add(delta);
             this.AuditedItems.Add(e);
             return;
@@ -43,16 +43,16 @@ namespace Recipes.Domain
             return sb.ToString();
         }
     }//class
-    public class Delta
+    public class EntityDelta
     {
-        EntityBase Entity { get; set; }
+        public EntityBase Entity { get; set; }
         public string ClassName { get { return this.Entity.GetType().Name; } }
         public string PropertyName { get; set; }
         public string OldValue { get; set; }
         public string NewValue { get; set; }
         public EntityState EntityState { get; set; }
 
-        public Delta(EntityBase entity, EntityState entityState, string propertyName, string oldValue, string newValue)
+        public EntityDelta(EntityBase entity, EntityState entityState, string propertyName, string oldValue, string newValue)
         {
             this.Entity = entity;
             this.PropertyName = propertyName;

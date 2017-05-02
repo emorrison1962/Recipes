@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Collections.Specialized;
 
 namespace Recipes.Domain
 {
@@ -49,11 +50,37 @@ namespace Recipes.Domain
         }
 
         [OnDeserialized]
-        void OnDeserialized(StreamingContext ctx)
+        new void OnDeserialized(StreamingContext ctx)
         {
             //this.Init();
         }
 
+        public override void Add(ShoppingListItem item)
+        {
+            this._items.Add(item);
+            item.ShoppingListGroup = this;
+        }
 
+        public override void Remove(ShoppingListItem item)
+        {
+            this._items.Remove(item);
+            item.ShoppingListGroup = null;
+        }
+
+        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.NewItems.Count > 0)
+                foreach (var ob in e.NewItems)
+                {
+                    var item = ob as ShoppingListItem;
+                    item.ShoppingListGroup = this;
+                }
+            if (e.OldItems.Count > 0)
+                foreach (var ob in e.OldItems)
+                {
+                    var item = ob as ShoppingListItem;
+                    item.ShoppingListGroup = null;
+                }
+        }
     }
 }

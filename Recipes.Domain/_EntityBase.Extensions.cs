@@ -13,7 +13,7 @@ namespace Recipes.Domain
 {
     public static partial class EntityExtensions
     {
-        public static bool Audit<T>(this EntityBase<T> x, EntityBase<T> y, AuditResult auditResult)
+        public static bool Audit<T>(this EntityBase<T> x, EntityBase<T> y, EntityDeltaResults auditResult)
         {
             bool result = ((x == y) || ((x != null) && (y != null)));
             if (result)
@@ -94,7 +94,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool Equals<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, AuditResult auditResult = null)
+        public static bool Equals<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityDeltaResults auditResult = null)
         {
             var cliCopy = client;
             var srvCopy = server;
@@ -128,7 +128,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool Equals<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, AuditResult auditResult = null)
+        public static bool Equals<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, EntityDeltaResults auditResult = null)
             where T : EntityBase<T>
         {
             bool result = Object.ReferenceEquals(cliList, srvList);
@@ -185,7 +185,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool CompareFields<T>(this EntityBase<T> server, EntityBase<T> client, AuditResult auditResult = null)
+        public static bool CompareFields<T>(this EntityBase<T> server, EntityBase<T> client, EntityDeltaResults auditResult = null)
         {
             bool result = true;
             var cliCopy = client;
@@ -221,7 +221,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool CompareProperties<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, AuditResult auditResult = null)
+        public static bool CompareProperties<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityDeltaResults auditResult = null)
         {
             bool result = true;
             if (server is Recipe)
@@ -294,8 +294,8 @@ namespace Recipes.Domain
         class DeepEqualityComparer<T> : IEqualityComparer<T>
             where T : EntityBase<T>
         {
-            AuditResult AuditResult { get; set; }
-            public DeepEqualityComparer(AuditResult auditResult)
+            EntityDeltaResults AuditResult { get; set; }
+            public DeepEqualityComparer(EntityDeltaResults auditResult)
             {
                 this.AuditResult = auditResult;
             }

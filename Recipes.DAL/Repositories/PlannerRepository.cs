@@ -3,7 +3,6 @@ using Recipes.DAL.Data;
 using Recipes.Domain;
 using System;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Recipes.DAL.Repositories
@@ -41,36 +40,24 @@ namespace Recipes.DAL.Repositories
 
             try
             {
-                //Action<PlannerItem> clearRecipe = delegate (PlannerItem i) { i.RecipeId = i.Recipe.RecipeId; i.Recipe = null; };
-                //entity.Groups.ForEach(g => g.Items.ForEach(i => clearRecipe(i)));
-
-
                 var existing = this.GetById(pending.PlannerId);
 
                 if (!existing.Equals(pending))
                 {
-                    var ar = existing.AuditChanges(pending);
-
-                    existing.Copy(pending);
-                    var b = existing.Equals(pending);
-                    var validations = _dataContext.GetValidationErrors();
-                    foreach (var validation in validations)
-                    {
-                        Debug.WriteLine(validation.ToString());
-                    }
-
-                    var e = _dataContext.Entry(pending);
-                    e.State = System.Data.Entity.EntityState.Added;
+                    var ar = existing.DetectChanges(pending);
+                    _dataContext.SetChanges(ar);
                     _dataContext.SaveChanges();
                 }
             }
+
             catch (Exception ex)
             {
-
                 throw;
             }
         }
-    }
+
+
+    }//class
 
     #endregion
 
@@ -80,9 +67,8 @@ namespace Recipes.DAL.Repositories
     {
         public PlannerGroupRepository(DataContext dc) : base(dc)
         {
-
         }
-    }
+    }//class
 
     #endregion
 
@@ -92,9 +78,8 @@ namespace Recipes.DAL.Repositories
     {
         public PlannerItemRepository(DataContext dc) : base(dc)
         {
-
         }
-    }
+    }//class
 
     #endregion
 

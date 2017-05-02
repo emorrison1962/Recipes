@@ -70,7 +70,7 @@ namespace Recipes.Services.Tests
             var shoppingList = shoppingSvc.GetFullObject(int.MinValue);
             shoppingList = Helpers.Detach(shoppingList);
 
-            shoppingList.Groups.ForEach(g => g.Items.ForEach(i => i.IsChecked = !i.IsChecked));
+            shoppingList.Groups.ForEach(g => g.Items.ToList().ForEach(i => i.IsChecked = !i.IsChecked));
 
             shoppingSvc.Update(shoppingList);
             new object();
@@ -98,7 +98,7 @@ namespace Recipes.Services.Tests
 
             if (!server.Equals(client))
             {
-                var ar = server.AuditChanges(client);
+                var ar = server.DetectChanges(client);
                 Assert.IsTrue(ar.Deltas.Count == 1);
                 var delta = ar.Deltas.First();
                 Assert.IsTrue(delta.EntityState == EntityState.Added);

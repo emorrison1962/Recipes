@@ -61,6 +61,15 @@ namespace Recipes.DAL.Repositories
             try
             {
                 var existing = this.GetFullObject(incoming.ShoppingListId);
+                if (!existing.Equals(incoming))
+                {
+                    var ar = existing.DetectChanges(incoming);
+                    _dataContext.SetChanges(ar);
+                    _dataContext.SaveChanges();
+                }
+
+#if false
+                var existing = this.GetFullObject(incoming.ShoppingListId);
                 var defaultGroup = existing.Groups[0];
 
                 var existingItems = (
@@ -96,7 +105,7 @@ namespace Recipes.DAL.Repositories
                     from e in existingItems
                     from i in incomingItems
                     where e.Item.ShoppingListItemId == i.Item.ShoppingListItemId
-                        && (e.Item.IsChecked != i.Item.IsChecked 
+                        && (e.Item.IsChecked != i.Item.IsChecked
                             || e.GroupId != i.GroupId)
                     select new { Existing = e, Incoming = i }
                     );
@@ -120,10 +129,10 @@ namespace Recipes.DAL.Repositories
                         var group = existingGroups.Where(x => x.ShoppingListGroupId == update.Incoming.GroupId).First();
                         modifiedGroups.Add(existingItem.ShoppingListGroup);
                         modifiedGroups.Add(group);
-                        existingItem.ShoppingListGroup.Items.Remove(existingItem);
+                        existingItem.ShoppingListGroup.Remove(existingItem);
 
                         existingItem.ShoppingListGroup = group;
-                        group.Items.Add(existingItem);
+                        group.Add(existingItem);
                     }
                 }
 
@@ -132,6 +141,8 @@ namespace Recipes.DAL.Repositories
                 modifiedGroups.ToList().ForEach(x => _dataContext.Entry(x).State = EntityState.Modified);
 
                 _dataContext.SaveChanges();
+
+#endif
             }
             catch (DbEntityValidationException e)
             {

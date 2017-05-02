@@ -117,7 +117,7 @@ namespace Recipes.Services.Tests
 
             if (!server.Equals(client))
             {
-                var ar = server.AuditChanges(client);
+                var ar = server.DetectChanges(client);
                 Assert.IsTrue(ar.Deltas.Count == 1);
                 var delta = ar.Deltas.First();
                 Assert.IsTrue(delta.EntityState == EntityState.Modified);
@@ -135,11 +135,11 @@ namespace Recipes.Services.Tests
 
             var group = client.IngredientGroups[0];
             var item = new IngredientItem("XXXX");
-            group.Items.Add(item);
+            group.Add(item);
 
             if (!server.Equals(client))
             {
-                var ar = server.AuditChanges(client);
+                var ar = server.DetectChanges(client);
                 Assert.IsTrue(ar.Deltas.Count == 1);
                 var delta = ar.Deltas.First();
                 Assert.IsTrue(delta.EntityState == EntityState.Added);

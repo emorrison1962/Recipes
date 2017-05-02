@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Recipes.Domain
 {
+    [Serializable]
     public class Planner : EntityBase<Planner>
     {
         [UniqueIdentifier]
