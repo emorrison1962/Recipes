@@ -19,20 +19,9 @@ namespace Recipes.DAL.Repositories
 
         public override Planner GetById(int id)
         {
-
-
             var result = this._dataContext.Planners
                 .Include(p => p.Groups.Select(g => g.Items))
                 .FirstOrDefault();
-
-
-            //var query = this._dbSet
-            //    .Where(x => null != x)
-            //    .IncludeMultiple(
-            //        p => p.Groups
-            //        , p => p.Groups.Select<PlannerGroup, List<PlannerItem>>(pg => pg.Items));
-
-            //var result = query.FirstOrDefault();
             return result;
         }
 
@@ -46,8 +35,8 @@ namespace Recipes.DAL.Repositories
                     var ecr = existing.DetectChanges(pending);
                     Debug.WriteLine(ecr);
                     _dataContext.SetChanges(ecr);
+                    _dataContext.SaveChanges();
                 }
-                _dataContext.SaveChanges();
             }
 #pragma warning disable 0168
             catch (Exception ex)

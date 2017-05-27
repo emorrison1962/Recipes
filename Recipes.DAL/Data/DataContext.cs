@@ -14,24 +14,24 @@ namespace Recipes.DAL.Data
 
         public void SetChanges(EntityChangeResults ar)
         {
-            foreach (var delta in ar.ModifiedEntities)
+            foreach (var me in ar.ModifiedEntities)
             {
-                var dbset = this.Set(delta.Entity.GetType());
-                if (delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added)
+                var dbset = this.Set(me.Entity.GetType());
+                if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added)
                 {
-                    var dbEntry = this.Entry(delta.Entity).State = System.Data.Entity.EntityState.Added;
+                    var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Added;
                     //var dbEntry = dbset.Add(delta.Entity);
                     //this.DebugChanges();
                 }
-                else if (delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Deleted)
+                else if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Deleted)
                 {
-                    var dbEntry = this.Entry(delta.Entity).State = System.Data.Entity.EntityState.Deleted;
+                    var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Deleted;
                     //var dbEntry = dbset.Remove(delta.Entity);
                     //this.DebugChanges();
                 }
-                else if (delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Modified)
+                else if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Modified)
                 {
-                    var dbEntry = this.Entry(delta.Entity).State = System.Data.Entity.EntityState.Modified;
+                    var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Modified;
                     //this.DebugChanges();
                 }
                 else

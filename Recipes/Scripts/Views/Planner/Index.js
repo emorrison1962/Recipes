@@ -3,7 +3,7 @@
 var plannerIndexController = myApp.controller("plannerIndexController", ['$scope', '$window', '$log', '$http', '$location', function ($scope, $window, $log, $http, $location) {
 
     var vm = this;
-    vm.isBusy = true;
+    vm.isBusy = false;
 
     $scope.init = function (model) {
 
@@ -15,7 +15,9 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
                     return recipe.RecipeId === item.Recipe.RecipeId;
                 });
                 recipe.IsChecked = true;
+                item.IsChecked = true;
                 item.Recipe = recipe;
+                recipe.PlannerItemId = item.PlannerItemId;
             });
         });
         vm.model = model;
@@ -55,10 +57,21 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
     };
 
 
+    $scope.plannerItemChecked = function (item) {
+        if (!item.IsChecked) {
+            item.Recipe.IsChecked = false;
+            vm.model.Planner.Groups.forEach(function (group) {
+                group.Items.RemovePlannerItem(item);
+            }
+        )}
+    };
+
+
     $scope.recipeChecked = function (recipe) {
         if (recipe.IsChecked) {
             var groupId = vm.model.Planner.Groups[0].PlannerGroupId;
-            vm.model.Planner.Groups[0].Items.push({ PlannerItemId: 0, GroupId: groupId, Recipe: recipe, Text: recipe.Name })
+            var plannerItem = { PlannerItemId: 0, GroupId: groupId, Recipe: recipe, Text: recipe.Name, IsChecked: true };
+            vm.model.Planner.Groups[0].Items.push(plannerItem)
         }
         else {
             vm.model.Planner.Groups.forEach(function (group) {
@@ -84,7 +97,7 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
 
     Array.prototype.RemovePlannerItem = function (item) {
         for (i = 0; i < this.length; i++) {
-            if (this[i].PlannerItemId === item.PlannerItemId) {
+            if (this[i].Recipe.RecipeId === item.Recipe.RecipeId) {
                 this.splice(i, 1);
                 break;
             }
@@ -92,11 +105,13 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
     };
 
     $scope.savePlanner = function () {
+        vm.isBusy = true;
         $http({
             method: 'POST',
             url: 'Planner/Update',
             data: JSON.stringify(vm.model.Planner) ,
         }).success(function (data, status, headers, config) {
+            vm.isBusy = false;
             vm.message = '';
             if (data.success == false) {
                 var str = '';
@@ -111,6 +126,7 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
 
             }
         }).error(function (data, status, headers, config) {
+            vm.isBusy = false;
             vm.message = 'Unexpected Error';
         });
     };

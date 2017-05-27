@@ -47,9 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amount.cs" />
-    <Compile Include="Enums\EntityStateEnum.cs" />
     <Compile Include="_EntityBase.Extensions.cs" />
-    <Compile Include="AuditResult, Delta.cs" />
+    <Compile Include="EntityChangeResults, ModifiedEntity.cs" />
     <Compile Include="_EntityBase.cs" />
     <Compile Include="Groups\PlannerGroup.cs" />
     <Compile Include="Groups\_GroupBase.cs" />
@@ -79,6 +78,9 @@
       <Project>{8EC87091-238E-481A-934A-715C5D068EC6}</Project>
       <Name>Recipes.Contracts</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

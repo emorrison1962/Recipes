@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="Data\DataContext.cs" />
     <Compile Include="Configuration - Copy.cs" />
-    <Compile Include="Enums\EntityStateEnum.cs" />
     <Compile Include="Migrations\201705240219305_052317_02.cs" />
     <Compile Include="Migrations\201705240219305_052317_02.Designer.cs">
       <DependentUpon>201705240219305_052317_02.cs</DependentUpon>

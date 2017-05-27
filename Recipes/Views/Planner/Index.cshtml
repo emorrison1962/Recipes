@@ -79,7 +79,7 @@
                             &nbsp;
                             <label class="checkbox checkbox-inline" style="display:inline;" for="cbRecipe-{{item.Recipe.RecipeId}}">
                                 &nbsp;
-                                <input ng-model="item.Recipe.IsChecked" ng-change="recipeChecked(item.Recipe)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox" />{{item.Recipe.Name}}
+                                <input ng-model="item.IsChecked" ng-change="plannerItemChecked(item)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox" />{{item.Recipe.Name}}
                             </label>
                         </span>
                     </li>
@@ -108,7 +108,9 @@
 
     <div>
         <br />
-        <button class="btn btn-default" ng-click="savePlanner()">Save Planner</button>
+        <button class="btn btn-default" ng-click="savePlanner()">
+            <i ng-class="{'fa fa-refresh fa-spin': vm.isBusy}"></i>&nbsp;Save Planner</button>
+        
     </div>
     @Html.ActionLink("Edit Shopping List Items", "EditItems")
 </div>

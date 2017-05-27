@@ -15,8 +15,8 @@ namespace Recipes.Domain
         }
         public void Add(EntityBase e, EntityState entityState, string property = null, string oldValue = null, string newValue = null)
         {
-            var delta = new ModifiedEntity(e, entityState, property, oldValue, newValue);
-            this.ModifiedEntities.Add(delta);
+            var me = new ModifiedEntity(e, entityState, property, oldValue, newValue);
+            this.ModifiedEntities.Add(me);
             this.Entities.Add(e);
             return;
         }
@@ -26,9 +26,9 @@ namespace Recipes.Domain
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            foreach (var delta in ModifiedEntities)
+            foreach (var me in ModifiedEntities)
             {
-                sb.AppendFormat("\t{0}", delta.ToString());
+                sb.AppendFormat("\t{0}", me.ToString());
                 sb.AppendLine();
             }
 

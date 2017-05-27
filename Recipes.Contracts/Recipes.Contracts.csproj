@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Attributes\NavigationPropertyAttribute.cs" />
     <Compile Include="Attributes\UniqueIdentifierAttribute.cs" />
+    <Compile Include="Enums\EntityStateEnum.cs" />
     <Compile Include="IShoppingListShallow.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IRepositoryBase.cs" />

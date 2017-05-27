@@ -98,10 +98,10 @@ namespace Recipes.Services.Tests
 
             if (!server.Equals(client))
             {
-                var ar = server.DetectChanges(client);
-                Assert.IsTrue(ar.ModifiedEntities.Count == 1);
-                var delta = ar.ModifiedEntities.First();
-                Assert.IsTrue(delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added);
+                var changes = server.DetectChanges(client);
+                Assert.IsTrue(changes.ModifiedEntities.Count == 1);
+                var me = changes.ModifiedEntities.First();
+                Assert.IsTrue(me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added);
                 new object();
             }
         }

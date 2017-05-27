@@ -2,7 +2,6 @@
 using Recipes.Contracts.Services;
 using Recipes.Domain;
 using Recipes.Models;
-using System.Diagnostics;
 using System.IO;
 using System.Web.Mvc;
 
@@ -31,18 +30,11 @@ namespace Recipes.Controllers
         public ActionResult Update()
         {
             var planner = this.DeserializeJson<Planner>();
-            //var json = string.Empty;
-            //this.HttpContext.Request.InputStream.Position = 0;
-            //using (StreamReader inputStream = new StreamReader(this.HttpContext.Request.InputStream))
-            //{
-            //    json = inputStream.ReadToEnd();
-            //}
-            //var planner = JsonConvert.DeserializeObject<Planner>(json);
             this.PlannerService.Update(planner);
             return null;
         }
 
-        T DeserializeJson<T>()  where T : EntityBase
+        T DeserializeJson<T>() where T : EntityBase
         {
             var json = string.Empty;
             this.HttpContext.Request.InputStream.Position = 0;
