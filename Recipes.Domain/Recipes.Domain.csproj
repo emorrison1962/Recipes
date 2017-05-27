@@ -37,7 +37,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Amount.cs" />
-    <Compile Include="Items\UniqueIdentifierAttribute.cs" />
+    <Compile Include="Enums\EntityStateEnum.cs" />
     <Compile Include="_EntityBase.Extensions.cs" />
     <Compile Include="AuditResult, Delta.cs" />
     <Compile Include="_EntityBase.cs" />
@@ -75,7 +74,12 @@
     <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Recipes.Contracts\Recipes.Contracts.csproj">
+      <Project>{8EC87091-238E-481A-934A-715C5D068EC6}</Project>
+      <Name>Recipes.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

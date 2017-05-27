@@ -99,9 +99,9 @@ namespace Recipes.Services.Tests
             if (!server.Equals(client))
             {
                 var ar = server.DetectChanges(client);
-                Assert.IsTrue(ar.Deltas.Count == 1);
-                var delta = ar.Deltas.First();
-                Assert.IsTrue(delta.EntityState == EntityState.Added);
+                Assert.IsTrue(ar.ModifiedEntities.Count == 1);
+                var delta = ar.ModifiedEntities.First();
+                Assert.IsTrue(delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added);
                 new object();
             }
         }

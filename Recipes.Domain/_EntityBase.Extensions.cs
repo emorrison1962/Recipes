@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Recipes.Contracts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Recipes.Domain
 {
     public static partial class EntityExtensions
     {
-        public static bool Audit<T>(this EntityBase<T> x, EntityBase<T> y, EntityDeltaResults auditResult)
+        public static bool Audit<T>(this EntityBase<T> x, EntityBase<T> y, EntityChangeResults auditResult)
         {
             bool result = ((x == y) || ((x != null) && (y != null)));
             if (result)
@@ -50,7 +51,6 @@ namespace Recipes.Domain
             var pis = dst.GetType().UnproxyType().GetProperties().ToList();
             foreach (var pi in pis)
             {
-#warning We'll need another method for CopyProperties for IEnumerables, so that we can mark items in the Enumerable as added, deleted, etc.
                 var srcVal = (dynamic)pi.GetValue(src);
                 pi.SetValue(dst, srcVal);
             }
@@ -87,21 +87,22 @@ namespace Recipes.Domain
             var exclude = (
                 from pi in result
                 from ca in pi.CustomAttributes
-                where ca.AttributeType == typeof(JsonIgnoreAttribute)
+                where ca.AttributeType == typeof(JsonIgnoreAttribute) 
+                    || ca.AttributeType == typeof(NavigationPropertyAttribute) 
                 select (pi)).ToList();
             exclude.ForEach(x => result.Remove(x));
 
             return result;
         }
 
-        public static bool Equals<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityDeltaResults auditResult = null)
+        public static bool Equals<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityChangeResults auditResult = null)
         {
             var cliCopy = client;
             var srvCopy = server;
 
-            if (null != auditResult && auditResult.AuditedItems.Contains(srvCopy))
+            if (null != auditResult && auditResult.Entities.Contains(srvCopy))
                 srvCopy = null;
-            if (null != auditResult && auditResult.AuditedItems.Contains(cliCopy))
+            if (null != auditResult && auditResult.Entities.Contains(cliCopy))
                 cliCopy = null;
 
             var bothNotNull = ((srvCopy != null) && (cliCopy != null));
@@ -128,7 +129,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool Equals<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, EntityDeltaResults auditResult = null)
+        public static bool Equals<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, EntityChangeResults auditResult = null)
             where T : EntityBase<T>
         {
             bool result = Object.ReferenceEquals(cliList, srvList);
@@ -138,13 +139,13 @@ namespace Recipes.Domain
                 var srvCopy = new List<T>(srvList);
 
                 var before = cliCopy.Count;
-                cliCopy = cliCopy.Except(auditResult.AuditedItems.OfType<T>()).ToList();
+                cliCopy = cliCopy.Except(auditResult.Entities.OfType<T>()).ToList();
                 var after = cliCopy.Count;
                 if (before - after > 0)
                     Debug.WriteLine(string.Format("Ignored {0} audited entities.", before - after));
 
                 before = srvCopy.Count;
-                srvCopy = srvCopy.Except(auditResult.AuditedItems.OfType<T>()).ToList();
+                srvCopy = srvCopy.Except(auditResult.Entities.OfType<T>()).ToList();
                 after = srvCopy.Count;
                 if (before - after > 0)
                     Debug.WriteLine(string.Format("Ignored {0} audited entities.", before - after));
@@ -185,7 +186,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool CompareFields<T>(this EntityBase<T> server, EntityBase<T> client, EntityDeltaResults auditResult = null)
+        public static bool CompareFields<T>(this EntityBase<T> server, EntityBase<T> client, EntityChangeResults auditResult = null)
         {
             bool result = true;
             var cliCopy = client;
@@ -221,7 +222,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool CompareProperties<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityDeltaResults auditResult = null)
+        public static bool CompareProperties<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityChangeResults auditResult = null)
         {
             bool result = true;
             if (server is Recipe)
@@ -294,8 +295,8 @@ namespace Recipes.Domain
         class DeepEqualityComparer<T> : IEqualityComparer<T>
             where T : EntityBase<T>
         {
-            EntityDeltaResults AuditResult { get; set; }
-            public DeepEqualityComparer(EntityDeltaResults auditResult)
+            EntityChangeResults AuditResult { get; set; }
+            public DeepEqualityComparer(EntityChangeResults auditResult)
             {
                 this.AuditResult = auditResult;
             }

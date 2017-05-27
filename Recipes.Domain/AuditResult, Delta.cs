@@ -1,31 +1,23 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
+﻿using System.Collections.Generic;
 using System.Data;
-using System.Reflection;
+using System.Text;
 
 namespace Recipes.Domain
 {
-    public class EntityDeltaResults
+    public class EntityChangeResults
     {
-        public HashSet<EntityBase> AuditedItems { get; set; }
-        public HashSet<EntityDelta> Deltas { get; set; }
-        public EntityDeltaResults()
+        public HashSet<EntityBase> Entities { get; set; }
+        public HashSet<ModifiedEntity> ModifiedEntities { get; set; }
+        public EntityChangeResults()
         {
-            this.Deltas = new HashSet<EntityDelta>();
-            this.AuditedItems = new HashSet<EntityBase>();
+            this.ModifiedEntities = new HashSet<ModifiedEntity>();
+            this.Entities = new HashSet<EntityBase>();
         }
         public void Add(EntityBase e, EntityState entityState, string property = null, string oldValue = null, string newValue = null)
         {
-            if (e.GetType() == typeof(PlannerGroup))
-                new object();
-            var delta = new EntityDelta(e, entityState, property, oldValue, newValue);
-            this.Deltas.Add(delta);
-            this.AuditedItems.Add(e);
+            var delta = new ModifiedEntity(e, entityState, property, oldValue, newValue);
+            this.ModifiedEntities.Add(delta);
+            this.Entities.Add(e);
             return;
         }
 
@@ -34,7 +26,7 @@ namespace Recipes.Domain
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(base.ToString());
 
-            foreach (var delta in Deltas)
+            foreach (var delta in ModifiedEntities)
             {
                 sb.AppendFormat("\t{0}", delta.ToString());
                 sb.AppendLine();
@@ -43,7 +35,7 @@ namespace Recipes.Domain
             return sb.ToString();
         }
     }//class
-    public class EntityDelta
+    public class ModifiedEntity
     {
         public EntityBase Entity { get; set; }
         public string ClassName { get { return this.Entity.GetType().Name; } }
@@ -52,7 +44,7 @@ namespace Recipes.Domain
         public string NewValue { get; set; }
         public EntityState EntityState { get; set; }
 
-        public EntityDelta(EntityBase entity, EntityState entityState, string propertyName, string oldValue, string newValue)
+        public ModifiedEntity(EntityBase entity, EntityState entityState, string propertyName, string oldValue, string newValue)
         {
             this.Entity = entity;
             this.PropertyName = propertyName;

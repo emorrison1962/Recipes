@@ -2,14 +2,13 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
 using System.Runtime.Serialization;
+using Recipes.Contracts;
 
 namespace Recipes.Domain
 {
     [Serializable]
     public class PlannerItem : GroupItemBase<PlannerItem>
     {
-        [JsonIgnore]
-        public PlannerGroup _group { get; set; }
 
         [UniqueIdentifier]
         public int PlannerItemId { get; set; }
@@ -17,22 +16,14 @@ namespace Recipes.Domain
         public int? RecipeId { get; set; }
 
         [ForeignKey("RecipeId")]
+        [NavigationProperty]
         virtual public Recipe Recipe { get; set; }
 
 
         [JsonIgnore]
         [ForeignKey("PlannerGroupId")]
-        public virtual PlannerGroup PlannerGroup
-        {
-            get { return _group; }
-            set
-            {
-                _group = value;
-                _group.Add(this);
-                this.PlannerGroupId = _group.PlannerGroupId;
-            }
-        }
-        public int? PlannerGroupId { get; set; }
+        public virtual PlannerGroup PlannerGroup { get; set; }
+        public int? PlannerGroupId { get; set; } 
 
         public override int PrimaryKey
         {
@@ -55,12 +46,31 @@ namespace Recipes.Domain
         {
         }
 
+        [OnDeserializing]
+        public void OnDeserializing(StreamingContext ctx)
+        {
+        }
+
         [OnDeserialized]
         void OnDeserialized(StreamingContext ctx)
         {
             this.Init();
             if (null != this.PlannerGroup)
+            {
                 this.PlannerGroupId = this.PlannerGroup.PlannerGroupId;
+                this.PlannerGroup = null;
+            }
+            if (null != this.Recipe)
+            {
+                this.RecipeId = this.Recipe.RecipeId;
+                this.Recipe = null;
+            }
         }
-    }
-}
+
+        public void Trace()
+        {
+            throw new NotImplementedException();
+        }
+
+    }//class
+}//ns

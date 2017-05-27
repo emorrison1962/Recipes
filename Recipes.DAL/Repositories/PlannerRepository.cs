@@ -3,6 +3,7 @@ using Recipes.DAL.Data;
 using Recipes.Domain;
 using System;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Recipes.DAL.Repositories
@@ -37,24 +38,25 @@ namespace Recipes.DAL.Repositories
 
         public override void Update(Planner pending)
         {
-
             try
             {
                 var existing = this.GetById(pending.PlannerId);
-
                 if (!existing.Equals(pending))
                 {
-                    var ar = existing.DetectChanges(pending);
-                    _dataContext.SetChanges(ar);
-                    _dataContext.SaveChanges();
+                    var ecr = existing.DetectChanges(pending);
+                    Debug.WriteLine(ecr);
+                    _dataContext.SetChanges(ecr);
                 }
+                _dataContext.SaveChanges();
             }
-
+#pragma warning disable 0168
             catch (Exception ex)
             {
                 throw;
             }
+#pragma warning restore 0168
         }
+
 
 
     }//class

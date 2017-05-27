@@ -196,6 +196,7 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PlannerController.cs" />
+    <Compile Include="Infrastructure\JsonNetValueProviderFactory.cs" />
     <Compile Include="Models\PlannerVM.cs" />
     <Compile Include="Controllers\RecipeController.cs" />
     <Compile Include="Controllers\ShoppingListController.cs" />

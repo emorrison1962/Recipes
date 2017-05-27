@@ -89,7 +89,13 @@ namespace Recipes.Services.Tests
                 var source = svc.GetById(-1);
                 var pending = Helpers.Detach(source);
 
-                if (false)
+
+                var items = (
+                    from g in pending.Groups
+                    from i in g.Items
+                    select i).ToList();
+
+                if (0 == items.Count)
                 {//Add
                     // add the recipes.
                     const int MAX = 2;
@@ -101,6 +107,7 @@ namespace Recipes.Services.Tests
                         pending.Groups[0].Add(item);
                     }
 
+                    pending = Helpers.Detach(pending);
                     svc.Update(pending);
                     new object();
                 }
@@ -113,16 +120,21 @@ namespace Recipes.Services.Tests
                         deletions.Add(item);
                     }
                     deletions.ForEach(x => group.Remove(x));
+
+
+                    pending = Helpers.Detach(pending);
                     svc.Update(pending);
                     new object();
                 }
 
             }
+#pragma warning disable 0168
             catch (Exception ex)
             {
 
                 throw;
             }
+#pragma warning restore 0168
             //if (!source.Equals(pending))
             //{
             //    var ar = source.AuditChanges(pending);
@@ -134,6 +146,75 @@ namespace Recipes.Services.Tests
             //    new object();
             //}
         }
+
+        [TestMethod()]
+        public void PlannerService_UpdateTest_02()
+        {
+            try
+            {
+                var svc = CreateService();
+                var source = svc.GetById(-1);
+                var pending = Helpers.Detach(source);
+
+                
+                var items = (
+                    from g in pending.Groups
+                    from i in g.Items
+                    select i).ToList();
+
+                
+                if (0 == items.Count)
+                {//Add
+                    // add the recipes.
+                    const int MAX = 1;
+                    var recipes = this.GetRecipes(MAX);
+                    var group = pending.Groups[0];
+                    foreach (var recipe in recipes)
+                    {
+                        var item = Helpers.Detach(new PlannerItem(recipe));
+                        pending.Groups[0].Add(item);
+                    }
+
+                    pending = Helpers.Detach(pending);
+                    svc.Update(pending);
+                    new object();
+                }
+                /*
+                {//Remove
+                    var deletions = new List<PlannerItem>();
+                    var group = pending.Groups[0];
+                    foreach (var item in group.Items)
+                    {
+                        deletions.Add(item);
+                    }
+                    deletions.ForEach(x => group.Remove(x));
+
+
+                    pending = Helpers.Detach(pending);
+                    svc.Update(pending);
+                    new object();
+                }
+                */
+            }
+#pragma warning disable 0168
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+#pragma warning restore 0168
+            //if (!source.Equals(pending))
+            //{
+            //    var ar = source.AuditChanges(pending);
+            //    Assert.IsTrue(ar.Deltas.Count == 2);
+            //    foreach (var delta in ar.Deltas)
+            //    {
+            //        Assert.IsTrue(delta.EntityState == EntityState.Added);
+            //    }
+            //    new object();
+            //}
+        }
+
 
         Recipe GetRecipe()
         {

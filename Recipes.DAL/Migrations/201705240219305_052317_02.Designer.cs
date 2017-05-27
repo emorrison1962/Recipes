@@ -7,13 +7,13 @@ namespace Recipes.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class _040318_02 : IMigrationMetadata
+    public sealed partial class _052317_02 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_040318_02));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_052317_02));
         
         string IMigrationMetadata.Id
         {
-            get { return "201704042318283_040318_02"; }
+            get { return "201705240219305_052317_02"; }
         }
         
         string IMigrationMetadata.Source

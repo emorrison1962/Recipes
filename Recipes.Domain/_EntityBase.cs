@@ -35,10 +35,10 @@ namespace Recipes.Domain
         [JsonIgnore]
         abstract public int PrimaryKey { get; }
 
-        public EntityDeltaResults DetectChanges(EntityBase<T> client)
+        public EntityChangeResults DetectChanges(EntityBase<T> client)
         {
             // there is an expectation that "other" is the client object.
-            var result = new EntityDeltaResults();
+            var result = new EntityChangeResults();
             var hasChanged = EntityExtensions.Equals((dynamic)this, (dynamic)client, true, result);
             return result;
         }

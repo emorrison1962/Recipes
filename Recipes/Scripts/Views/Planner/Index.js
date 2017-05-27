@@ -6,6 +6,9 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
     vm.isBusy = true;
 
     $scope.init = function (model) {
+
+        $log.debug(JSON.stringify(model));
+
         model.Planner.Groups.forEach(function (group) {
             group.Items.forEach(function (item) {
                 var recipe = model.RecipeCatalog.firstOrDefault(function (recipe) {
@@ -92,7 +95,7 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
         $http({
             method: 'POST',
             url: 'Planner/Update',
-            data: { planner: vm.model.Planner },
+            data: JSON.stringify(vm.model.Planner) ,
         }).success(function (data, status, headers, config) {
             vm.message = '';
             if (data.success == false) {

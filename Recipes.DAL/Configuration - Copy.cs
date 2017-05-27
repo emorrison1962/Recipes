@@ -1,3 +1,4 @@
+#if false
 namespace Recipes.DAL.Migrations
 {
     using Data;
@@ -92,8 +93,6 @@ namespace Recipes.DAL.Migrations
                 new Tag { Name = "Dessert" },
                 new Tag { Name = "Ice Cream" });
         }
-
-
     }//class
 
     public static class Extensions
@@ -107,3 +106,4 @@ namespace Recipes.DAL.Migrations
 
     }//class
 }//ns
+#endif

@@ -1,8 +1,7 @@
 ﻿using Recipes.Domain;
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Annotations;
+using System.Linq;
 
 namespace Recipes.DAL.Data
 {
@@ -13,31 +12,69 @@ namespace Recipes.DAL.Data
 
         }
 
-        public void SetChanges(EntityDeltaResults ar)
+        public void SetChanges(EntityChangeResults ar)
         {
-            foreach (var delta in ar.Deltas)
+            foreach (var delta in ar.ModifiedEntities)
             {
-                if (delta.EntityState == System.Data.EntityState.Added)
+                var dbset = this.Set(delta.Entity.GetType());
+                if (delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added)
                 {
-                    var dbEntry = this.Entry(delta.Entity);
-                    dbEntry.State = EntityState.Added;
+                    var dbEntry = this.Entry(delta.Entity).State = System.Data.Entity.EntityState.Added;
+                    //var dbEntry = dbset.Add(delta.Entity);
+                    //this.DebugChanges();
                 }
-                else if (delta.EntityState == System.Data.EntityState.Deleted)
+                else if (delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Deleted)
                 {
-                    var dbEntry = this.Entry(delta.Entity);
-                    dbEntry.State = EntityState.Deleted;
+                    var dbEntry = this.Entry(delta.Entity).State = System.Data.Entity.EntityState.Deleted;
+                    //var dbEntry = dbset.Remove(delta.Entity);
+                    //this.DebugChanges();
                 }
-                else if (delta.EntityState == System.Data.EntityState.Modified)
+                else if (delta.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Modified)
                 {
-                    var dbEntry = this.Entry(delta.Entity);
-                    dbEntry.State = EntityState.Modified;
+                    var dbEntry = this.Entry(delta.Entity).State = System.Data.Entity.EntityState.Modified;
+                    //this.DebugChanges();
                 }
                 else
                 {
                     new Object();
                 }
+
+            }
+            this.DebugChanges();
+        }
+
+#if false
+        Nice idea, but a bug in EF6 won't allow us to use a dynamic generic DbSet<T>
+        public DbSet<T> GetDbSet<T>(T entity) where T : class
+        {
+            DbSet<T> result = null;
+            var pis = this.GetType().GetProperties();
+            foreach (var pi in pis)
+            {
+                if (pi.PropertyType == typeof(DbSet<T>))
+                {
+                    result = pi.GetValue(this) as DbSet<T>;
+                    break;
+                }
+            }
+            return result;
+        }
+
+#endif
+        void DebugChanges()
+        {
+            if (this.ChangeTracker.HasChanges())
+            {
+                var count = this.ChangeTracker.Entries().Count();
+                foreach (var e in this.ChangeTracker.Entries())
+                {
+                    var eb = e.Entity as EntityBase;
+                    System.Diagnostics.Debug.WriteLine(string.Format("{0} - {1}", e.Entity.ToString(), e.State.ToString()));
+                }
+                System.Diagnostics.Debug.WriteLine("");
             }
         }
+
 
 
         public DbSet<Recipe> Recipes { get; set; }

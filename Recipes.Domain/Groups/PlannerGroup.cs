@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Collections.Specialized;
 using System.Runtime.Serialization;
+using Recipes.Contracts;
 
 namespace Recipes.Domain
 {
@@ -72,15 +73,32 @@ namespace Recipes.Domain
                 }
         }
 
+
+        public void Trace()
+        {
+            throw new NotImplementedException();
+        }
+
         void Init() { }
+
+        [OnDeserializing]
+        public void OnDeserializing(StreamingContext ctx)
+        {
+        }
+
 
         [OnDeserialized]
         void OnDeserialized(StreamingContext ctx)
         {
             this.Init();
             if (null != this.Items)
+            {
                 foreach (var item in this.Items)
+                {
                     item.PlannerGroupId = this.PlannerGroupId;
+                    //item.PlannerGroup = this;
+                }
+            }
         }
 
     }//class
