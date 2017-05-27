@@ -31,7 +31,7 @@ div.module {
                 <div class="controls">
                     <div class="input-group">
                         <span class="input-group-addon">Add</span>
-                        <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
+                        <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=vm.newItem ng-change="newItem_Changed()">
                         <div ng-repeat="group in vm.model.Groups">
                             <datalist id="data_list">
                                 <option ng-repeat="item in group.Items | filter: { IsChecked: 'true' }" value="{{item.Text}}"></option>
