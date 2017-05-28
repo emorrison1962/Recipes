@@ -44,7 +44,7 @@ namespace Recipes.Services.Tests
         }
 
         [TestMethod()]
-        public void Exception_Test()
+        public void GetById_Test()
         {
             var svc = CreateService();
             var r = svc.GetById(2);
