@@ -14,21 +14,7 @@ namespace Recipes.Domain
 {
     public static partial class EntityExtensions
     {
-        public static bool Audit<T>(this EntityBase<T> x, EntityBase<T> y, EntityChangeResults auditResult)
-        {
-            bool result = ((x == y) || ((x != null) && (y != null)));
-            if (result)
-            {
-                if (null != x)
-                {
-                    result = CompareFields(x, y, auditResult);
-                    result = CompareProperties(x, y, true, auditResult);
-                    return result;
-                }
-                result = false;
-            }
-            return result;
-        }
+        const string PROXY_NAMESPACE = "System.Data.Entity.DynamicProxies";
 
         public static void Copy<T>(this EntityBase<T> dst, EntityBase<T> src)
         {
@@ -58,7 +44,6 @@ namespace Recipes.Domain
 
         static Type UnproxyType(this Type t)
         {
-            const string PROXY_NAMESPACE = "System.Data.Entity.DynamicProxies";
             if (t.Namespace == PROXY_NAMESPACE)
                 t = t.BaseType;
             return t;
@@ -129,6 +114,17 @@ namespace Recipes.Domain
             return result;
         }
 
+        public static bool IsProxy<T>(this EntityBase<T> entity)
+            where T : EntityBase<T>
+        {
+            var result = false;
+            if (PROXY_NAMESPACE == entity.GetType().Namespace)
+            {
+                result = true;
+            }
+            return result;
+        }
+
         public static bool Equals<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, EntityChangeResults auditResult = null)
             where T : EntityBase<T>
         {
@@ -154,13 +150,31 @@ namespace Recipes.Domain
                 var additions = cliCopy.Where(x => !srvCopy.Contains<T>(x, deepComparer)).ToList();
                 if (null != auditResult && additions.Count > 0)
                 {
-                    additions.ForEach(x => auditResult.Add(x, EntityState.Added));
+                    foreach (var addition in additions)
+                    {
+                        if (!auditResult.Entities.Contains(addition))
+                        { 
+                            if (!addition.IsProxy())
+                            {
+                                auditResult.Added(addition, addition.PrimaryKey, EntityState.Added);
+                            }
+                        }
+                    }
                 }
 
                 var deletions = srvCopy.Where(x => !cliCopy.Contains(x, deepComparer)).ToList();
                 if (null != auditResult && deletions.Count > 0)
                 {
-                    deletions.ForEach(x => auditResult.Add(x, EntityState.Deleted));
+                    foreach (var deletion in deletions)
+                    {
+                        if (!auditResult.Entities.Contains(deletion))
+                        {
+                            if (!deletion.IsProxy())
+                            {
+                                auditResult.Deleted(deletion, deletion.PrimaryKey, EntityState.Deleted);
+                            }
+                        }
+                    }
                 }
 
                 var ignore = additions.Concat(deletions).ToList();
@@ -173,7 +187,7 @@ namespace Recipes.Domain
                 var changes = srvCopy.Except(cliCopy, deepComparer).ToList();
                 if (null != auditResult && changes.Count > 0)
                 {
-                    changes.ForEach(x => auditResult.Add(x, EntityState.Modified));
+                    changes.ForEach(x => auditResult.Modified(x, x.PrimaryKey, EntityState.Modified));
                 }
 
                 if (additions.Count == 0
@@ -203,7 +217,7 @@ namespace Recipes.Domain
                     result = Object.Equals(cliVal, srvVal);
                     if (null != auditResult && !result)
                     {
-                        auditResult.Add(cliCopy, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
+                        auditResult.Modified(cliCopy, cliCopy.PrimaryKey, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
                     }
                 }
                 else if (!cliVal.Equals(srvVal))
@@ -211,7 +225,7 @@ namespace Recipes.Domain
                     result = false;
                     if (null != auditResult)
                     {
-                        auditResult.Add(cliCopy, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
+                        auditResult.Modified(cliCopy, cliCopy.PrimaryKey, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
                     }
                     else
                     {
@@ -260,7 +274,8 @@ namespace Recipes.Domain
                         result &= (cliVal == srvVal);
                         if ((cliVal != srvVal) && null != auditResult)
                         {
-                            auditResult.Add(client,
+                            auditResult.Modified(client,
+                                client.PrimaryKey, 
                                 EntityState.Modified,
                                 pi.Name,
                                 (null == srvVal) ? null : srvVal.ToString(),

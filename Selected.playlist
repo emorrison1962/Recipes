@@ -1,1 +1,1 @@
-<Playlist Version="1.0"><Add Test="Recipes.Services.Tests.RecipeServiceTests.RecipeService_AuditTest" /><Add Test="Recipes.Services.Tests.PlannerServiceTests.PlannerService_UpdateTest_01" /></Playlist>
+<Playlist Version="1.0"><Add Test="Recipes.Services.Tests.RecipeServiceTests.RecipeService_AuditTest" /><Add Test="Recipes.Services.Tests.ShoppingListServiceTests.Update_UpdateIngredient_Test" /></Playlist>

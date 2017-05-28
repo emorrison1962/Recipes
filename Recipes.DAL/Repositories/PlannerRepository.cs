@@ -33,7 +33,6 @@ namespace Recipes.DAL.Repositories
                 if (!existing.Equals(pending))
                 {
                     var ecr = existing.DetectChanges(pending);
-                    Debug.WriteLine(ecr);
                     _dataContext.SetChanges(ecr);
                     _dataContext.SaveChanges();
                 }

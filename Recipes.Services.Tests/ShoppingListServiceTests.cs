@@ -3,14 +3,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Recipes.Contracts.Services;
 using Recipes.Domain;
-using Recipes.Models;
-using Recipes.Services;
-using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recipes.Services.Tests
 {
@@ -72,8 +65,19 @@ namespace Recipes.Services.Tests
 
             shoppingList.Groups.ForEach(g => g.Items.ToList().ForEach(i => i.IsChecked = !i.IsChecked));
 
+            var size = GetObjectGraphSize(shoppingList);
             shoppingSvc.Update(shoppingList);
             new object();
+        }
+
+        int GetObjectGraphSize(ShoppingList sl)
+        {
+            var result = 1;
+
+            result += sl.Groups.Count;
+            result += sl.Groups.Select(x => x.Items).Count();
+
+            return result;
         }
 
         IngredientItem GetRandomIngredient()

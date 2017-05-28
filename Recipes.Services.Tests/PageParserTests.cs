@@ -10,7 +10,8 @@ namespace Recipes.Services.Tests
 	[TestClass()]
 	public class PageParserTests
 	{
-		[TestMethod()]
+        [Ignore]
+        [TestMethod()]
 		public void ParseTest()
 		{
             var list = RecipeUrls.Catalog;
@@ -48,6 +49,7 @@ namespace Recipes.Services.Tests
 
         }
 
+        [Ignore]
 		[TestMethod()]
 		public void PrintRecipeTest()
 		{

@@ -20,18 +20,17 @@ namespace Recipes.DAL.Data
                 if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added)
                 {
                     var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Added;
-                    //var dbEntry = dbset.Add(delta.Entity);
                     //this.DebugChanges();
                 }
                 else if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Deleted)
                 {
                     var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Deleted;
-                    //var dbEntry = dbset.Remove(delta.Entity);
                     //this.DebugChanges();
                 }
                 else if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Modified)
                 {
-                    var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Modified;
+                    var dbEntry = this.Entry(me.Entity); 
+                    dbEntry.State = System.Data.Entity.EntityState.Modified;
                     //this.DebugChanges();
                 }
                 else
@@ -69,7 +68,7 @@ namespace Recipes.DAL.Data
                 foreach (var e in this.ChangeTracker.Entries())
                 {
                     var eb = e.Entity as EntityBase;
-                    System.Diagnostics.Debug.WriteLine(string.Format("{0} - {1}", e.Entity.ToString(), e.State.ToString()));
+                    System.Diagnostics.Debug.WriteLine(string.Format("{1} - {0}", e.Entity.ToString(), e.State.ToString()));
                 }
                 System.Diagnostics.Debug.WriteLine("");
             }

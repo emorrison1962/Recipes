@@ -26,13 +26,6 @@ namespace Recipes.Services.Tests
             return result;
         }
 
-        [Ignore]
-        [TestMethod()]
-        public void RecipeServiceTest()
-        {
-            Assert.Fail();
-        }
-
         //[Ignore]
         [TestMethod()]
         public void GetAllTest()
@@ -51,6 +44,7 @@ namespace Recipes.Services.Tests
         }
 
 
+        [Ignore]
         [TestMethod()]
         public void SeedDatabase()
         {
