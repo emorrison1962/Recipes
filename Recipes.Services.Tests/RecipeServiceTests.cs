@@ -17,7 +17,6 @@ namespace Recipes.Services.Tests
     [TestClass()]
     public class RecipeServiceTests
     {
-        //public EntityState Enti { get; private set; }
 
         public static RecipeService CreateService()
         {
@@ -43,6 +42,14 @@ namespace Recipes.Services.Tests
 
             Assert.IsNotNull(list);
         }
+
+        [TestMethod()]
+        public void Exception_Test()
+        {
+            var svc = CreateService();
+            var r = svc.GetById(2);
+        }
+
 
         [TestMethod()]
         public void SeedDatabase()

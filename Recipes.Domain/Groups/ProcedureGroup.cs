@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using Newtonsoft.Json;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace Recipes.Domain
 {
     [Serializable]
     public class ProcedureGroup : GroupBase<ProcedureGroup, ProcedureItem>
     {
+        #region Properties
+
         public int ProcedureGroupId { get; set; }
 
         public override int PrimaryKey
@@ -16,6 +19,13 @@ namespace Recipes.Domain
                 return ProcedureGroupId;
             }
         }
+
+        [JsonIgnore]
+        [ForeignKey("RecipeId")]
+        public Recipe Recipe { get; set; }
+        public int? RecipeId { get; set; }
+
+        #endregion
 
         public ProcedureGroup() : base()
         {
@@ -33,30 +43,24 @@ namespace Recipes.Domain
 
         public override void Add(ProcedureItem item)
         {
-            this._items.Add(item);
+            this.Items.Add(item);
             item.ProcedureGroup = this;
         }
 
         public override void Remove(ProcedureItem item)
         {
-            this._items.Remove(item);
+            this.Items.Remove(item);
             item.ProcedureGroup = null;
         }
 
-        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext ctx)
         {
-            if (e.NewItems.Count > 0)
-                foreach (var ob in e.NewItems)
-                {
-                    var item = ob as ProcedureItem;
-                    item.ProcedureGroup = this;
-                }
-            if (e.OldItems.Count > 0)
-                foreach (var ob in e.OldItems)
-                {
-                    var item = ob as ProcedureItem;
-                    item.ProcedureGroup = null;
-                }
+            if (null != this.Recipe)
+            {
+                this.RecipeId = this.Recipe.RecipeId;
+                this.Recipe = null;
+            }
         }
     }//class
 }//ns

@@ -47,32 +47,15 @@ namespace Recipes.Domain
 
         public override void Add(PlannerItem item)
         {
-            this._items.Add(item);
+            this.Items.Add(item);
             item.PlannerGroup = this;
         }
 
         public override void Remove(PlannerItem item)
         {
-            this._items.Remove(item);
+            this.Items.Remove(item);
             item.PlannerGroup = null;
         }
-
-        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems.Count > 0)
-                foreach (var ob in e.NewItems)
-                {
-                    var item = ob as PlannerItem;
-                    item.PlannerGroup = this;
-                }
-            if (e.OldItems.Count > 0)
-                foreach (var ob in e.OldItems)
-                {
-                    var item = ob as PlannerItem;
-                    item.PlannerGroup = null;
-                }
-        }
-
 
         public void Trace()
         {
@@ -91,12 +74,16 @@ namespace Recipes.Domain
         void OnDeserialized(StreamingContext ctx)
         {
             this.Init();
+            if (null != this.Planner)
+            {
+                this.PlannerId = this.Planner.PlannerId;
+                this.Planner = null;
+            }
             if (null != this.Items)
             {
                 foreach (var item in this.Items)
                 {
                     item.PlannerGroupId = this.PlannerGroupId;
-                    //item.PlannerGroup = this;
                 }
             }
         }

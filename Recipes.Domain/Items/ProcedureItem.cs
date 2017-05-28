@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Recipes.Domain
@@ -11,7 +12,9 @@ namespace Recipes.Domain
 		public int ProcedureItemId { get; set; }
 
         [JsonIgnore][XmlIgnore]
+        [ForeignKey("ProcedureGroupId")]
         public virtual ProcedureGroup ProcedureGroup { get; set; }
+        public virtual int? ProcedureGroupId { get; set; }
 
         public override int PrimaryKey
         {
@@ -35,5 +38,15 @@ namespace Recipes.Domain
         {
         }
 
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext ctx)
+        {
+            this.Init();
+            if (null != this.ProcedureGroup)
+            {
+                this.ProcedureGroupId = this.ProcedureGroup.ProcedureGroupId;
+                this.ProcedureGroup = null;
+            }
+        }
     }//class
 }//ns

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 
 namespace Recipes.Domain
 {
@@ -17,6 +19,13 @@ namespace Recipes.Domain
                 return this.IngredientGroupId;
             }
         }
+
+        [JsonIgnore]
+        [ForeignKey("RecipeId")]
+        public Recipe Recipe { get; set; }
+        public int? RecipeId { get; set; }
+
+
 
         public IngredientGroup()
             : base()
@@ -36,30 +45,24 @@ namespace Recipes.Domain
 
         public override void Add(IngredientItem item)
         {
-            this._items.Add(item);
+            this.Items.Add(item);
             item.IngredientGroup = this;
         }
 
         public override void Remove(IngredientItem item)
         {
-            this._items.Remove(item);
+            this.Items.Remove(item);
             item.IngredientGroup = null;
         }
 
-        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        [OnDeserialized]
+        public void OnDeserialized(StreamingContext ctx)
         {
-            if (e.NewItems.Count > 0)
-                foreach (var ob in e.NewItems)
-                {
-                    var item = ob as IngredientItem;
-                    item.IngredientGroup = this;
-                }
-            if (e.OldItems.Count > 0)
-                foreach (var ob in e.OldItems)
-                {
-                    var item = ob as IngredientItem;
-                    item.IngredientGroup = null;
-                }
+            if (null != this.Recipe)
+            {
+                this.RecipeId = this.Recipe.RecipeId;
+                this.Recipe = null;
+            }
         }
     }//class
 }//ns

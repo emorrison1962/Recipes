@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace Recipes.Domain
@@ -14,8 +15,10 @@ namespace Recipes.Domain
         public int IngredientItemId { get; set; }
 
         [JsonIgnore]
-        [XmlIgnore]
+        [ForeignKey("IngredientGroupId")]
         public virtual IngredientGroup IngredientGroup { get; set; }
+        public int? IngredientGroupId { get; set; }
+        
         [NotMapped]
         public bool IsChecked { get; set; }
 
@@ -49,5 +52,15 @@ namespace Recipes.Domain
         }
 
 
+        [OnDeserialized]
+        void OnDeserialized(StreamingContext ctx)
+        {
+            this.Init();
+            if (null != this.IngredientGroup)
+            {
+                this.IngredientGroupId = this.IngredientGroup.IngredientGroupId;
+                this.IngredientGroup = null;
+            }
+        }
     }//class
 }//ns

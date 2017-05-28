@@ -15,7 +15,11 @@ namespace Recipes.Domain
 
         //Navigation property
         [JsonIgnore]
+        [ForeignKey("ShoppingListId")]
         public virtual ShoppingList ShoppingList { get; set; }
+        public int? ShoppingListId { get; set; }
+
+
 
         public override int PrimaryKey
         {
@@ -32,6 +36,18 @@ namespace Recipes.Domain
 
         void Init()
         {
+        }
+
+        public override void Add(ShoppingListItem item)
+        {
+            this.Items.Add(item);
+            item.ShoppingListGroup = this;
+        }
+
+        public override void Remove(ShoppingListItem item)
+        {
+            this.Items.Remove(item);
+            item.ShoppingListGroup = null;
         }
 
         [OnSerializing]
@@ -52,35 +68,19 @@ namespace Recipes.Domain
         [OnDeserialized]
         void OnDeserialized(StreamingContext ctx)
         {
-            //this.Init();
-        }
-
-        public override void Add(ShoppingListItem item)
-        {
-            this._items.Add(item);
-            item.ShoppingListGroup = this;
-        }
-
-        public override void Remove(ShoppingListItem item)
-        {
-            this._items.Remove(item);
-            item.ShoppingListGroup = null;
-        }
-
-        protected override void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.NewItems.Count > 0)
-                foreach (var ob in e.NewItems)
+            this.Init();
+            if (null != this.ShoppingList)
+            {
+                this.ShoppingListId = this.ShoppingList.ShoppingListId;
+                this.ShoppingList = null;
+            }
+            if (null != this.Items)
+            {
+                foreach (var item in this.Items)
                 {
-                    var item = ob as ShoppingListItem;
-                    item.ShoppingListGroup = this;
+                    item.ShoppingListGroupId = this.ShoppingListGroupId;
                 }
-            if (e.OldItems.Count > 0)
-                foreach (var ob in e.OldItems)
-                {
-                    var item = ob as ShoppingListItem;
-                    item.ShoppingListGroup = null;
-                }
+            }
         }
-    }
-}
+    }//class
+}//ns
