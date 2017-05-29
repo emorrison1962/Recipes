@@ -16,7 +16,7 @@ namespace Recipes.DAL.Repositories
 
         public override Recipe GetById(int id)
         {
-            var query = this._dbSet
+            var query = this.DbSet
                 .Where(r => r.RecipeId == id)
                 .IncludeMultiple(
                     r => r.IngredientGroups
@@ -35,7 +35,7 @@ namespace Recipes.DAL.Repositories
             if (filter is Func<Recipe, bool>)
             {
                 var where = filter as Func<Recipe, bool>;
-                result = this._dbSet.AsEnumerable().Where(x => where(x)).ToList();
+                result = this.DbSet.AsEnumerable().Where(x => where(x)).ToList();
             }
             else
             {

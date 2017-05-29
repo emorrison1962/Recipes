@@ -3,6 +3,7 @@ using Recipes.DAL.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,10 +12,13 @@ namespace Recipes.Dal.Repositories
 {
 	public abstract class RepositoryBase<T> : IRepositoryBase<T> where T : class
 	{
-		internal DataContext _dataContext;
-		internal DbSet<T> _dbSet;
+		private DataContext _dataContext;
+		private DbSet<T> _dbSet;
 
-		public RepositoryBase(DataContext dataContext)
+        protected DbQuery<T> DbSet { get { return _dbSet.AsNoTracking(); } }
+        protected DataContext DataContext { get { return _dataContext; } }
+
+        public RepositoryBase(DataContext dataContext)
 		{
             this._dataContext = dataContext;
             this._dbSet = dataContext.Set<T>();
@@ -48,8 +52,9 @@ namespace Recipes.Dal.Repositories
 
 		public virtual void Insert(T entity)
 		{
-			_dbSet.Add(entity);
-		}
+            _dbSet.Add(entity);
+            _dataContext.SaveChanges();
+        }
 
 		public virtual void Update(T entity)
 		{

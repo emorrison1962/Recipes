@@ -19,23 +19,10 @@ namespace Recipes.DAL.Repositories
 
         public override ShoppingList GetFullObject(object id)
         {
-
-#if false
-            var query = this._dbSet
-                .Where(r => r.RecipeId == id)
-                .IncludeMultiple(
-                    r => r.IngredientGroups
-                    , r => r.IngredientGroups.Select<IngredientGroup, List<IngredientItem>>(pg => pg.Items)
-                    , r => r.ProcedureGroups
-                    , r => r.ProcedureGroups.Select<ProcedureGroup, List<ProcedureItem>>(pg => pg.Items));
-                        
-            var result = query.FirstOrDefault();
-#endif
-            var result = this._dbSet
+            var result = this.DbSet
                 .Where(l => l.ShoppingListId != int.MinValue)
                 .IncludeMultiple(l => l.Groups,
                     l => l.Groups.Select(slg => slg.Items))
-                    .AsNoTracking()
                     .FirstOrDefault();
 
             return result;
@@ -64,9 +51,9 @@ namespace Recipes.DAL.Repositories
                 var existing = this.GetFullObject(incoming.ShoppingListId);
                 if (!existing.Equals(incoming))
                 {
-                    var ar = existing.DetectChanges(incoming);
-                    _dataContext.SetChanges(ar);
-                    _dataContext.SaveChanges();
+                    var changes = existing.DetectChanges(incoming);
+                    this.DataContext.SetChanges(changes);
+                    this.DataContext.SaveChanges();
                 }
             }
             catch (DbEntityValidationException e)

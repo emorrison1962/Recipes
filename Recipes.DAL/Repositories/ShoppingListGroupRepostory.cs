@@ -18,7 +18,7 @@ namespace Recipes.DAL.Repositories
 
         public override IEnumerable<ShoppingListGroup> GetAll()
         {
-            var result = this._dbSet
+            var result = this.DbSet
                 .AsQueryable()
                 .Include(g => g.Items);
 

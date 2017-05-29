@@ -26,7 +26,6 @@ namespace Recipes.Services.Tests
             return result;
         }
 
-        //[Ignore]
         [TestMethod()]
         public void GetAllTest()
         {
@@ -43,49 +42,6 @@ namespace Recipes.Services.Tests
             var r = svc.GetById(2);
         }
 
-
-        [Ignore]
-        [TestMethod()]
-        public void SeedDatabase()
-        {
-            #region list
-            var list = RecipeUrls.Catalog;
-            #endregion
-
-            var svc = CreateService();
-
-            foreach (var url in list)
-            {
-				try
-				{
-                    var parser = PageParserFactory.Create(url);
-                    var host = new UriBuilder(url).Host;
-                    var recipe = parser.TryParse(url);
-                    if (recipe.IsValid)
-                    {
-                        svc.Insert(recipe);
-                        new object();
-                        Debug.WriteLine(string.Format("ADDED: {0}", url));
-                    }
-                    else
-                    {
-                        Debug.WriteLine(string.Format("*** IsValid failed: {0} ***", url));
-                    }
-                }
-
-#pragma warning disable 168
-                catch (Exception ex)
-				{
-					Debug.WriteLine(url);
-					new object();
-
-                    Debug.WriteLine(string.Format("*** Exception: {0} ***", url));
-
-                }
-#pragma warning restore 168
-            }
-
-        }
 
         [TestMethod()]
         public void UpdateTest()
@@ -106,25 +62,6 @@ namespace Recipes.Services.Tests
             //Check for accurate update....
         }
 
-        [TestMethod()]
-        public void RecipeService_AuditTest_01()
-        {// Change Name.
-            var svc = CreateService();
-            var id = svc.GetAll().Select(x => x.RecipeId).First();
-            var server = svc.GetById(id);
-            var client = Helpers.Detach(server);
-
-            client.Name = "XXX";
-
-            if (!server.Equals(client))
-            {
-                var ar = server.DetectChanges(client);
-                Assert.IsTrue(ar.ModifiedEntities.Count == 1);
-                var me = ar.ModifiedEntities.First();
-                Assert.IsTrue(me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Modified);
-                new object();
-            }
-        }
 
         [TestMethod()]
         public void RecipeService_AuditTest_02()

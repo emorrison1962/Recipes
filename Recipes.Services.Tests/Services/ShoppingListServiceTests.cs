@@ -19,9 +19,6 @@ namespace Recipes.Services.Tests
         static public void ClassInitialize(TestContext testCtx)
         {
             UnityContainer = Recipes.Unity.GetConfiguredContainer();
-            //var unity =  new UnityConfig();
-            //UnityContainer = UnityConfig.GetConfiguredContainer();
-            //var shoppingSvc = UnityContainer.Resolve<IServiceBase<ShoppingList>>();
         }
 
         [TestMethod()]

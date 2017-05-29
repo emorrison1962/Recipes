@@ -1,6 +1,6 @@
 ﻿namespace Recipes.Services.Tests
 {
-    public class Helpers
+    public static class Helpers
     {
         static public T Detach<T>(T entity)
         {

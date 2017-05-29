@@ -24,15 +24,6 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
         $log.debug(vm.model);
     };
 
-    //$scope.dragControlListeners = {
-    //    accept: function (sourceItemHandleScope, destSortableScope) {return boolean}//override to determine drag is allowed or not. default is true.
-    //    itemMoved: function (event) {//Do what you want},
-    //    orderChanged: function(event) {//Do what you want},
-    //            containment: '#board'//optional param.
-    //            clone: true //optional param for clone feature.
-    //            allowDuplicates: false //optional param allows duplicates to be dropped.
-    //    };
-
     $scope.dragControlListeners = {
         itemMoved: function (event) {
             $scope.setGroup(event.source.itemScope.item, event.dest.sortableScope.group);
@@ -41,8 +32,7 @@ var plannerIndexController = myApp.controller("plannerIndexController", ['$scope
         },
         orderChanged: function (event) {
             var x = 0;
-        }
-        };
+    }};
 
     $scope.mouseover = function () {
         var x = 0;

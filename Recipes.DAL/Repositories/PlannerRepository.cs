@@ -19,7 +19,7 @@ namespace Recipes.DAL.Repositories
 
         public override Planner GetById(int id)
         {
-            var result = this._dataContext.Planners
+            var result = this.DbSet
                 .Include(p => p.Groups.Select(g => g.Items))
                 .FirstOrDefault();
             return result;
@@ -32,9 +32,9 @@ namespace Recipes.DAL.Repositories
                 var existing = this.GetById(pending.PlannerId);
                 if (!existing.Equals(pending))
                 {
-                    var ecr = existing.DetectChanges(pending);
-                    _dataContext.SetChanges(ecr);
-                    _dataContext.SaveChanges();
+                    var changes = existing.DetectChanges(pending);
+                    this.DataContext.SetChanges(changes);
+                    this.DataContext.SaveChanges();
                 }
             }
 #pragma warning disable 0168

@@ -11,7 +11,7 @@ namespace Recipes.Domain
     {
 		public int ProcedureItemId { get; set; }
 
-        [JsonIgnore][XmlIgnore]
+        [JsonIgnore]
         [ForeignKey("ProcedureGroupId")]
         public virtual ProcedureGroup ProcedureGroup { get; set; }
         public virtual int? ProcedureGroupId { get; set; }
