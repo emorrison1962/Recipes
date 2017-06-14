@@ -157,16 +157,17 @@ namespace Recipes.Domain
         {
             var result = x.Entity.GetType() == y.Entity.GetType();
             if (result)
-            {
                 result = x.Entity.PrimaryKey == y.Entity.PrimaryKey;
-            }
+            if (result)
+                result = x.Entity.Text == y.Entity.Text;
             return result;
         }
 
         public int GetHashCode(T obj)
         {
             int result = obj.Entity.PrimaryKey
-                ^ obj.Entity.GetType().Name.GetHashCode();
+                ^ obj.Entity.GetType().Name.GetHashCode()
+                ^ obj.Entity.Text.GetHashCode();
             return result;
         }
     }

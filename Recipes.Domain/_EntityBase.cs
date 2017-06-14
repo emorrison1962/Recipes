@@ -24,6 +24,7 @@ namespace Recipes.Domain
         [NotMapped]
         [JsonIgnore]
         abstract public int PrimaryKey { get; }
+        abstract public string Text { get; set; }
 
         public EntityBase()
         {
@@ -39,7 +40,6 @@ namespace Recipes.Domain
 
     abstract public partial class EntityBase<T> : EntityBase, IEquatable<EntityBase<T>>
     {
-        abstract public string Text { get; set; }
         public EntityChangeResults DetectChanges(EntityBase<T> client)
         {
             if (this.IsProxy())
@@ -73,8 +73,6 @@ namespace Recipes.Domain
             }
             return result;
         }
-
-
 
         public bool Equals(EntityBase<T> other)
         {
