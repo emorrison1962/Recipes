@@ -9,10 +9,10 @@ namespace Recipes.Domain
     [Serializable]
     public class Planner : EntityBase<Planner>
     {
+        override public string Text { get; set; }
         [UniqueIdentifier]
         public int PlannerId { get; set; }
         public List<PlannerGroup> Groups { get; set; }
-        public string Text { get; set; }
 
         public override int PrimaryKey
         {

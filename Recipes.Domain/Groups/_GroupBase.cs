@@ -6,7 +6,7 @@ namespace Recipes.Domain
     [Serializable]
     abstract public class GroupBase<T, I> : EntityBase<T> where I : GroupItemBase<I>, new()
     {
-        virtual public string Text { get; set; }
+        override public string Text { get; set; }
 
         public List<I> Items { get; set; }
 

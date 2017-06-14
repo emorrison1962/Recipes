@@ -47,12 +47,14 @@ namespace Recipes.Domain
         {
             this.Items.Add(item);
             item.IngredientGroup = this;
+            item.IngredientGroupId = this.IngredientGroupId;
         }
 
         public override void Remove(IngredientItem item)
         {
             this.Items.Remove(item);
             item.IngredientGroup = null;
+            item.IngredientGroupId = null;
         }
 
         [OnDeserialized]

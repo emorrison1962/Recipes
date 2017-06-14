@@ -9,6 +9,28 @@ namespace Recipes.Domain
 {
     public class EntityChangeResults
     {
+        static IsSameDatabaseEntityComparer<EntityBase> _eComparer;
+
+        static ModifiedEntityLookupComparer<ModifiedEntity> _meComparer;
+        IsSameDatabaseEntityComparer<EntityBase> EntityComparer
+        {
+            get
+            {
+                if (null == _eComparer)
+                    _eComparer = new IsSameDatabaseEntityComparer<EntityBase>();
+                return _eComparer;
+            }
+        }
+        ModifiedEntityLookupComparer<ModifiedEntity> ModifiedEntityComparer
+        {
+            get
+            {
+                if (null == _meComparer)
+                    _meComparer = new ModifiedEntityLookupComparer<ModifiedEntity>();
+                return _meComparer;
+            }
+        }
+
         public HashSet<EntityBase> Entities { get; set; }
         public HashSet<ModifiedEntity> ModifiedEntities { get; set; }
         public EntityChangeResults()
@@ -19,28 +41,57 @@ namespace Recipes.Domain
 
         void Add(EntityBase entity, int primaryKey, EntityState entityState, string property = null, string oldValue = null, string newValue = null)
         {
-            if (this.Entities.Contains(entity))
-                Debug.Assert(false);
-
             var me = new ModifiedEntity(entity, primaryKey, entityState, property, oldValue, newValue);
-            this.ModifiedEntities.Add(me);
-            this.Entities.Add(entity);
+
+            if (this.ModifiedEntities.Contains(me, ModifiedEntityComparer))
+            {
+                var where = new Func<ModifiedEntity, bool>( delegate (ModifiedEntity candidate) 
+                {
+                    var result = false;
+                    if (candidate.GetType().Name == me.GetType().Name)
+                        if (candidate.PrimaryKey == me.PrimaryKey)
+                            result = true;
+                    return result;
+                });
+                var existing = this.ModifiedEntities.Where(x => where(x)).FirstOrDefault();
+                if (existing.EntityState == EntityState.Added
+                    || existing.EntityState == EntityState.Deleted)
+                {
+                    if (me.EntityState == EntityState.Added
+                        || me.EntityState == EntityState.Deleted)
+                    {
+                        if (me.EntityState != existing.EntityState)
+                        {
+                            existing.EntityState = EntityState.Modified;
+                        }
+                        else
+                        {
+                            Debug.Assert(false);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                this.ModifiedEntities.Add(me);
+                this.Entities.Add(entity);
+            }
             return;
         }
 
-        public void Modified(EntityBase entity, int primaryKey, EntityState entityState, string property = null, string oldValue = null, string newValue = null)
+        public void Modified(EntityBase entity, string property = null, string oldValue = null, string newValue = null)
         {
-            this.Add(entity, primaryKey, entityState, property, oldValue, newValue);
+            this.Add(entity, entity.PrimaryKey, EntityState.Modified, property, oldValue, newValue);
         }
 
-        public void Added(EntityBase entity, int primaryKey, EntityState entityState)
+        public void Added(EntityBase entity)
         {
-            this.Add(entity, primaryKey, entityState, null, null, null);
+            this.Add(entity, entity.PrimaryKey, EntityState.Added);
         }
 
-        public void Deleted(EntityBase entity, int primaryKey, EntityState entityState)
+        public void Deleted(EntityBase entity)
         {
-            this.Add(entity, primaryKey, entityState, null, null, null);
+            this.Add(entity, entity.PrimaryKey, EntityState.Deleted);
         }
 
 
@@ -82,7 +133,7 @@ namespace Recipes.Domain
             if (this.EntityState == EntityState.Added || this.EntityState == EntityState.Deleted)
                 result = string.Format("{1}({2}): {3} {4}",
                     base.ToString(),
-                    this.Entity.GetType().Name,
+                    this.Entity.ToString(),
                     this.PrimaryKey,
                     this.PropertyName,
                     this.EntityState.ToString());
@@ -99,5 +150,25 @@ namespace Recipes.Domain
             return result;
         }
     }//class
+    class ModifiedEntityLookupComparer<T> : IEqualityComparer<T>
+    where T : ModifiedEntity
+    {
+        public bool Equals(T x, T y)
+        {
+            var result = x.Entity.GetType() == y.Entity.GetType();
+            if (result)
+            {
+                result = x.Entity.PrimaryKey == y.Entity.PrimaryKey;
+            }
+            return result;
+        }
+
+        public int GetHashCode(T obj)
+        {
+            int result = obj.Entity.PrimaryKey
+                ^ obj.Entity.GetType().Name.GetHashCode();
+            return result;
+        }
+    }
 
 }//ns

@@ -49,12 +49,14 @@ namespace Recipes.Domain
         {
             this.Items.Add(item);
             item.PlannerGroup = this;
+            item.PlannerGroupId = this.PlannerGroupId;
         }
 
         public override void Remove(PlannerItem item)
         {
             this.Items.Remove(item);
             item.PlannerGroup = null;
+            item.PlannerGroupId = null;
         }
 
         public void Trace()

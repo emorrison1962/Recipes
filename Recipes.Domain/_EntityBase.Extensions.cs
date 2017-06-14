@@ -14,7 +14,6 @@ namespace Recipes.Domain
 {
     public static partial class EntityExtensions
     {
-        const string PROXY_NAMESPACE = "System.Data.Entity.DynamicProxies";
 
         public static void Copy<T>(this EntityBase<T> dst, EntityBase<T> src)
         {
@@ -44,43 +43,42 @@ namespace Recipes.Domain
 
         static Type UnproxyType(this Type t)
         {
-            if (t.Namespace == PROXY_NAMESPACE)
+            if (t.Namespace == Constants.PROXY_NAMESPACE)
                 t = t.BaseType;
             return t;
         }
 
-        static List<FieldInfo> GetCommonFields(Type a, Type b)
-        {
-            a = a.UnproxyType();
-            b = b.UnproxyType();
+        //static List<FieldInfo> GetCommonFields(Type a, Type b)
+        //{
+        //    a = a.UnproxyType();
+        //    b = b.UnproxyType();
 
-            var cliFis = a.GetType().UnproxyType().GetFields().ToList();
-            var srvFis = b.GetType().UnproxyType().GetFields().ToList();
-            var result = cliFis.Intersect(srvFis).ToList();
-            return result;
-        }
+        //    var cliFis = a.GetType().UnproxyType().GetFields().ToList();
+        //    var srvFis = b.GetType().UnproxyType().GetFields().ToList();
+        //    var result = cliFis.Intersect(srvFis).ToList();
+        //    return result;
+        //}
 
-        static List<PropertyInfo> GetCommonProperties(Type a, Type b)
-        {
-            a = a.UnproxyType();
-            b = b.UnproxyType();
+        //static List<PropertyInfo> GetCommonProperties(Type a, Type b)
+        //{
+        //    a = a.UnproxyType();
+        //    b = b.UnproxyType();
 
-            var aProps = a.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty).OrderBy(x => x.Name).ToList();
-            var bProps = b.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty).OrderBy(x => x.Name).ToList();
-            var result = aProps.Intersect(bProps, new PropertyInfoComparer()).ToList();
+        //    var aProps = a.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty).OrderBy(x => x.Name).ToList();
+        //    var bProps = b.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty).OrderBy(x => x.Name).ToList();
+        //    var result = aProps.Intersect(bProps, new PropertyInfoComparer()).ToList();
 
-            var exclude = (
-                from pi in result
-                from ca in pi.CustomAttributes
-                where ca.AttributeType == typeof(JsonIgnoreAttribute) 
-                    || ca.AttributeType == typeof(NavigationPropertyAttribute) 
-                select (pi)).ToList();
-            exclude.ForEach(x => result.Remove(x));
+        //    var exclude = (
+        //        from pi in result
+        //        from ca in pi.CustomAttributes
+        //        where ca.AttributeType == typeof(JsonIgnoreAttribute) 
+        //        select (pi)).ToList();
+        //    exclude.ForEach(x => result.Remove(x));
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static bool Equals<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityChangeResults auditResult = null)
+        public static bool Equivalent<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityChangeResults auditResult = null)
         {
             var cliCopy = client;
             var srvCopy = server;
@@ -90,13 +88,11 @@ namespace Recipes.Domain
             if (null != auditResult && auditResult.Entities.Contains(cliCopy))
                 cliCopy = null;
 
-            var bothNotNull = ((srvCopy != null) && (cliCopy != null));
-            bool result = ((srvCopy == cliCopy) || bothNotNull);
+            var neitherIsNull = ((srvCopy != null) && (cliCopy != null));
+            bool result = ((srvCopy == cliCopy) || neitherIsNull);
 
-            if (bothNotNull)
+            if (neitherIsNull)
             {
-                if (client is IngredientItem)
-                    new object();
                 if (cliCopy.PrimaryKey != srvCopy.PrimaryKey)
                 {
                     result = false;
@@ -114,18 +110,7 @@ namespace Recipes.Domain
             return result;
         }
 
-        public static bool IsProxy<T>(this EntityBase<T> entity)
-            where T : EntityBase<T>
-        {
-            var result = false;
-            if (PROXY_NAMESPACE == entity.GetType().Namespace)
-            {
-                result = true;
-            }
-            return result;
-        }
-
-        public static bool Equals<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, EntityChangeResults auditResult = null)
+        public static bool Equivalent<T>(this IEnumerable<T> srvList, IEnumerable<T> cliList, bool unused, EntityChangeResults auditResult = null)
             where T : EntityBase<T>
         {
             bool result = Object.ReferenceEquals(cliList, srvList);
@@ -135,13 +120,15 @@ namespace Recipes.Domain
                 var srvCopy = new List<T>(srvList);
 
                 var before = cliCopy.Count;
-                cliCopy = cliCopy.Except(auditResult.Entities.OfType<T>()).ToList();
+                if (null != auditResult)
+                    cliCopy = cliCopy.Except(auditResult.Entities.OfType<T>()).ToList();
                 var after = cliCopy.Count;
                 if (before - after > 0)
                     Debug.WriteLine(string.Format("Ignored {0} audited entities.", before - after));
 
                 before = srvCopy.Count;
-                srvCopy = srvCopy.Except(auditResult.Entities.OfType<T>()).ToList();
+                if (null != auditResult)
+                    srvCopy = srvCopy.Except(auditResult.Entities.OfType<T>()).ToList();
                 after = srvCopy.Count;
                 if (before - after > 0)
                     Debug.WriteLine(string.Format("Ignored {0} audited entities.", before - after));
@@ -156,7 +143,8 @@ namespace Recipes.Domain
                         { 
                             if (!addition.IsProxy())
                             {
-                                auditResult.Added(addition, addition.PrimaryKey, EntityState.Added);
+                                //auditResult.Added(addition, addition.PrimaryKey, EntityState.Added);
+                                //addition.GetNewChildren(auditResult);
                             }
                         }
                     }
@@ -167,13 +155,10 @@ namespace Recipes.Domain
                 {
                     foreach (var deletion in deletions)
                     {
-                        if (!auditResult.Entities.Contains(deletion))
-                        {
-                            if (!deletion.IsProxy())
-                            {
-                                auditResult.Deleted(deletion, deletion.PrimaryKey, EntityState.Deleted);
-                            }
-                        }
+                        //if (!auditResult.Entities.Contains(deletion))
+                        //{
+                        //    auditResult.Deleted(deletion, deletion.PrimaryKey, EntityState.Deleted);
+                        //}
                     }
                 }
 
@@ -187,7 +172,7 @@ namespace Recipes.Domain
                 var changes = srvCopy.Except(cliCopy, deepComparer).ToList();
                 if (null != auditResult && changes.Count > 0)
                 {
-                    changes.ForEach(x => auditResult.Modified(x, x.PrimaryKey, EntityState.Modified));
+                    changes.ForEach(x => auditResult.Modified(x));
                 }
 
                 if (additions.Count == 0
@@ -202,11 +187,15 @@ namespace Recipes.Domain
 
         public static bool CompareFields<T>(this EntityBase<T> server, EntityBase<T> client, EntityChangeResults auditResult = null)
         {
+            if (null == server)
+                throw new ArgumentNullException("server");
+            if (null == client)
+                throw new ArgumentNullException("client");
             bool result = true;
             var cliCopy = client;
             var srvCopy = server;
 
-            var fis = GetCommonFields(cliCopy.GetType().UnproxyType(), srvCopy.GetType().UnproxyType());
+            var fis = cliCopy.GetType().UnproxyType().GetFieldsEx();
             foreach (var fi in fis)
             {
                 var cliVal = (dynamic)fi.GetValue(cliCopy) as IComparable;
@@ -217,7 +206,7 @@ namespace Recipes.Domain
                     result = Object.Equals(cliVal, srvVal);
                     if (null != auditResult && !result)
                     {
-                        auditResult.Modified(cliCopy, cliCopy.PrimaryKey, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
+                        auditResult.Modified(cliCopy);
                     }
                 }
                 else if (!cliVal.Equals(srvVal))
@@ -225,7 +214,7 @@ namespace Recipes.Domain
                     result = false;
                     if (null != auditResult)
                     {
-                        auditResult.Modified(cliCopy, cliCopy.PrimaryKey, EntityState.Modified, fi.Name, srvVal.ToString(), cliVal.ToString());
+                        auditResult.Modified(cliCopy);
                     }
                     else
                     {
@@ -238,10 +227,14 @@ namespace Recipes.Domain
 
         public static bool CompareProperties<T>(this EntityBase<T> server, EntityBase<T> client, bool traverse, EntityChangeResults auditResult = null)
         {
+            if (null == server)
+                throw new ArgumentNullException("server");
+            if (null == client)
+                throw new ArgumentNullException("client");
             bool result = true;
             if (server is Recipe)
                 new Object();
-            var pis = GetCommonProperties(client.GetType().UnproxyType(), server.GetType().UnproxyType());
+            var pis = client.GetType().UnproxyType().GetPropertiesEx();
             foreach (var pi in pis)
             {
                 var cliVal = (dynamic)pi.GetValue(client);
@@ -249,21 +242,22 @@ namespace Recipes.Domain
 
                 if (cliVal is string)
                     new Object();
-                if (cliVal is EntityBase)
+                if (cliVal is EntityBase || srvVal is EntityBase)
                 {
-                    result &= EntityExtensions.Equals(srvVal, cliVal, traverse, auditResult);
+                    result &= EntityExtensions.Equivalent(srvVal, cliVal, traverse, auditResult);
                 }
-                else if (cliVal is IEnumerable && !(cliVal is String))
+                else if ((cliVal is IEnumerable && !(cliVal is String)) 
+                    || (srvVal is IEnumerable && !(srvVal is String)))
                 {
                     if (traverse)
                     {
                         if (null != auditResult)
                         {
-                            EntityExtensions.Equals(srvVal, cliVal, traverse, auditResult);
+                            EntityExtensions.Equivalent(srvVal, cliVal, traverse, auditResult);
                             new Object();
                         }
                         else
-                            result &= EntityExtensions.Equals(srvVal, cliVal, traverse, auditResult);
+                            result &= EntityExtensions.Equivalent(srvVal, cliVal, traverse, auditResult);
 
                     }
                 }
@@ -274,12 +268,7 @@ namespace Recipes.Domain
                         result &= (cliVal == srvVal);
                         if ((cliVal != srvVal) && null != auditResult)
                         {
-                            auditResult.Modified(client,
-                                client.PrimaryKey, 
-                                EntityState.Modified,
-                                pi.Name,
-                                (null == srvVal) ? null : srvVal.ToString(),
-                                (null == cliVal) ? null : cliVal.ToString());
+                            auditResult.Modified(client);
                         }
                     }
                 }
@@ -291,69 +280,228 @@ namespace Recipes.Domain
             return result;
         }
 
-        class PropertyInfoComparer : IEqualityComparer<PropertyInfo>
+        public static void GetAdditions(this EntityBase entity, EntityChangeResults auditResult)
         {
-            public bool Equals(PropertyInfo x, PropertyInfo y)
+            var fis = entity.GetType().UnproxyType().GetFields().ToList();
+            foreach (var fi in fis)
             {
-                var result = x == y;
-                if (!result)
-                    new object();
-                return result;
+                if (fi.FieldType.IsSubclassOf(typeof(EntityBase)))
+                {
+                    var child = fi.GetValue(entity) as EntityBase;
+                    if (0 == child.PrimaryKey)
+                    {
+                        auditResult.Added(child);
+                    }
+                }
+            }
+            var pis = entity.GetType().UnproxyType().GetPropertiesEx().ToList();
+            foreach (var pi in pis)
+            {
+                var pv = pi.GetValue(entity);
+                if (pv is EntityBase)
+                {
+                    var child = pv as EntityBase;
+                    if (0 == child.PrimaryKey)
+                    {
+                        auditResult.Added(child);
+                    }
+                    GetAdditions(child, auditResult);
+                }
+                else if (pv is IEnumerable<EntityBase>)
+                {
+                    var entities = pv as IEnumerable<EntityBase>;
+                    foreach (var child in entities)
+                    {
+                        if (0 == child.PrimaryKey)
+                        {
+                            auditResult.Added(child);
+                        }
+                        GetAdditions(child, auditResult);
+                    }
+                }
+            }
+        }
+
+        public static List<EntityBase> GetEntityGraph(this EntityBase entity, List<EntityBase> result = null)
+        {
+            if (null == result)
+                result = new List<EntityBase>(new EntityBase[] { entity });
+
+
+            var fis = entity.GetType().UnproxyType().GetFields().ToList();
+            foreach (var fi in fis)
+            {
+                if (fi.FieldType.IsSubclassOf(typeof(EntityBase)))
+                {
+                    var child = fi.GetValue(entity) as EntityBase;
+                    //if (0 == child.PrimaryKey)
+                    {
+                        var t = child.GetType();
+                        result.Add(child);
+                    }
+                }
+            }
+            var pis = entity.GetType().UnproxyType().GetPropertiesEx().ToList();
+            foreach (var pi in pis)
+            {
+                var pv = pi.GetValue(entity);
+                if (pv is EntityBase)
+                {
+                    var child = pv as EntityBase;
+                    //if (0 == child.PrimaryKey)
+                    {
+                        var t = child.GetType();
+                        result.Add(child);
+                    }
+                    GetEntityGraph(child, result);
+                }
+                else if (pv is IEnumerable<EntityBase>)
+                {
+                    var entities = pv as IEnumerable<EntityBase>;
+                    foreach (var child in entities)
+                    {
+                        //if (0 == child.PrimaryKey)
+                        {
+                            var t = child.GetType();
+                            result.Add(child);
+                        }
+                        GetEntityGraph(child, result);
+                    }
+                }
             }
 
-            public int GetHashCode(PropertyInfo obj)
-            {
-                return obj.GetHashCode();
-            }
-        }//class
+            return result;
+        }
+
+
+
+        static List<FieldInfo> GetFieldsEx(this EntityBase e)
+        {
+            var t = e.GetType();
+            var result = t.GetFieldsEx();
+            return result;
+        }
+        static List<FieldInfo> GetFieldsEx(this Type t)
+        {
+            var result = t.GetFields().ToList();
+
+            var exclude = (
+                from pi in result
+                from ca in pi.CustomAttributes
+                where ca.AttributeType == typeof(JsonIgnoreAttribute)
+                select (pi)).ToList();
+            exclude.ForEach(x => result.Remove(x));
+
+            return result;
+        }
+
+        static List<PropertyInfo> GetPropertiesEx(this EntityBase e)
+        {
+            var t = e.GetType();
+            var result = t.GetPropertiesEx();
+            return result;
+        }
+        static List<PropertyInfo> GetPropertiesEx(this Type t)
+        {
+            var result = t.GetProperties().ToList();
+
+            var exclude = (
+                from pi in result
+                from ca in pi.CustomAttributes
+                where ca.AttributeType == typeof(JsonIgnoreAttribute)
+                select (pi)).ToList();
+            exclude.ForEach(x => result.Remove(x));
+
+            return result;
+        }
         
-        class DeepEqualityComparer<T> : IEqualityComparer<T>
-            where T : EntityBase<T>
-        {
-            EntityChangeResults AuditResult { get; set; }
-            public DeepEqualityComparer(EntityChangeResults auditResult)
-            {
-                this.AuditResult = auditResult;
-            }
-
-            public bool Equals(T x, T y)
-            {
-                if (x is IngredientItem)
-                    new object();
-                var result = EntityExtensions.Equals(x, y, true, this.AuditResult);
-                if (!result)
-                    new object();
-                return result;
-            }
-
-            public int GetHashCode(T obj)
-            {
-                var result = obj.PrimaryKey.GetHashCode();
-                if (obj is IngredientItem)
-                    Debug.WriteLine(string.Format("{0}: {1}: {2}", obj.PrimaryKey.ToString(), result.ToString(), obj.ToString()));
-                return result;
-            }
-
-        }//class
-        class ShallowEqualityComparer<T> : IEqualityComparer<T>
-            where T : EntityBase<T>
-        {
-            public bool Equals(T x, T y)
-            {
-                if (x is PlannerGroup)
-                    new object();
-                var result = EntityExtensions.Equals(x, y, false);
-                if (!result)
-                    new object();
-                return result;
-            }
-
-            public int GetHashCode(T obj)
-            {
-                return obj.PrimaryKey.GetHashCode();
-            }
-
-        }//class
 
     }//class
+
+    class DeepEqualityComparer<T> : IEqualityComparer<T>
+        where T : EntityBase<T>
+    {
+        EntityChangeResults AuditResult { get; set; }
+        public DeepEqualityComparer(EntityChangeResults auditResult)
+        {
+            this.AuditResult = auditResult;
+        }
+
+        public bool Equals(T x, T y)
+        {
+            if (x is IngredientItem)
+                new object();
+            var result = EntityExtensions.Equivalent(x, y, true, this.AuditResult);
+            if (!result)
+                new object();
+            return result;
+        }
+
+        public int GetHashCode(T obj)
+        {
+            var result = obj.PrimaryKey.GetHashCode();
+            if (obj is IngredientItem)
+                Debug.WriteLine(string.Format("{0}: {1}: {2}", obj.PrimaryKey.ToString(), result.ToString(), obj.ToString()));
+            return result;
+        }
+
+    }//class
+    class ShallowEqualityComparer<T> : IEqualityComparer<T>
+        where T : EntityBase<T>
+    {
+        public bool Equals(T x, T y)
+        {
+            var result = EntityExtensions.Equivalent(x, y, false);
+            if (!result)
+                new object();
+            return result;
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return obj.PrimaryKey.GetHashCode();
+        }
+
+    }//class
+
+    class EntityBaseEqualityComparer<T> : IEqualityComparer<T>
+        where T : EntityBase
+    {
+        public bool Equals(T x, T y)
+        {
+            var result = x.GetType() == y.GetType();
+            if (result)
+            {
+                result = EntityExtensions.Equivalent((dynamic)x, (dynamic)y, false);
+            }
+            return result;
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return obj.PrimaryKey.GetHashCode();
+        }
+    }//class
+
+    class IsSameDatabaseEntityComparer<T> : IEqualityComparer<T>
+    where T : EntityBase
+    {
+        public bool Equals(T x, T y)
+        {
+            var result = x.GetType() == y.GetType();
+            if (result)
+            {
+                result = x.PrimaryKey == y.PrimaryKey;
+            }
+            return result;
+        }
+
+        public int GetHashCode(T obj)
+        {
+            int result = obj.PrimaryKey
+                ^obj.GetType().Name.GetHashCode();
+            return result;
+        }
+    }
+
 }

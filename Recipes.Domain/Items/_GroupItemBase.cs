@@ -5,7 +5,7 @@ namespace Recipes.Domain
     [Serializable]
     abstract public class GroupItemBase<T> : EntityBase<T>
     {
-        virtual public string Text { get; set; }
+        override public string Text { get; set; }
 
         public GroupItemBase()
         {

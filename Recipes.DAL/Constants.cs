@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Recipes.Contracts
+namespace Recipes.DAL
 {
-    //public class NavigationPropertyAttribute : Attribute
-    //{
-    //}
+    public static class Constants
+    {
+    }
 }

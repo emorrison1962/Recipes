@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using Eric.Morrison;
 
 namespace Recipes.Services.Tests
 {
@@ -85,7 +86,34 @@ namespace Recipes.Services.Tests
             }
         }
 
+        [TestMethod()]
+        public void RecipeService_Insert_AdHoc()
+        {
+            var r = CreateAdHocRecipe();
 
+            r = this.Insert(r);
+            this.Delete(r);
+        }
+
+        static public Recipe CreateAdHocRecipe()
+        {
+            var r = new Recipe();
+            r.Name = RandomString.GetAlphaOnly(16);
+            return r;
+        }
+
+        private void Delete(Recipe r)
+        {
+            var svc = CreateService();
+            svc.Delete(r);
+        }
+
+        Recipe Insert(Recipe r)
+        {
+            var svc = CreateService();
+            svc.Insert(r);
+            return r;
+        }
 
     }//class
 }//ns

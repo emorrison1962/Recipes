@@ -1,6 +1,10 @@
 ﻿using Newtonsoft.Json;
+using Recipes.Contracts;
+using Recipes.Domain;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Recipes.Domain
@@ -17,6 +21,10 @@ namespace Recipes.Domain
 
         #endregion
 
+        [NotMapped]
+        [JsonIgnore]
+        abstract public int PrimaryKey { get; }
+
         public EntityBase()
         {
             this.Init();
@@ -31,70 +39,63 @@ namespace Recipes.Domain
 
     abstract public partial class EntityBase<T> : EntityBase, IEquatable<EntityBase<T>>
     {
-        [NotMapped]
-        [JsonIgnore]
-        abstract public int PrimaryKey { get; }
-
+        abstract public string Text { get; set; }
         public EntityChangeResults DetectChanges(EntityBase<T> client)
         {
+            if (this.IsProxy())
+                throw new NotSupportedException("\"this\" must not be a \"System.Data.Entity.DynamicProxies\". Please detach object first.");
             // there is an expectation that "other" is the client object.
             var result = new EntityChangeResults();
-            var hasChanged = EntityExtensions.Equals((dynamic)this, (dynamic)client, true, result);
+
+            var cliGraph = client.GetEntityGraph();
+            var srvGraph = this.GetEntityGraph();
+
+            var comparer = new EntityBaseEqualityComparer<EntityBase>();
+
+            var additions = cliGraph.Where(x => !srvGraph.Contains<EntityBase>(x, comparer)).ToList();
+            additions.ForEach(x => result.Added(x));
+
+            var deletions = srvGraph.Where(x => !cliGraph.Contains<EntityBase>(x, comparer)).ToList();
+            deletions.ForEach(x => result.Deleted(x));
+
+            new object();
+
+            var hasChanged = EntityExtensions.Equivalent((dynamic)this, (dynamic)client, true, result);
             return result;
         }
+
+        public bool IsProxy()
+        {
+            var result = false;
+            if (Constants.PROXY_NAMESPACE == this.GetType().Namespace)
+            {
+                result = true;
+            }
+            return result;
+        }
+
+
 
         public bool Equals(EntityBase<T> other)
         {
             var result = this.PrimaryKey == other.PrimaryKey;
             if (result)
             {
-                result = EntityExtensions.Equals((dynamic)this, (dynamic)other);
+                result = EntityExtensions.Equivalent(this, other, true);
             }
+            return result;
+        }
+
+        public override string ToString()
+        {
+            var result = string.Format("{0}, PrimaryKey={1}, Text={2}", base.ToString(), this.PrimaryKey, this.Text);
             return result;
         }
 
         public override int GetHashCode()
         {
             var result = int.MinValue;
-
             result = this.PrimaryKey.GetHashCode();
-
-
-#if false
-            var type = this.GetType();
-            var pis = type.GetProperties().ToList();
-
-            var exclude = (
-                from pi in pis
-                from ca in pi.CustomAttributes
-                where ca.AttributeType == typeof(JsonIgnoreAttribute)
-                select (pi)).ToList();
-            exclude.ForEach(x => pis.Remove(x));
-
-            foreach (var pi in pis)
-            {
-                var val = pi.GetValue(this);
-                if (val is IEnumerable && !(val is String))
-                {
-                    continue;
-                }
-                if (null != val)
-                {
-                    result ^= val.GetHashCode();
-                }
-                else
-                {
-                    result ^= int.MinValue;
-                }
-            }
-
-            if (type == typeof(PlannerGroup))
-            {
-                Debug.WriteLine(string.Format("{0}, GetHashCode={1}", this.ToString(), result));
-            }
-
-
-#endif
             return result;
         }
 

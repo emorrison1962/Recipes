@@ -56,7 +56,7 @@
                 <div class="controls">
                     <div class="input-group">
                         <span class="input-group-addon">Add</span>
-                        <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=newItem>
+                        <input type="text" list="data_list" class="form-control" placeholder="New Item..." ng-model=vm.newItem  ng-change="newItem_Changed()">
                         <div ng-repeat="group in vm.model.Planner.Groups">
                             <datalist id="data_list">
                                 <option ng-repeat="item in group.Items | filter: { IsChecked: 'true' }" value="{{item.Text}}"></option>
@@ -79,7 +79,7 @@
                             &nbsp;
                             <label class="checkbox checkbox-inline" style="display:inline;" for="cbRecipe-{{item.Recipe.RecipeId}}">
                                 &nbsp;
-                                <input ng-model="item.IsChecked" ng-change="plannerItemChecked(item)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox" />{{item.Recipe.Name}}
+                                <input ng-model="item.IsChecked" ng-change="plannerItemChecked(item)" id="cbRecipe-{{item.Recipe.RecipeId}}" type="checkbox" />{{item.Text}}
                             </label>
                         </span>
                     </li>

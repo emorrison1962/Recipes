@@ -10,7 +10,9 @@ namespace Recipes.Domain
 	[Table("Tags")]
 	public class Tag : EntityBase<Tag>
 	{
-		public int TagId { get; set; }
+        [NotMapped]
+        override public string Text { get { return this.Name; } set { this.Name = value; } }
+        public int TagId { get; set; }
 		public string Name { get; set; }
 
         public List<Recipe> Recipes { get; set; }

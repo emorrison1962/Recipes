@@ -12,6 +12,8 @@ namespace Recipes.Domain
     {
         #region Properties
 
+        [NotMapped]
+        override public string Text { get { return this.Name; } set { this.Name = value; } }
         public int RecipeId { get; set; }
 
         public string Name { get; set; }

@@ -68,8 +68,7 @@ namespace Recipes.Services.Tests
                     typeof(NotMappedAttribute),
                     typeof(JsonIgnoreAttribute),
                     typeof(ForeignKeyAttribute),
-                    typeof(UniqueIdentifierAttribute),
-                    typeof(NavigationPropertyAttribute)
+                    typeof(UniqueIdentifierAttribute)
                 };
 
         static public IEnumerable<FieldInfo> GetFieldsEx(this Type t)

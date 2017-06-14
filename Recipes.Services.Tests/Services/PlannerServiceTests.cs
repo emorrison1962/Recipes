@@ -10,6 +10,7 @@ using Recipes.Services.Tests.Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace Recipes.Services.Tests
         {
             var svc = CreateService();
             var source = svc.GetById(-1);
-            var pending = Helpers.Detach(source);
+            var pending = source.Detach();
 
             // add the recipes.
             const int MAX = 2;
@@ -48,7 +49,7 @@ namespace Recipes.Services.Tests
             var group = pending.Groups[0];
             foreach (var recipe in recipes)
             {
-                var item = Helpers.Detach(new PlannerItem(recipe));
+                var item = new PlannerItem(recipe).Detach();
                 pending.Groups[0].Add(item);
             }
 
@@ -73,14 +74,14 @@ namespace Recipes.Services.Tests
         {
             var recipeSvc = RecipeServiceTests.CreateService();
             var result = recipeSvc.GetAll().LastOrDefault();
-            result = Helpers.Detach(result);
+            result = result.Detach();
             return result;
         }
         List<Recipe> GetRecipes(int count)
         {
             var recipeSvc = RecipeServiceTests.CreateService();
             var result = recipeSvc.GetAll().Take(count).ToList();
-            result.ForEach(x => x = Helpers.Detach(x));
+            result.ForEach(x => x = x.Detach());
             return result;
         }
 
@@ -177,7 +178,7 @@ namespace Recipes.Services.Tests
             {
                 var svc = CreateService();
                 var source = svc.GetById(-1);
-                var pending = Helpers.Detach(source);
+                var pending = source.Detach();
 
                 var items = (
                     from g in pending.Groups
@@ -192,11 +193,11 @@ namespace Recipes.Services.Tests
                     var group = pending.Groups[0];
                     foreach (var recipe in recipes)
                     {
-                        var item = Helpers.Detach(new PlannerItem(recipe));
+                        var item = new PlannerItem(recipe).Detach();
                         pending.Groups[0].Add(item);
                     }
 
-                    pending = Helpers.Detach(pending);
+                    pending = pending.Detach();
                     svc.Update(pending);
                 }
 
@@ -215,7 +216,7 @@ namespace Recipes.Services.Tests
                     }
                     deletions.ForEach(x => group.Remove(x));
 
-                    pending = Helpers.Detach(pending);
+                    pending = pending.Detach();
                     svc.Update(pending);
                     new object();
                 }
@@ -237,7 +238,7 @@ namespace Recipes.Services.Tests
         {
             var svc = CreateService();
             var planner = svc.GetById(-1);
-            planner = Helpers.Detach(planner);
+            planner = planner.Detach();
 
             var recipe = this.GetRecipe();
             var item = new PlannerItem(recipe);
@@ -254,8 +255,7 @@ namespace Recipes.Services.Tests
             {
                 var svc = CreateService();
                 var source = svc.GetById(-1);
-                var pending = Helpers.Detach(source);
-
+                var pending = source.Detach();
 
                 var items = (
                     from g in pending.Groups
@@ -263,38 +263,35 @@ namespace Recipes.Services.Tests
                     select i).ToList();
 
 
-                if (0 == items.Count)
+                var recipe = RecipeServiceTests.CreateAdHocRecipe();
+                var recipeName = recipe.Name;
+                int itemId = int.MinValue;
                 {//Add
-                    // add the recipes.
-                    const int MAX = 1;
-                    var recipes = this.GetRecipes(MAX);
                     var group = pending.Groups[0];
-                    foreach (var recipe in recipes)
-                    {
-                        var item = Helpers.Detach(new PlannerItem(recipe));
-                        pending.Groups[0].Add(item);
-                    }
+                    var item = new PlannerItem(recipe);
+                    group.Add(item);
 
-                    pending = Helpers.Detach(pending);
-                    svc.Update(pending);
+                    pending = svc.Update(pending).Detach();
                     new object();
+
+                    itemId = (
+                        from g in pending.Groups
+                        from i in g.Items
+                        where i.Text == recipeName
+                        select (i.PlannerItemId)
+                        ).First();
                 }
-                /*
                 {//Remove
                     var deletions = new List<PlannerItem>();
+                    var item = pending.Groups.Select(x => x.Items.Where(i => i.PlannerItemId == itemId).FirstOrDefault()).Where(x => x != null).First();
+
                     var group = pending.Groups[0];
-                    foreach (var item in group.Items)
-                    {
-                        deletions.Add(item);
-                    }
-                    deletions.ForEach(x => group.Remove(x));
-
-
-                    pending = Helpers.Detach(pending);
-                    svc.Update(pending);
+                    group.Remove(item);
+                    svc = CreateService();
+                    pending = svc.Update(pending).Detach();
                     new object();
                 }
-                */
+
             }
 #pragma warning disable 0168
             catch (Exception ex)
@@ -314,6 +311,169 @@ namespace Recipes.Services.Tests
             //    new object();
             //}
         }
+
+
+        [TestMethod()]
+        public void AddItem_061117()
+        {
+            try
+            {
+                var svc = CreateService();
+                var source = svc.GetById(-1);
+                var pending = source.Detach();
+
+                {//Add
+                    const int MAX = 2;
+                    for (int i = 0; i < MAX; ++i)
+                    {
+                        var recipe = RecipeServiceTests.CreateAdHocRecipe();
+                        var recipeName = recipe.Name;
+
+                        var group = pending.Groups[0];
+                        var item = new PlannerItem(recipe);
+                        group.Add(item);
+                    }
+                    pending = svc.Update(pending).Detach();
+                    new object();
+                }
+            }
+#pragma warning disable 0168
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        [TestMethod()]
+        public void MoveItem_061117()
+        {
+            try
+            {
+                var svc = CreateService();
+                var source = svc.GetById(-1);
+                var pending = source.Detach();
+
+                {//Move
+                    var g0 = pending.Groups[0];
+                    var g1 = pending.Groups[1];
+                    var item = g0.Items.First();
+                    g0.Remove(item);
+                    g1.Add(item);
+
+                    pending = svc.Update(pending).Detach();
+                    new object();
+                }
+            }
+#pragma warning disable 0168
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+
+        [TestMethod()]
+        public void RemovePlannerItem_061117()
+        {
+            try
+            {
+                var svc = CreateService();
+                var source = svc.GetById(-1);
+                var pending = source.Detach();
+                {//Remove
+                    var deletions = new List<PlannerItem>();
+                    var group = pending.Groups.First();
+                    var item = group.Items.First();
+
+                    group.Remove(item);
+                    svc = CreateService();
+                    pending = svc.Update(pending).Detach();
+                    new object();
+                }
+
+            }
+#pragma warning disable 0168
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+#pragma warning restore 0168
+        }
+
+
+
+        [TestMethod()]
+        public void DetectChangesTest_01()
+        {
+            try
+            {
+                var svc = CreateService();
+                var source = svc.GetById(-1).Detach();
+                var pending = source.Detach();
+
+                var recipe = RecipeServiceTests.CreateAdHocRecipe();
+                var recipeName = recipe.Name;
+                int itemId = int.MinValue;
+                {//Add
+                    var item = new PlannerItem(recipe);
+                    pending.Groups[0].Add(item);
+
+                    //var ecr = new EntityChangeResults();
+                    //pending.GetNewChildren(ecr);
+                    //Debug.WriteLine(ecr);
+
+                    var changes = source.DetectChanges(pending);
+                    Debug.WriteLine(changes);
+                    new object();
+
+                    itemId = (
+                        from g in pending.Groups
+                        from i in g.Items
+                        where i.Text == recipeName
+                        select (i.PlannerItemId)
+                        ).First();
+
+                    new object();
+                }
+                {//Remove
+                    source = pending.Detach();
+
+                    var deletions = new List<PlannerItem>();
+                    var item = pending.Groups.Select(x => x.Items.Where(i => i.PlannerItemId == itemId).FirstOrDefault()).Where(x => x != null).First();
+
+                    var group = pending.Groups[0];
+                    group.Remove(item);
+
+
+                    pending = pending.Detach();
+                    var changes = source.DetectChanges(pending);
+                    Debug.WriteLine(changes);
+                    new object();
+                    //svc.Update(pending);
+                    new object();
+                }
+
+            }
+#pragma warning disable 0168
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+#pragma warning restore 0168
+            //if (!source.Equals(pending))
+            //{
+            //    var ar = source.AuditChanges(pending);
+            //    Assert.IsTrue(ar.Deltas.Count == 2);
+            //    foreach (var delta in ar.Deltas)
+            //    {
+            //        Assert.IsTrue(delta.EntityState == EntityState.Added);
+            //    }
+            //    new object();
+            //}
+        }
+
 
     }//class
 

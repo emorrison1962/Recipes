@@ -16,7 +16,7 @@ namespace Recipes.Domain
         public int? RecipeId { get; set; }
 
         [ForeignKey("RecipeId")]
-        [NavigationProperty]
+        //[NavigationProperty]
         virtual public Recipe Recipe { get; set; }
 
 
@@ -41,6 +41,8 @@ namespace Recipes.Domain
         public PlannerItem(Recipe r) : this()
         {
             this.RecipeId = r.RecipeId;
+            this.Recipe = r;
+            this.Text = Recipe.Name;
         }
         void Init()
         {
@@ -63,7 +65,9 @@ namespace Recipes.Domain
             if (null != this.Recipe)
             {
                 this.RecipeId = this.Recipe.RecipeId;
-                this.Recipe = null;
+                this.Text = this.Recipe.Name;
+                //if (this.Recipe.RecipeId != 0)
+                //    this.Recipe = null;
             }
         }
 

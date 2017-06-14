@@ -9,7 +9,7 @@ namespace Recipes.DAL.Data
     {
         public DataContext() : base("DefaultConnection")
         {
-
+            this.Configuration.ProxyCreationEnabled = false;
         }
 
         public void SetChanges(EntityChangeResults ar)
@@ -20,18 +20,19 @@ namespace Recipes.DAL.Data
                 if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Added)
                 {
                     var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Added;
-                    //this.DebugChanges();
+                    this.DebugChanges();
                 }
                 else if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Deleted)
                 {
-                    var dbEntry = this.Entry(me.Entity).State = System.Data.Entity.EntityState.Deleted;
-                    //this.DebugChanges();
+                    var dbEntry = this.Entry(me.Entity);
+                    dbEntry.State = System.Data.Entity.EntityState.Deleted;
+                    this.DebugChanges();
                 }
                 else if (me.EntityState == (Recipes.Domain.EntityState)System.Data.Entity.EntityState.Modified)
                 {
-                    var dbEntry = this.Entry(me.Entity); 
+                    var dbEntry = this.Entry(me.Entity);  
                     dbEntry.State = System.Data.Entity.EntityState.Modified;
-                    //this.DebugChanges();
+                    this.DebugChanges();
                 }
                 else
                 {
@@ -39,6 +40,14 @@ namespace Recipes.DAL.Data
                 }
 
             }
+
+            foreach (var e in this.ChangeTracker.Entries())
+            {
+                var eb = e.Entity as EntityBase;
+                if (eb.PrimaryKey > 0 && e.State == System.Data.Entity.EntityState.Added)
+                    e.State = System.Data.Entity.EntityState.Modified;
+            }
+
             this.DebugChanges();
         }
 
@@ -60,7 +69,7 @@ namespace Recipes.DAL.Data
         }
 
 #endif
-        void DebugChanges()
+        public void DebugChanges()
         {
             if (this.ChangeTracker.HasChanges())
             {

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Recipes.Contracts
 {
-    //public class NavigationPropertyAttribute : Attribute
-    //{
-    //}
+    public static class Constants
+    {
+        public const string PROXY_NAMESPACE = "System.Data.Entity.DynamicProxies";
+    }
 }

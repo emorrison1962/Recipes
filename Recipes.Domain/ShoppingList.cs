@@ -11,7 +11,7 @@ namespace Recipes.Domain
     public class ShoppingList : EntityBase<ShoppingList>
     {
         const string DEFAULT_GROUP_TEXT = "<Unknown>";
-        public string Text { get; set; }
+        override public string Text { get; set; }
         public int ShoppingListId { get; set; }
         public List<ShoppingListGroup> Groups { get; set; }
 

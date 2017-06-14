@@ -30,9 +30,11 @@ namespace Recipes.DAL.Repositories
             try
             {
                 var existing = this.GetById(pending.PlannerId);
+                this.Detach(existing);
                 if (!existing.Equals(pending))
                 {
                     var changes = existing.DetectChanges(pending);
+                    Debug.WriteLine(changes);
                     this.DataContext.SetChanges(changes);
                     this.DataContext.SaveChanges();
                 }

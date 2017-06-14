@@ -38,9 +38,13 @@ namespace Recipes.Services
                     result = recipe;
                 }
             }
-            else
+            else if (null != recipe.Uri)
             {
                 result = this.Create(recipe.Uri);
+            }
+            else
+            {// Create AdHoc recipe.
+                result = recipe;
             }
             if (null != result)
 			{
@@ -61,14 +65,24 @@ namespace Recipes.Services
 
         override public void Delete(Recipe entity)
 		{
-			throw new NotImplementedException();
-		}
+            try
+            {
+                this.Repository.Delete(entity);
+                this.Repository.Commit();
+            }
+#pragma warning disable 168
+            catch (Exception ex)
+            {
+                throw;
+            }
+#pragma warning restore 168
+        }
         override public void Delete(int id)
 		{
 			try
 			{
-				this.Repository.Delete(id);
-				this.Repository.Commit();
+				var recipe = this.Repository.GetById(id);
+                this.Delete(recipe);
 			}
 #pragma warning disable 168
 			catch (Exception ex)

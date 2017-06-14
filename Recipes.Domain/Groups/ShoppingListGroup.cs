@@ -42,12 +42,14 @@ namespace Recipes.Domain
         {
             this.Items.Add(item);
             item.ShoppingListGroup = this;
+            item.ShoppingListGroupId = this.ShoppingListGroupId;
         }
 
         public override void Remove(ShoppingListItem item)
         {
             this.Items.Remove(item);
             item.ShoppingListGroup = null;
+            item.ShoppingListGroupId = null;
         }
 
         [OnSerializing]

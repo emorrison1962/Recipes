@@ -45,12 +45,14 @@ namespace Recipes.Domain
         {
             this.Items.Add(item);
             item.ProcedureGroup = this;
+            item.ProcedureGroupId = this.ProcedureGroupId;
         }
 
         public override void Remove(ProcedureItem item)
         {
             this.Items.Remove(item);
             item.ProcedureGroup = null;
+            item.ProcedureGroupId = null;
         }
 
         [OnDeserialized]
